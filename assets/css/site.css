@@ -625,6 +625,13 @@ button {
   display: block;
 }
 
+/* The full lockup already contains the wordmark and tagline, so the text
+   lockup beside it would duplicate them — and being cream on the cream plate,
+   only its gold "For" would have shown. */
+.brand--plate.has-logo .brand__word {
+  display: none;
+}
+
 /* Until the lockup lands, the plate collapses and the cream type lockup
    stands in directly on the green. */
 .brand--plate:not(.has-logo) {

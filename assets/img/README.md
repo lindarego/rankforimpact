@@ -11,9 +11,12 @@ stock-looking.
 
 ## Brand assets
 
-Add these and they are picked up automatically — no markup or CSS change. Until
-each file exists the lockup falls back to a typographic `R.` in the brand serif,
-so a missing logo never shows a broken-image icon.
+All present. Each lockup still falls back to a typographic `R.` in the brand
+serif if its file ever goes missing, so a broken-image icon never appears.
+
+`favicon.png`, `apple-touch-icon.png` and `og-default.jpg` were derived from the
+supplied artwork by resampling and compositing — no new artwork was drawn.
+Replace them freely if you would rather art-direct the social card.
 
 | File | Used for | Notes |
 | --- | --- | --- |

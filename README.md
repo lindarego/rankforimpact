@@ -108,14 +108,12 @@ useful when snapshotting or embedding the pages elsewhere.
 ## Known gaps
 
 - **Photography** — no image files yet; every frame is showing its placeholder.
-- **Logo artwork** — not yet in the repo, so both lockups fall back to a
-  typographic `R.` plus wordmark in the brand serif. Add
-  `assets/img/logo-mark.png` (header) and `assets/img/logo-full.png` +
-  `logo-full-480.png` (footer) and they are used automatically — no markup or
-  CSS change needed. The footer's cream plate only paints once its artwork is
-  present, so the fallback sits directly on the green.
-- **Favicon** — `assets/img/favicon.png` and `apple-touch-icon.png` are
-  referenced but not present.
+- ~~**Logo artwork**~~ — done. `logo-mark.png` (header), `logo-full.png` and
+  `logo-full-480.png` (footer), plus `favicon.png`, `apple-touch-icon.png` and
+  `og-default.jpg` derived from them. Each lockup still degrades to a
+  typographic `R.` if its file is ever missing.
+- **Favicon** — present, resampled from the supplied monogram. The
+  apple-touch-icon is flattened onto cream because iOS ignores alpha.
 - **Contact form** — GitHub Pages cannot process form posts. Point the form's
   `action` at Formspree, Basin, Netlify Forms or similar, then delete the notice
   under the submit button. The direct `mailto:` link works today.
