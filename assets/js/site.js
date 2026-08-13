@@ -5,17 +5,42 @@
 (function () {
   'use strict';
 
+  /* Marks the document as script-enabled. Every motion rule in the stylesheet
+     is gated behind this, so the page renders fully visible without JS. */
+  document.documentElement.classList.add('js');
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* ----------------------------------------------------------------------
-     Sticky header background
+     Sticky header state + reading progress
      ---------------------------------------------------------------------- */
   var header = document.querySelector('.header');
+  var progress = document.querySelector('.scroll-progress span');
 
-  if (header) {
+  if (header || progress) {
     var syncHeader = function () {
-      header.classList.toggle('is-stuck', window.scrollY > 12);
+      var y = window.scrollY || window.pageYOffset;
+      if (header) header.classList.toggle('is-stuck', y > 12);
+      if (progress) {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+      }
     };
+
+    var ticking = false;
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          syncHeader();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
     syncHeader();
-    window.addEventListener('scroll', syncHeader, { passive: true });
   }
 
   /* ----------------------------------------------------------------------
@@ -53,16 +78,25 @@
      to the real artwork once assets/img/logo.svg loads. Adding the file is
      the only step — no markup change required.
      ---------------------------------------------------------------------- */
-  Array.prototype.forEach.call(document.querySelectorAll('.brand__mark--art'), function (art) {
+  var artwork = document.querySelectorAll('.brand__mark--art, .brand__full');
+
+  Array.prototype.forEach.call(artwork, function (art) {
     var brand = art.closest ? art.closest('.brand') : art.parentNode;
     if (!brand) return;
 
     var adopt = function () {
-      if (art.naturalWidth > 0) brand.classList.add('has-logo');
+      brand.classList.add('has-logo');
     };
 
-    if (art.complete) adopt();
-    else art.addEventListener('load', adopt);
+    /* A fired load event is the reliable signal that the artwork decoded;
+       naturalWidth alone is unsafe here because a srcset `w` descriptor
+       scales it by the computed density. */
+    art.addEventListener('load', adopt);
+    art.addEventListener('error', function () {
+      brand.classList.remove('has-logo');
+    });
+
+    if (art.complete && art.naturalWidth > 0) adopt();
   });
 
   /* ----------------------------------------------------------------------
@@ -97,12 +131,52 @@
   });
 
   /* ----------------------------------------------------------------------
-     Scroll reveal
+     Section headings become masked lines
+     One mask line per heading so it rides up as a block. The hero h1 is
+     marked up by hand because its line breaks are deliberate.
      ---------------------------------------------------------------------- */
-  var revealables = document.querySelectorAll('.reveal');
+  Array.prototype.forEach.call(
+    document.querySelectorAll('[data-mask-auto]'),
+    function (h) {
+      if (h.querySelector('.mask-line')) return;
+      var line = document.createElement('span');
+      line.className = 'mask-line';
+      var inner = document.createElement('span');
+      while (h.firstChild) inner.appendChild(h.firstChild);
+      line.appendChild(inner);
+      h.appendChild(line);
+      h.setAttribute('data-mask', '');
+    }
+  );
 
-  if (!('IntersectionObserver' in window)) {
-    Array.prototype.forEach.call(revealables, function (el) {
+  /* ----------------------------------------------------------------------
+     Scroll reveal, staggered per group
+     ---------------------------------------------------------------------- */
+  [
+    ['.hero__copy > .eyebrow, .hero__copy .prose > *, .hero__copy .btn-row', 90],
+    ['.cards .card', 120],
+    ['.steps > .step', 90],
+    ['.pillars .pillar', 90],
+    ['.mission__inner > *', 80],
+    ['.collage .tile', 120],
+    ['.cta__copy, .cta__actions', 130],
+    ['.footer__grid > *', 90],
+    ['.rows > .row', 60],
+    ['.posts .post', 100]
+  ].forEach(function (group) {
+    Array.prototype.forEach.call(
+      document.querySelectorAll(group[0]),
+      function (el, i) {
+        el.setAttribute('data-reveal', '');
+        el.style.setProperty('--d', i * group[1] + 'ms');
+      }
+    );
+  });
+
+  var animated = document.querySelectorAll('.reveal, [data-reveal], [data-mask]');
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    Array.prototype.forEach.call(animated, function (el) {
       el.classList.add('is-in');
     });
   } else {
@@ -117,8 +191,40 @@
       { rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
     );
 
-    Array.prototype.forEach.call(revealables, function (el) {
+    Array.prototype.forEach.call(animated, function (el) {
       observer.observe(el);
+    });
+  }
+
+  /* ----------------------------------------------------------------------
+     Active nav link follows the visible section (in-page anchors only)
+     ---------------------------------------------------------------------- */
+  var spyLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.nav__link[href^="#"]')
+  );
+  var spyTargets = spyLinks
+    .map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    })
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && spyTargets.length) {
+    var spy = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          spyLinks.forEach(function (a) {
+            a.classList.toggle(
+              'is-active',
+              a.getAttribute('href') === '#' + entry.target.id
+            );
+          });
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    spyTargets.forEach(function (t) {
+      spy.observe(t);
     });
   }
 

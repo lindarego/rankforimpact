@@ -21,9 +21,9 @@
   font-display: swap;
 }
 @font-face {
-  font-family: 'Inter';
-  src: url('../fonts/inter.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'Jost';
+  src: url('../fonts/jost.woff2') format('woff2');
+  font-weight: 300 700;
   font-style: normal;
   font-display: swap;
 }
@@ -37,31 +37,32 @@
   color-scheme: light;
 
   /* Brand */
-  --green: #16302a;
-  --green-deep: #102420;
-  --green-tint: #1e3b34;
-  --gold: #c4a265;
-  --gold-ink: #96742f; /* gold that passes contrast on cream */
-  --gold-light: #cdad74; /* gold for use on dark green */
+  --green: #123328;
+  --green-deep: #0d2620;
+  --green-tint: #1b4335;
+  --gold: #c19a63;
+  --gold-soft: #c9a877;
+  --gold-ink: #c19a63; /* accent text on cream */
+  --gold-light: #c9a877; /* gold for use on dark green */
 
-  /* Neutrals */
-  --cream: #f7f5f0;
-  --cream-hi: #fbfaf8;
-  --cream-lo: #efebe3;
-  --ink: #22241f;
-  --body: #4c4c46;
-  --muted: #6f6f67;
-  --line: #ddd7cd;
-  --line-soft: #e8e3da;
+  /* Neutrals — cream-hi is the page ground, cream the warmer accent band */
+  --cream: #f4f0e8;
+  --cream-hi: #faf8f3;
+  --cream-lo: #ece5d7;
+  --ink: #1c1c1a;
+  --body: #55554f;
+  --muted: #5b5b55;
+  --line: #ddd7cb;
+  --line-soft: #e7e2d6;
 
   /* On dark */
-  --on-dark: #ebe8e0;
-  --on-dark-muted: #b9bfb8;
-  --on-dark-line: rgba(235, 232, 224, 0.16);
+  --on-dark: #ffffff;
+  --on-dark-muted: rgba(255, 255, 255, 0.72);
+  --on-dark-line: rgba(255, 255, 255, 0.16);
 
   /* Type */
   --serif: 'Cormorant Garamond', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-  --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --sans: 'Jost', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 
   /* Rhythm */
   --gutter: clamp(1.25rem, 5vw, 4rem);
@@ -83,11 +84,12 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  scroll-padding-top: 104px; /* clears the sticky header on anchor jumps */
 }
 
 body {
   margin: 0;
-  background: var(--cream);
+  background: var(--cream-hi);
   color: var(--body);
   font-family: var(--sans);
   font-size: clamp(0.95rem, 0.2vw + 0.9rem, 1.0rem);
@@ -220,10 +222,13 @@ button {
 }
 
 .tone-lo {
-  background: var(--cream-lo);
+  background: var(--cream);
 }
 .tone-hi {
   background: var(--cream-hi);
+}
+.tone-deep {
+  background: var(--cream-lo);
 }
 
 /* --------------------------------------------------------------------------
@@ -372,8 +377,13 @@ button {
    -------------------------------------------------------------------------- */
 .btn {
   --btn-bg: var(--green);
-  --btn-fg: var(--cream-hi);
+  --btn-fg: #fff;
   --btn-bd: var(--green);
+  --btn-wipe: var(--green-deep);
+  --btn-fg-hover: var(--btn-fg);
+  --btn-bd-hover: var(--btn-bd);
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   gap: 0.85rem;
@@ -388,8 +398,21 @@ button {
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: background 0.35s var(--ease), color 0.35s var(--ease),
-    border-color 0.35s var(--ease), transform 0.35s var(--ease);
+  transition: color 0.35s var(--ease), border-color 0.35s var(--ease),
+    transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+/* Negative-z pseudo paints above the background but below the label, so the
+   hover colour wipes in from the left without touching the text. */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-wipe);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.5s var(--ease);
 }
 
 .btn .icon {
@@ -399,57 +422,69 @@ button {
 }
 
 .btn:hover {
+  color: var(--btn-fg-hover);
+  border-color: var(--btn-bd-hover);
   transform: translateY(-2px);
+}
+.btn:hover::before {
+  transform: scaleX(1);
 }
 .btn:hover .icon {
   transform: translateX(4px);
 }
+.btn:active {
+  transform: translateY(1px);
+}
 
 .btn--dark:hover {
-  --btn-bg: var(--green-deep);
-  --btn-bd: var(--green-deep);
+  box-shadow: 0 16px 30px -18px rgba(18, 51, 40, 0.6);
 }
 
 .btn--ghost {
   --btn-bg: transparent;
   --btn-fg: var(--ink);
   --btn-bd: var(--line);
-}
-.btn--ghost:hover {
-  --btn-bg: var(--green);
-  --btn-fg: var(--cream-hi);
-  --btn-bd: var(--green);
+  --btn-wipe: var(--green);
+  --btn-fg-hover: #fff;
+  --btn-bd-hover: var(--green);
 }
 
 .btn--gold {
   --btn-bg: var(--gold);
-  --btn-fg: #1a3129;
+  --btn-fg: #fff;
   --btn-bd: var(--gold);
+  --btn-wipe: #b18a52;
 }
 .btn--gold:hover {
-  --btn-bg: #b8945a;
-  --btn-bd: #b8945a;
+  box-shadow: 0 16px 30px -18px rgba(193, 154, 99, 0.7);
 }
 
 .btn--light {
   --btn-bg: var(--cream-hi);
   --btn-fg: var(--green);
   --btn-bd: var(--cream-hi);
-}
-.btn--light:hover {
-  --btn-bg: transparent;
-  --btn-fg: var(--cream-hi);
+  --btn-wipe: var(--green-deep);
+  --btn-fg-hover: #fff;
+  --btn-bd-hover: var(--green-deep);
 }
 
 .btn--outline-light {
   --btn-bg: transparent;
   --btn-fg: var(--on-dark);
   --btn-bd: var(--on-dark-line);
+  --btn-wipe: var(--cream-hi);
+  --btn-fg-hover: var(--green);
+  --btn-bd-hover: var(--cream-hi);
 }
-.btn--outline-light:hover {
-  --btn-bg: var(--cream-hi);
-  --btn-fg: var(--green);
-  --btn-bd: var(--cream-hi);
+
+/* Outlined on a light ground: white plate, ink label, wipes to green. */
+.btn--paper {
+  --btn-bg: #fff;
+  --btn-fg: var(--ink);
+  --btn-bd: var(--line);
+  --btn-wipe: var(--green);
+  --btn-fg-hover: #fff;
+  --btn-bd-hover: var(--green);
 }
 
 .btn-row {
@@ -500,15 +535,19 @@ button {
   display: block;
   flex: none;
   width: auto;
-  height: 42px;
+  height: 52px;
+  transition: height 0.35s var(--ease);
 }
 
 /* The monogram artwork. Hidden until site.js confirms the file actually
-   loaded, so a missing logo.svg never shows a broken-image icon. */
+   loaded, so a missing file never shows a broken-image icon. The PNG carries
+   ~8% internal padding, so a slight negative margin optically aligns it
+   with the wordmark. */
 .brand__mark--art {
   display: none;
   width: auto;
-  height: 42px;
+  height: 52px;
+  margin: -3px 0;
 }
 
 .brand.has-logo .brand__mark--art {
@@ -542,13 +581,19 @@ button {
 
 .brand__word {
   font-family: var(--serif);
-  font-size: 0.94rem;
+  font-size: 1.19rem;
   font-weight: 500;
   color: var(--green);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.13em;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+/* "For" carries the gold in the wordmark. */
+.brand__word em {
+  font-style: normal;
+  color: var(--gold);
 }
 
 .dark .brand__mark--type,
@@ -558,6 +603,35 @@ button {
   color: var(--cream-hi);
 }
 
+/* The supplied full lockup is dark-ink artwork, so on the dark green footer it
+   sits on a cream plate to stay legible. */
+.brand--plate {
+  display: inline-block;
+  max-width: 290px;
+  padding: 22px 26px;
+  background: var(--cream-hi);
+}
+
+.brand--plate .brand__full {
+  width: 100%;
+  height: auto;
+}
+
+.brand__full {
+  display: none;
+}
+
+.brand--plate.has-logo .brand__full {
+  display: block;
+}
+
+/* Until the lockup lands, the plate collapses and the cream type lockup
+   stands in directly on the green. */
+.brand--plate:not(.has-logo) {
+  padding: 0;
+  background: none;
+}
+
 /* --------------------------------------------------------------------------
    9. Header
    -------------------------------------------------------------------------- */
@@ -565,14 +639,15 @@ button {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(247, 245, 240, 0);
-  transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  background: var(--cream);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: background 0.35s var(--ease), box-shadow 0.35s var(--ease);
 }
 
 .header.is-stuck {
-  background: rgba(251, 250, 248, 0.94);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 1px 0 var(--line-soft);
+  background: rgba(244, 240, 232, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 34px -26px rgba(18, 51, 40, 0.5);
 }
 
 .header__inner {
@@ -580,8 +655,36 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  min-height: 88px;
-  padding-block: 0.9rem;
+  padding-block: 1.375rem;
+  transition: padding 0.35s var(--ease);
+}
+
+/* The bar tightens as the page scrolls, and the mark shrinks with it. */
+.header.is-stuck .header__inner {
+  padding-block: 0.75rem;
+}
+
+.header.is-stuck .brand__mark {
+  height: 42px;
+}
+
+/* Reading progress, pinned to the header's lower edge. */
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  overflow: hidden;
+}
+
+.scroll-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #dfc49a);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
 }
 
 .nav {
@@ -613,11 +716,13 @@ button {
 }
 
 .nav__link:hover::after,
-.nav__link[aria-current='page']::after {
+.nav__link[aria-current='page']::after,
+.nav__link.is-active::after {
   width: 100%;
 }
 
-.nav__link[aria-current='page'] {
+.nav__link[aria-current='page'],
+.nav__link.is-active {
   color: var(--green);
 }
 
@@ -660,9 +765,13 @@ body.nav-open .nav-toggle__close {
     order: 3;
   }
 
+  /* Anchored to the header's own lower edge rather than a hard-coded offset,
+     so it stays correct as the bar shrinks on scroll. */
   .nav {
-    position: fixed;
-    inset: 88px 0 auto;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
@@ -748,7 +857,37 @@ body.nav-open .nav-toggle__close {
 }
 
 .frame--dark {
-  background: linear-gradient(155deg, #253d34 0%, #16302a 48%, #0d1f1a 100%);
+  background: linear-gradient(155deg, #1e4536 0%, #123328 48%, #0b1d18 100%);
+}
+
+/* Per-photograph placeholder tints. Each stands in for a specific shot, so the
+   holding page reads as art direction rather than a row of identical blocks.
+   A real file at the frame's src takes over and hides all of this. */
+.frame--desk {
+  background:
+    radial-gradient(120% 90% at 78% 12%, rgba(255, 244, 222, 0.85), rgba(255, 244, 222, 0) 55%),
+    linear-gradient(160deg, #e6dccb 0%, #cbb695 30%, #8b6f4e 62%, #4a3527 100%);
+}
+.frame--office {
+  background: linear-gradient(150deg, #f0e6d6, #c9ab84 45%, #7d6448);
+}
+.frame--meeting {
+  background: linear-gradient(200deg, #efe4d2, #b79a76 50%, #6d5740);
+}
+.frame--valley {
+  background: linear-gradient(180deg, #9fb8a2, #4e7d5c 45%, #22402f);
+}
+.frame--portrait {
+  background: linear-gradient(160deg, #e7d8c2, #9d7f5e 45%, #2f2a22);
+}
+.frame--leaf {
+  background: linear-gradient(115deg, #dfe4d3, #b9c4a5 55%, #8fa07c);
+}
+
+/* Inside a collage tile the frame is the backdrop, so its caption would fight
+   the tile's own. Needs to outrank `.frame.is-empty .frame__ph`. */
+.tile .frame.is-empty .frame__ph {
+  display: none;
 }
 
 /* Placeholder rendered only while the photograph is absent. */
@@ -814,7 +953,12 @@ body.nav-open .nav-toggle__close {
 .cta__bg .frame__label,
 .cta__bg .frame__note,
 .cta__edge .frame__label,
-.cta__edge .frame__note {
+.cta__edge .frame__note,
+.cta__leaf .frame__label,
+.cta__leaf .frame__note,
+.cta__bg .frame__ph::before,
+.cta__edge .frame__ph::before,
+.cta__leaf .frame__ph::before {
   display: none;
 }
 
@@ -823,7 +967,7 @@ body.nav-open .nav-toggle__close {
    -------------------------------------------------------------------------- */
 .hero {
   position: relative;
-  background: var(--cream-hi);
+  background: var(--cream);
 }
 
 .hero__grid {
@@ -905,44 +1049,83 @@ body.nav-open .nav-toggle__close {
    -------------------------------------------------------------------------- */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 0;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  border: 1px solid var(--line-soft);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.625rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
-  padding: clamp(1.85rem, 3vw, 2.75rem);
-  background: var(--cream-hi);
-  border-right: 1px solid var(--line-soft);
-  transition: background 0.4s var(--ease), transform 0.4s var(--ease);
-}
-
-.card:last-child {
-  border-right: 0;
+  padding: 2.5rem 2.25rem 2.25rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
 }
 
 .card:hover {
-  background: #fff;
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -28px rgba(18, 51, 40, 0.35);
+}
+
+.card .icon--lg {
+  margin-bottom: 1.875rem;
+}
+
+.card .icon--lg svg,
+.card__icon svg {
+  transition: transform 0.45s var(--ease);
+}
+
+.card:hover .icon--lg {
   transform: translateY(-4px);
 }
 
+/* Gold rule draws in under the title on hover. */
+.card__title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.card__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.45s var(--ease);
+}
+
+.card:hover .card__title::after {
+  transform: scaleX(1);
+}
+
 .card__body {
-  flex: 1;
-  font-size: 0.93rem;
+  margin-bottom: 1.75rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
   line-height: 1.75;
 }
 
-@media (max-width: 820px) {
-  .card {
-    border-right: 0;
-    border-bottom: 1px solid var(--line-soft);
-  }
-  .card:last-child {
-    border-bottom: 0;
+.card .link {
+  margin-top: auto;
+}
+
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -950,58 +1133,79 @@ body.nav-open .nav-toggle__close {
    13. Process band (horizontal steps)
    -------------------------------------------------------------------------- */
 .steps {
+  --rail-gap: 44px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  margin-top: clamp(2.5rem, 5vw, 3.75rem);
+  align-items: start;
+  column-gap: var(--rail-gap);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
 .step {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
+}
+
+.step .icon-ring {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.75rem;
+  color: var(--gold-soft);
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease),
+    color 0.4s var(--ease);
+}
+
+.step:hover .icon-ring {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--green);
 }
 
 .step__title {
+  margin-bottom: 0.625rem;
   font-family: var(--sans);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--on-dark);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
   letter-spacing: 0.02em;
 }
 
 .step__body {
-  font-size: 0.88rem;
+  max-width: 24ch;
+  font-size: 0.875rem;
   line-height: 1.7;
 }
 
-/* Connector arrow between steps */
-.step:not(:last-child)::after {
-  content: '';
+/* Connector, centred between this ring and the next: half a column, plus half
+   a ring, plus half the gap. */
+.step__link {
   position: absolute;
-  top: 33px;
-  right: calc(-1 * clamp(1.5rem, 3vw, 2.5rem) / 2 - 6px);
-  width: 13px;
-  height: 13px;
-  border-top: 1px solid rgba(235, 232, 224, 0.42);
-  border-right: 1px solid rgba(235, 232, 224, 0.42);
-  transform: rotate(45deg);
+  top: 32px;
+  left: calc(50% + 32px + var(--rail-gap) / 2);
+  transform: translate(-50%, -50%);
+  line-height: 0;
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1080px) {
+  /* Two per row — drop each row's trailing connector so it never points
+     into empty space. */
   .steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.5rem 1.5rem;
+    row-gap: 3.25rem;
   }
-  .step:not(:last-child)::after {
+  .step:nth-child(2n) .step__link {
     display: none;
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
   .steps {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.75rem;
+  }
+  .step__link {
+    display: none;
   }
 }
 
@@ -1015,35 +1219,60 @@ body.nav-open .nav-toggle__close {
   align-items: start;
 }
 
+/* The heading sits above the row rather than beside it: the container caps at
+   1240px, so side by side the five pillars were stuck at ~150px each. */
+.pillars-head {
+  max-width: 34ch;
+  margin-bottom: clamp(3rem, 5vw, 4.75rem);
+}
+
+.pillars-head .h2 {
+  max-width: 16ch;
+}
+
 .pillars {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
+  row-gap: 3.75rem;
 }
 
+/* Every pillar carries a divider, cleared on the first of each row. The
+   row-start selector tracks the column count at each breakpoint below. */
 .pillar {
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  padding: 0 clamp(1rem, 1.8vw, 1.6rem);
-  border-left: 1px solid var(--line-soft);
+  padding: 0 1.875rem;
+  border-left: 1px solid var(--line);
 }
 
-.pillar:first-child {
+.pillar:nth-child(5n + 1) {
   padding-left: 0;
   border-left: 0;
 }
 
+.pillar .icon--lg {
+  color: var(--green);
+  transition: transform 0.4s var(--ease);
+}
+
+.pillar:hover .icon--lg {
+  transform: translateY(-3px);
+}
+
 .pillar__title {
   font-family: var(--serif);
-  font-size: 1.14rem;
+  font-size: 1.3125rem;
   font-weight: 400;
   color: var(--ink);
-  line-height: 1.3;
+  line-height: 1.28;
 }
 
 .pillar__body {
-  font-size: 0.85rem;
-  line-height: 1.7;
+  max-width: 25ch;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.75;
 }
 
 .dark .pillar {
@@ -1069,16 +1298,36 @@ body.nav-open .nav-toggle__close {
   font-size: 1.12rem;
 }
 
+/* 5 → 3 columns: restore the divider on the old row-start, clear the new. */
+@media (max-width: 1200px) {
+  .pillars {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .pillar:nth-child(5n + 1) {
+    padding-left: 1.875rem;
+    border-left: 1px solid var(--line);
+  }
+  .pillar:nth-child(3n + 1) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
 @media (max-width: 1000px) {
   .split-heading {
     grid-template-columns: 1fr;
   }
+}
+
+/* 3 → 2 columns */
+@media (max-width: 860px) {
   .pillars {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.75rem 0;
+    row-gap: 3.25rem;
   }
-  .pillar {
-    padding-inline: clamp(1rem, 4vw, 2rem);
+  .pillar:nth-child(3n + 1) {
+    padding-left: 1.875rem;
+    border-left: 1px solid var(--line);
   }
   .pillar:nth-child(odd) {
     padding-left: 0;
@@ -1086,13 +1335,15 @@ body.nav-open .nav-toggle__close {
   }
 }
 
-@media (max-width: 560px) {
+/* Single column: no dividers at all. `.pillars .pillar` matches the
+   specificity of the nth-child rules above and wins on source order. */
+@media (max-width: 600px) {
   .pillars {
-    grid-template-columns: 1fr;
-    gap: 2.25rem;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.625rem;
   }
-  .pillar {
-    padding-inline: 0;
+  .pillars .pillar {
+    padding: 0;
     border-left: 0;
   }
 }
@@ -1300,65 +1551,189 @@ body.nav-open .nav-toggle__close {
    -------------------------------------------------------------------------- */
 .mission {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
 }
 
 .mission__copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(3rem, 6vw, 5.5rem) clamp(2rem, 4vw, 3.5rem)
-    clamp(3rem, 6vw, 5.5rem) var(--gutter);
+  padding: clamp(3rem, 6vw, 6rem) var(--gutter) clamp(3rem, 6vw, 6.5rem);
+}
+
+.mission__inner {
+  width: 100%;
+  max-width: 470px;
+  margin-left: auto;
 }
 
 .mission__copy .lede {
-  max-width: 42ch;
-  font-size: 0.95rem;
+  max-width: 46ch;
+  font-size: 0.9375rem;
 }
 
-.mosaic {
+/* Pinwheel mosaic: two tall tiles on opposite corners. */
+.collage {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 3px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  min-height: 600px;
   background: var(--green);
 }
 
-.mosaic .frame--span2 {
-  grid-column: span 2;
+.collage .c1 {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+.collage .c2 {
+  grid-column: 2;
+  grid-row: 1;
+}
+.collage .c3 {
+  grid-column: 1;
+  grid-row: 3;
+}
+.collage .c4 {
+  grid-column: 2;
+  grid-row: 2 / span 2;
 }
 
-.mosaic__card {
+.tile {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.tile .frame {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 0;
+  z-index: 0;
+  transition: transform 0.7s var(--ease);
+}
+
+/* Veil sits above the image, below the caption. */
+.tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(13, 38, 32, 0.95) 0%,
+    rgba(13, 38, 32, 0.78) 42%,
+    rgba(13, 38, 32, 0.16) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+}
+
+.tile__cap {
+  position: absolute;
   z-index: 2;
-  transform: translate(-50%, -50%);
-  width: min(320px, 62%);
-  padding: clamp(1.5rem, 2.5vw, 2.25rem);
-  background: var(--green);
-  color: var(--on-dark);
-  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.5);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.75rem 1.75rem 1.625rem;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
 }
 
-.mosaic__card .icon-ring {
-  width: 44px;
-  height: 44px;
+.tile__key {
+  display: block;
+  margin-bottom: 0.625rem;
+  color: var(--gold-soft);
+  font-size: 0.656rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.tile__cap p {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.42;
+  color: #fff;
+}
+
+.tile:hover .frame {
+  transform: scale(1.05);
+}
+.tile:hover::after,
+.tile:focus-visible::after {
+  opacity: 1;
+}
+.tile:hover .tile__cap,
+.tile:focus-visible .tile__cap {
+  opacity: 1;
+  transform: none;
+}
+.tile:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+/* No hover to reveal on touch, so the captions stay visible. */
+@media (hover: none) {
+  .tile::after,
+  .tile__cap {
+    opacity: 1;
+  }
+  .tile__cap {
+    transform: none;
+  }
+}
+
+/* The promise block lives in the copy column, not over the collage, where it
+   covered a tile's hover caption. */
+.promise {
+  margin-top: 2.875rem;
+  padding: 1.75rem 1.875rem 1.625rem;
+  background: var(--green-deep);
+  border-top: 2px solid var(--gold);
+}
+
+.promise__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 1.25rem;
-  border-color: var(--on-dark-line);
-  color: var(--gold-light);
 }
 
-.mosaic__card .icon-ring .icon {
-  width: 20px;
-  height: 20px;
+.promise .icon-ring {
+  width: 52px;
+  height: 52px;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--gold-soft);
 }
 
-.mosaic__card p {
-  font-family: var(--sans);
-  font-size: 0.92rem;
-  line-height: 1.85;
+.promise__key {
+  margin: 0;
+  color: var(--gold);
+  font-size: 0.656rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.promise__list li {
+  padding: 0.6875rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.promise__list li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.promise__list li:last-child {
+  padding-bottom: 0;
 }
 
 @media (max-width: 900px) {
@@ -1366,16 +1741,27 @@ body.nav-open .nav-toggle__close {
     grid-template-columns: 1fr;
   }
   .mission__copy {
-    padding: clamp(2.75rem, 9vw, 4rem) var(--gutter);
+    padding: clamp(2.75rem, 9vw, 4.5rem) var(--gutter);
   }
-  .mosaic {
-    grid-template-rows: repeat(2, minmax(160px, 1fr));
+  .mission__inner {
+    max-width: none;
+    margin: 0;
   }
-  .mosaic__card {
-    position: static;
-    width: auto;
-    grid-column: span 2;
-    transform: none;
+  .collage {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 600px) {
+  .collage {
+    min-height: 0;
+    grid-template-rows: repeat(3, 180px);
+  }
+  .tile__cap {
+    padding: 1.25rem;
+  }
+  .tile__cap p {
+    font-size: 1rem;
   }
 }
 
@@ -1470,7 +1856,7 @@ body.nav-open .nav-toggle__close {
 .cta {
   position: relative;
   overflow: hidden;
-  background: var(--cream-lo);
+  background: var(--cream);
 }
 
 .cta__inner {
@@ -1542,6 +1928,51 @@ body.nav-open .nav-toggle__close {
   margin-top: 0.9rem;
   font-size: 0.84rem;
   line-height: 1.6;
+}
+
+/* Foliage bled into the left edge of the light CTA band, faded out with a mask
+   so it reads as texture rather than a hard-edged panel. */
+.cta--leaf .cta__inner {
+  padding-block: 3.125rem;
+}
+
+.cta__leaf {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  width: 230px;
+  opacity: 0.85;
+  -webkit-mask-image: linear-gradient(90deg, #000 55%, transparent);
+  mask-image: linear-gradient(90deg, #000 55%, transparent);
+}
+
+.cta__leaf .frame {
+  height: 100%;
+}
+
+.cta--leaf .cta__copy {
+  margin-left: 180px;
+}
+
+.cta--leaf .cta__copy .h2 {
+  font-size: clamp(1.625rem, 2.6vw, 2.125rem);
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .cta--leaf .cta__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: 3.5rem;
+  }
+  .cta--leaf .cta__copy {
+    margin-left: 0;
+  }
+  .cta__leaf {
+    display: none;
+  }
 }
 
 /* Photograph bled into one edge of a light CTA band */
@@ -1891,15 +2322,55 @@ body.nav-open .nav-toggle__close {
 /* --------------------------------------------------------------------------
    23. Scroll reveal
    -------------------------------------------------------------------------- */
-.reveal {
+/* Gated behind .js (set by site.js) so the page renders fully visible if the
+   script never runs — an ungated rule leaves everything permanently at
+   opacity 0 for no-JS readers. */
+.js .reveal,
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(22px);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
+  transition-delay: var(--d, 0ms);
 }
 
-.reveal.is-in {
+.js .reveal.is-in,
+.js [data-reveal].is-in {
   opacity: 1;
   transform: none;
+}
+
+/* Headline lines ride up from behind their own clipping mask. */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+}
+
+.mask-line > span {
+  display: block;
+}
+
+.js .mask-line > span {
+  transform: translateY(108%);
+  transition: transform 1.05s cubic-bezier(0.2, 0.75, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+.js [data-mask].is-in .mask-line > span {
+  transform: none;
+}
+
+.js h1 .mask-line:nth-child(1) > span {
+  --d: 60ms;
+}
+.js h1 .mask-line:nth-child(2) > span {
+  --d: 180ms;
+}
+.js h1 .mask-line:nth-child(3) > span {
+  --d: 300ms;
+}
+.js h2[data-mask] .mask-line > span {
+  --d: 40ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1912,8 +2383,18 @@ body.nav-open .nav-toggle__close {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal {
+  .js .reveal,
+  .js [data-reveal] {
     opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .js .mask-line > span {
+    transform: none;
+    transition: none;
+  }
+  .btn:hover,
+  .tile:hover .tile__img {
     transform: none;
   }
 }

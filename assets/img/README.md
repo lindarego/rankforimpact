@@ -17,14 +17,16 @@ so a missing logo never shows a broken-image icon.
 
 | File | Used for | Notes |
 | --- | --- | --- |
-| `logo.svg` | Header lockup | The monogram as supplied: dark green `R` with the gold arrow and dot, on transparent. Displayed at 42 px tall. |
-| `logo-light.svg` | Footer lockup | A **light-on-dark export** of the same monogram — cream `R`, gold arrow. The footer sits on `#16302a`, so the dark green original would be almost invisible there. |
-| `favicon.png` | Browser tab | 512×512, transparent background |
+| `logo-mark.png` | Header lockup | The square monogram — dark green `R` with the gold arrow and dot, transparent background. 512×512; rendered 52 px tall, shrinking to 42 px once the header sticks. |
+| `logo-full.png` | Footer lockup | The full lockup: monogram over `RANKFORIMPACT` and the "Authority creates opportunity." line. 1200×685. Because it is dark-ink artwork it sits on a cream plate in the footer, which keeps it legible on the dark green. |
+| `logo-full-480.png` | Footer lockup, 1× | 480 px wide version of the same artwork, served via `srcset`. |
+| `favicon.png` | Browser tab | 512×512, transparent background — the monogram alone |
 | `apple-touch-icon.png` | iOS home screen | 180×180, opaque cream background — iOS does not honour transparency |
 | `og-default.jpg` | Social sharing card | 1200×630 |
 
-A `.png` works in place of either `.svg` if that is what you have — update the
-two `src` attributes in each page's `.brand` block to match the extension.
+Using `.svg` instead is fine — update the `src`/`srcset` attributes in each
+page's `.brand` block to match. The header and footer upgrade independently, so
+adding one without the other works.
 
 ## Home — `index.html`
 

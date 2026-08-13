@@ -66,11 +66,14 @@ type families and rhythm. Adjust tokens there rather than individual rules.
 
 | Token | Value | Role |
 | --- | --- | --- |
-| `--green` | `#16302a` | Dark sections, buttons, footer |
-| `--gold` | `#c4a265` | Accent fills, gold buttons |
-| `--gold-ink` | `#96742f` | Accent text on light backgrounds (contrast-safe) |
-| `--cream` | `#f7f5f0` | Page background |
-| `--ink` | `#22241f` | Headings |
+| `--green` | `#123328` | Dark sections, buttons, footer |
+| `--green-deep` | `#0d2620` | Button hover wipe, the mission promise block |
+| `--gold` | `#c19a63` | Accent fills, gold buttons, eyebrow text |
+| `--gold-soft` | `#c9a877` | Gold on dark green |
+| `--cream-hi` | `#faf8f3` | Page ground |
+| `--cream` | `#f4f0e8` | Warmer accent band — header, hero, CTA |
+| `--ink` | `#1c1c1a` | Headings |
+| `--muted` | `#5b5b55` | Secondary copy |
 
 ### Images
 
@@ -88,17 +91,29 @@ from [Simple Icons](https://simpleicons.org) (CC0). Sources are kept in
 
 ### Fonts
 
-Cormorant Garamond (display) and Inter (body), self-hosted as variable WOFF2
-latin subsets in `assets/fonts/` — 125 KB total, no calls to Google Fonts.
+Cormorant Garamond (display) and Jost (body), self-hosted as variable WOFF2
+latin subsets in `assets/fonts/` — ~104 KB total, no calls to Google Fonts.
+
+### Motion
+
+`site.js` adds a `js` class to `<html>`, and every motion rule is gated behind
+it, so with JavaScript unavailable the page renders fully visible instead of
+stranding content at `opacity: 0`. Reveals are driven by `IntersectionObserver`
+with per-group stagger; headings ride up from behind a clipping mask
+(`.mask-line`). `prefers-reduced-motion` short-circuits all of it.
+
+Note that a page rendered without the `js` class shows its final settled state —
+useful when snapshotting or embedding the pages elsewhere.
 
 ## Known gaps
 
 - **Photography** — no image files yet; every frame is showing its placeholder.
-- **Logo artwork** — not yet in the repo, so the lockup falls back to a
-  typographic `R.` in the brand serif. Add `assets/img/logo.svg` (header) and
-  `assets/img/logo-light.svg` (footer, light-on-dark — the footer's dark green
-  ground would swallow the original) and both are used automatically. No markup
-  or CSS change needed.
+- **Logo artwork** — not yet in the repo, so both lockups fall back to a
+  typographic `R.` plus wordmark in the brand serif. Add
+  `assets/img/logo-mark.png` (header) and `assets/img/logo-full.png` +
+  `logo-full-480.png` (footer) and they are used automatically — no markup or
+  CSS change needed. The footer's cream plate only paints once its artwork is
+  present, so the fallback sits directly on the green.
 - **Favicon** — `assets/img/favicon.png` and `apple-touch-icon.png` are
   referenced but not present.
 - **Contact form** — GitHub Pages cannot process form posts. Point the form's

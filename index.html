@@ -24,7 +24,7 @@
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="header">
   <div class="wrap header__inner">
-    <a class="brand" href="index.html" aria-label="RankForImpact — home"><!-- The monogram is used as soon as assets/img/logo.svg exists; until then the typographic lockup below stands in. Nothing to edit. --><img class="brand__mark brand__mark--art" src="assets/img/logo.svg" alt="" width="42" height="42"><span class="brand__mark brand__mark--type" aria-hidden="true">R</span><span class="brand__word">RankForImpact</span></a>
+    <a class="brand" href="index.html" aria-label="RankForImpact — home"><!-- Drop assets/img/logo-mark.png in and it replaces the type lockup automatically. Nothing to edit. --><img class="brand__mark brand__mark--art" src="assets/img/logo-mark.png" alt="" width="512" height="512"><span class="brand__mark brand__mark--type" aria-hidden="true">R</span><span class="brand__word">Rank<em>For</em>Impact</span></a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a class="nav__link" href="services.html">Services</a><a class="nav__link" href="approach.html">Our Approach</a><a class="nav__link" href="about.html">About</a><a class="nav__link" href="insights.html">Insights</a><a class="nav__link" href="contact.html">Contact</a>
       <a class="btn btn--dark" href="contact.html">Book a strategy call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
@@ -36,6 +36,7 @@
       <span class="nav-toggle__close"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg></span>
     </button>
   </div>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
 </header>
 <main id="main">
 <!-- ============================ Hero ============================ -->
@@ -43,7 +44,11 @@
   <div class="hero__grid">
     <div class="hero__copy">
       <span class="eyebrow">Premium Editorial SEO &amp; AEO for B2B SaaS</span>
-      <h1 class="display">Search authority<br>that creates<br><em class="accent">opportunity.</em></h1>
+      <h1 class="display" data-mask>
+        <span class="mask-line"><span>Search authority</span></span>
+        <span class="mask-line"><span>that creates</span></span>
+        <span class="mask-line"><span><em class="accent">opportunity.</em></span></span>
+      </h1>
       <div class="prose" style="margin-top:2rem">
         <p class="lede">We help ambitious B2B SaaS companies build stronger search authority through strategic SEO, editorial outreach, and answer engine optimisation.</p>
         <p class="lede">No shortcuts. No gimmicks. Just thoughtful strategy and genuine relationships that create long-term value.</p>
@@ -54,31 +59,31 @@
       </div>
     </div>
     <div class="hero__media">
-      <figure class="frame"><img src="assets/img/hero-workspace.jpg" alt="A laptop, stoneware mug and notebook on a walnut desk in morning light" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Hero photograph</span><span class="frame__note">Walnut desk, open laptop, black stoneware mug, notebook and pen. Warm raking side-light, soft shadows.</span></div></figure>
+      <figure class="frame frame--desk"><img src="assets/img/hero-workspace.jpg" alt="A laptop, notebook and coffee on a wooden desk in warm light" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Hero photograph</span><span class="frame__note">Walnut desk, open laptop, black stoneware mug, notebook and pen. Warm raking side-light, soft shadows.</span></div></figure>
     </div>
   </div>
 </section>
 
 <!-- ========================== Services ========================== -->
-<section class="section tone-lo">
+<section class="section" id="services">
   <div class="wrap center">
     <span class="eyebrow">Our Services</span>
-    <h2 class="h2">Strategic SEO. Lasting <em class="accent">Authority.</em></h2>
+    <h2 class="h2" data-mask-auto>Strategic SEO. Lasting <em class="accent">Authority.</em></h2>
   </div>
   <div class="wrap">
-    <div class="cards"><article class="card reveal">
+    <div class="cards"><article class="card">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-link-2"></use></svg>
-        <h3 class="h3">Editorial Link Building</h3>
+        <h3 class="card__title">Editorial Link Building</h3>
         <p class="card__body">We secure high-DR backlinks from relevant publications your ideal customers read and trust.</p>
         <a class="link" href="services.html#editorial-link-building">Learn more<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-      </article><article class="card reveal">
+      </article><article class="card">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-shield-check"></use></svg>
-        <h3 class="h3">Authority Building</h3>
+        <h3 class="card__title">Authority Building</h3>
         <p class="card__body">We build topical authority and brand credibility through strategic content and digital PR.</p>
         <a class="link" href="services.html#authority-building">Learn more<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-      </article><article class="card reveal">
+      </article><article class="card">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-search"></use></svg>
-        <h3 class="h3">Answer Engine Optimisation</h3>
+        <h3 class="card__title">Answer Engine Optimisation</h3>
         <p class="card__body">We optimise your content to get discovered, cited, and recommended by AI search engines.</p>
         <a class="link" href="services.html#aeo">Learn more<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
       </article></div>
@@ -86,56 +91,60 @@
 </section>
 
 <!-- =========================== Process ========================== -->
-<section class="section dark">
+<section class="section dark" id="process">
   <div class="wrap center">
     <span class="eyebrow">Our Process</span>
-    <h2 class="h2">A Relationship-Driven Approach</h2>
+    <h2 class="h2" data-mask-auto>A Relationship-Driven Approach</h2>
   </div>
   <div class="wrap">
-    <div class="steps"><div class="step reveal">
+    <div class="steps"><div class="step">
         <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg></div>
         <h3 class="step__title">01. Discover</h3>
         <p class="step__body">We learn about your business, audience, and linkable assets.</p>
-      </div><div class="step reveal">
+        <span class="step__link" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></span>
+      </div><div class="step">
         <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg></div>
         <h3 class="step__title">02. Build Relationships</h3>
         <p class="step__body">We conduct personalised outreach to relevant editorial publications.</p>
-      </div><div class="step reveal">
+        <span class="step__link" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></span>
+      </div><div class="step">
         <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-file-check-2"></use></svg></div>
         <h3 class="step__title">03. Earn Authority</h3>
         <p class="step__body">We secure high-quality placements that build trust and drive impact.</p>
-      </div><div class="step reveal">
+        <span class="step__link" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></span>
+      </div><div class="step">
         <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-chart-column-increasing"></use></svg></div>
         <h3 class="step__title">04. Measure Growth</h3>
         <p class="step__body">We track performance and provide transparent reporting.</p>
+        
       </div></div>
   </div>
 </section>
 
 <!-- ========================= Why us ============================= -->
-<section class="section">
-  <div class="wrap split-heading">
-    <div>
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="pillars-head">
       <span class="eyebrow">Why RankForImpact</span>
-      <h2 class="h2">Built on principles<br>that don&rsquo;t change.</h2>
+      <h2 class="h2" data-mask-auto>Built on principles that don&rsquo;t change.</h2>
     </div>
-    <div class="pillars"><div class="pillar reveal">
+    <div class="pillars"><div class="pillar">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-users"></use></svg>
         <h3 class="pillar__title">Long-term partnerships</h3>
         <p class="pillar__body">We work with a limited number of clients so we can deliver our best work, every time.</p>
-      </div><div class="pillar reveal">
+      </div><div class="pillar">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-shield-check"></use></svg>
         <h3 class="pillar__title">Strategic recommendations</h3>
         <p class="pillar__body">Everything we do is based on data, expertise and what&rsquo;s best for your business.</p>
-      </div><div class="pillar reveal">
+      </div><div class="pillar">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-file-check-2"></use></svg>
         <h3 class="pillar__title">Transparent reporting</h3>
         <p class="pillar__body">You&rsquo;ll always know what we&rsquo;re doing, why it matters and what&rsquo;s next.</p>
-      </div><div class="pillar reveal">
+      </div><div class="pillar">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-handshake"></use></svg>
         <h3 class="pillar__title">Genuine publisher relationships</h3>
         <p class="pillar__body">We believe trust creates better opportunities than volume ever will.</p>
-      </div><div class="pillar reveal">
+      </div><div class="pillar">
         <svg class="icon icon--lg" aria-hidden="true"><use href="#i-leaf"></use></svg>
         <h3 class="pillar__title">Sustainable growth</h3>
         <p class="pillar__body">We focus on lasting impact&mdash;not quick wins that disappear overnight.</p>
@@ -146,40 +155,69 @@
 <!-- ========================== Mission ========================== -->
 <section class="mission dark" id="mission">
   <div class="mission__copy">
-    <span class="eyebrow">Our Mission</span>
-    <h2 class="h2">Growth should benefit<br>more than <em class="accent">one</em> business.</h2>
-    <div class="prose" style="margin-top:1.75rem">
-      <p class="lede">RankForImpact exists to help ambitious companies grow through strategic search authority.</p>
-      <p class="lede">Our long-term vision is to use that growth to increase digital visibility for nonprofits while creating meaningful career opportunities for talented young women in developing countries.</p>
-      <p class="lede">Every partnership brings us one step closer.</p>
+    <div class="mission__inner">
+      <span class="eyebrow">Our Mission</span>
+      <h2 class="h2" data-mask-auto>Growth should benefit more than <em class="accent">one</em> business.</h2>
+      <div class="prose" style="margin-top:1.75rem">
+        <p class="lede">RankForImpact exists to help ambitious companies grow through strategic search authority.</p>
+        <p class="lede">Our long-term vision is to use that growth to increase digital visibility for nonprofits while creating meaningful career opportunities for talented young women in developing countries.</p>
+        <p class="lede">Every partnership brings us one step closer.</p>
+      </div>
+      <a class="link link--light" href="about.html#mission">Learn more about our mission<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+
+      <div class="promise">
+        <div class="promise__head">
+          <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg></div>
+          <p class="promise__key">The ripple effect</p>
+        </div>
+        <ul class="promise__list">
+          <li>Better visibility.</li>
+          <li>More opportunities.</li>
+          <li>Stronger communities.</li>
+        </ul>
+      </div>
     </div>
-    <div class="btn-row"><a class="link link--light" href="about.html#mission">Learn more about our mission<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></div>
   </div>
-  <div class="mosaic">
-    <figure class="frame"><img src="assets/img/mission-focus.jpg" alt="A woman working at a laptop in a bright open-plan office" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Mission — 1</span><span class="frame__note">Woman at a laptop in a bright open-plan office, candid, natural light.</span></div></figure>
-    <figure class="frame"><img src="assets/img/mission-collaboration.jpg" alt="Two colleagues in conversation across a table" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Mission — 2</span><span class="frame__note">Two colleagues mid-conversation across a table, warm and unposed.</span></div></figure>
-    <figure class="frame"><img src="assets/img/mission-landscape.jpg" alt="A green valley and river seen from above at golden hour" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Mission — 3</span><span class="frame__note">Green valley and river from above, golden hour, misty ridgelines.</span></div></figure>
-    <figure class="frame"><img src="assets/img/mission-portrait.jpg" alt="Portrait of a smiling woman in a library" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Mission — 4</span><span class="frame__note">Portrait of a smiling woman in a library, headwrap, soft window light.</span></div></figure>
-    <div class="mosaic__card">
-      <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg></div>
-      <p>Better visibility.<br>More opportunities.<br>Stronger communities.</p>
-    </div>
-  </div>
+  <div class="collage"><figure class="tile c1" tabindex="0">
+      <div class="frame frame--office frame--fill"><img src="assets/img/mission-focus.jpg" alt="A person working at a laptop in a bright open-plan office" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Editorial outreach</span><span class="frame__note">Real conversations with the editors who shape your category.</span></div></div>
+      <figcaption class="tile__cap">
+        <span class="tile__key">Editorial outreach</span>
+        <p>Real conversations with the editors who shape your category.</p>
+      </figcaption>
+    </figure><figure class="tile c2" tabindex="0">
+      <div class="frame frame--meeting frame--fill"><img src="assets/img/mission-collaboration.jpg" alt="Two colleagues in conversation across a table" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Senior attention</span><span class="frame__note">A deliberately small client roster, so your campaign never gets junior hands.</span></div></div>
+      <figcaption class="tile__cap">
+        <span class="tile__key">Senior attention</span>
+        <p>A deliberately small client roster, so your campaign never gets junior hands.</p>
+      </figcaption>
+    </figure><figure class="tile c3" tabindex="0">
+      <div class="frame frame--valley frame--fill"><img src="assets/img/mission-landscape.jpg" alt="A green river valley between forested mountains" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Compounding authority</span><span class="frame__note">Rankings built to hold their ground long after the campaign ends.</span></div></div>
+      <figcaption class="tile__cap">
+        <span class="tile__key">Compounding authority</span>
+        <p>Rankings built to hold their ground long after the campaign ends.</p>
+      </figcaption>
+    </figure><figure class="tile c4" tabindex="0">
+      <div class="frame frame--portrait frame--fill"><img src="assets/img/mission-portrait.jpg" alt="A smiling woman in a library" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Opportunity created</span><span class="frame__note">Every partnership funds career paths for young women entering tech.</span></div></div>
+      <figcaption class="tile__cap">
+        <span class="tile__key">Opportunity created</span>
+        <p>Every partnership funds career paths for young women entering tech.</p>
+      </figcaption>
+    </figure></div>
 </section>
 
 <!-- ============================ CTA ============================ -->
-<section class="cta">
-  <div class="cta__bg">
-    <div class="frame frame--fill"><img src="assets/img/cta-foliage.jpg" alt="" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Band texture</span><span class="frame__note">Soft-focus olive foliage against a pale plaster wall, very low contrast.</span></div></div>
+<section class="cta cta--leaf" id="contact">
+  <div class="cta__leaf" aria-hidden="true">
+    <div class="frame frame--leaf frame--fill"><img src="assets/img/cta-foliage.jpg" alt="" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Band texture</span><span class="frame__note">Soft-focus olive foliage against a pale plaster wall, very low contrast.</span></div></div>
   </div>
   <div class="wrap cta__inner">
     <div class="cta__copy">
-      <h2 class="h2">Ready to build authority that lasts?</h2>
-      <p style="margin-top:.75rem">Let&rsquo;s grow your brand and create impact&mdash;together.</p>
+      <h2 class="h2" data-mask-auto>Ready to build authority that lasts?</h2>
+      <p>Let&rsquo;s grow your brand and create impact&mdash;together.</p>
     </div>
     <div class="cta__actions">
       <a class="btn btn--gold" href="contact.html">Book a strategy call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-      <a class="btn btn--ghost" href="contact.html">Let&rsquo;s talk</a>
+      <a class="btn btn--paper" href="contact.html">Let&rsquo;s talk</a>
     </div>
   </div>
 </section>
@@ -187,7 +225,7 @@
 <footer class="footer">
   <div class="wrap footer__grid">
     <div class="footer__brand">
-      <a class="brand brand--light" href="index.html" aria-label="RankForImpact — home"><!-- The monogram is used as soon as assets/img/logo-light.svg exists; until then the typographic lockup below stands in. Nothing to edit. --><img class="brand__mark brand__mark--art" src="assets/img/logo-light.svg" alt="" width="42" height="42"><span class="brand__mark brand__mark--type" aria-hidden="true">R</span><span class="brand__word">RankForImpact</span></a>
+      <a class="brand brand--light brand--plate" href="index.html" aria-label="RankForImpact — home"><!-- Drop assets/img/logo-full.png in and it replaces the type lockup automatically; the plate keeps the dark artwork legible on the green. --><img class="brand__full" src="assets/img/logo-full.png" srcset="assets/img/logo-full-480.png 480w, assets/img/logo-full.png 1200w" sizes="290px" width="1200" height="685" alt="RankForImpact — Authority creates opportunity."><span class="brand__mark brand__mark--type" aria-hidden="true">R</span><span class="brand__word">Rank<em>For</em>Impact</span></a>
       <p class="footer__tagline">Authority today.<br>Opportunity tomorrow.</p>
       <div class="socials">
         <a href="https://www.linkedin.com/company/rankforimpact" aria-label="RankForImpact on LinkedIn"><span class="socials__in" aria-hidden="true">in</span></a>
