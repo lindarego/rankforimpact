@@ -1081,8 +1081,8 @@ body.nav-open .nav-toggle__close {
   margin-bottom: 1.875rem;
 }
 
-.card .icon--lg svg,
-.card__icon svg {
+/* .icon--lg is itself the <svg>, so the transition belongs on it directly. */
+.card .icon--lg {
   transition: transform 0.45s var(--ease);
 }
 
@@ -1293,6 +1293,11 @@ body.nav-open .nav-toggle__close {
 }
 .dark .pillar__title {
   color: var(--on-dark);
+}
+/* .pillar__body sets --muted directly, which would otherwise beat the colour
+   .dark passes down and leave dark grey text on dark green. */
+.dark .pillar__body {
+  color: var(--on-dark-muted);
 }
 
 /* Compact variant — icon + two-line label, no body copy */
@@ -1910,6 +1915,12 @@ body.nav-open .nav-toggle__close {
   background: var(--cream);
 }
 
+/* .cta is declared after .dark and both are one class deep, so the cream would
+   otherwise win and leave a dark band's white text on a cream ground. */
+.cta.dark {
+  background: var(--green);
+}
+
 .cta__inner {
   position: relative;
   z-index: 1;
@@ -2371,6 +2382,97 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
+   22b. Interaction — the homepage's hover language, applied site-wide
+   The vocabulary established on the homepage is: photography scales gently,
+   circled icons fill gold, and a gold rule draws in under the title. These
+   rules carry it to the components that only appear on the other pages.
+   -------------------------------------------------------------------------- */
+
+.frame {
+  transition: transform 0.7s var(--ease);
+}
+
+/* A frame clips its own contents, so scaling it needs the parent to clip. */
+.row__media,
+.duo__media,
+.post {
+  overflow: hidden;
+}
+
+/* A feature row is one interactive unit — hovering its copy moves its image.
+   The about-page splits are editorial rather than card-like, so there only the
+   image itself responds. */
+.row:hover .row__media .frame,
+.duo__media:hover .frame,
+.post:hover .frame {
+  transform: scale(1.04);
+}
+
+.icon-ring {
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease),
+    color 0.4s var(--ease);
+}
+
+.row:hover .icon-ring {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--green);
+}
+
+.row:hover .icon--lg,
+.post:hover .icon--lg {
+  transform: translateY(-4px);
+}
+
+/* Row and article titles take the gold rule the service cards use. */
+.row__main .h3,
+.post__title {
+  position: relative;
+  display: inline-block;
+}
+
+.row__main .h3::after,
+.post__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.45s var(--ease);
+}
+
+.row:hover .row__main .h3::after,
+.post:hover .post__title::after {
+  transform: scaleX(1);
+}
+
+.post:hover {
+  border-color: var(--gold);
+}
+
+/* Checklist ticks brighten with their row. */
+.checklist .icon {
+  transition: color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.row:hover .checklist .icon {
+  color: var(--gold);
+}
+
+/* Contact details and the footer plate lift slightly on hover. */
+.detail .icon {
+  transition: transform 0.35s var(--ease);
+}
+
+.detail:hover .icon {
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
    23. Scroll reveal
    -------------------------------------------------------------------------- */
 /* Gated behind .js (set by site.js) so the page renders fully visible if the
@@ -2444,8 +2546,20 @@ body.nav-open .nav-toggle__close {
     transform: none;
     transition: none;
   }
+  /* Every hover transform is cancelled; colour changes are kept, since they
+     convey the same affordance without motion. */
   .btn:hover,
-  .tile:hover .tile__img {
+  .card:hover,
+  .post:hover,
+  .tile:hover .frame,
+  .row:hover .row__media .frame,
+  .duo__media:hover .frame,
+  .post:hover .frame,
+  .card:hover .icon--lg,
+  .row:hover .icon--lg,
+  .post:hover .icon--lg,
+  .pillar:hover .icon--lg,
+  .detail:hover .icon {
     transform: none;
   }
 }

@@ -102,6 +102,17 @@ stranding content at `opacity: 0`. Reveals are driven by `IntersectionObserver`
 with per-group stagger; headings ride up from behind a clipping mask
 (`.mask-line`). `prefers-reduced-motion` short-circuits all of it.
 
+Headings are masked from one selector list (`MASK_TARGETS` in `site.js`) rather
+than tagged per heading, so a new page picks the effect up for free. A heading
+whose line breaks are deliberate — the homepage hero — is split by hand in the
+markup and skipped automatically.
+
+The hover vocabulary is shared across every page: photography scales to 1.04,
+circled icons fill gold, a gold rule draws in under the title, and cards lift
+with a gold border. Section `22b` of the stylesheet carries it to the components
+that only appear away from the homepage (feature rows, article cards, the
+about-page splits).
+
 Note that a page rendered without the `js` class shows its final settled state —
 useful when snapshotting or embedding the pages elsewhere.
 

@@ -131,12 +131,27 @@
   });
 
   /* ----------------------------------------------------------------------
-     Section headings become masked lines
-     One mask line per heading so it rides up as a block. The hero h1 is
-     marked up by hand because its line breaks are deliberate.
+     Headings become masked lines
+     One mask line per heading, so it rides up as a block from behind its own
+     clip. Applied site-wide from this list rather than tagged per heading in
+     the markup. A heading whose lines are split by hand (the homepage hero)
+     already contains .mask-line and is skipped.
      ---------------------------------------------------------------------- */
+  var MASK_TARGETS = [
+    '[data-mask-auto]',
+    '.hero__copy .display',
+    '.hero__copy .h1',
+    '.wrap > .h1',
+    '.wrap > .h2',
+    '.pillars-head .h2',
+    '.duo__copy .h2',
+    '.mission__inner .h2',
+    '.cta__copy .h2',
+    '.quote blockquote'
+  ].join(',');
+
   Array.prototype.forEach.call(
-    document.querySelectorAll('[data-mask-auto]'),
+    document.querySelectorAll(MASK_TARGETS),
     function (h) {
       if (h.querySelector('.mask-line')) return;
       var line = document.createElement('span');
