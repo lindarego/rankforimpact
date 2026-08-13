@@ -11,12 +11,20 @@ stock-looking.
 
 ## Brand assets
 
+Add these and they are picked up automatically — no markup or CSS change. Until
+each file exists the lockup falls back to a typographic `R.` in the brand serif,
+so a missing logo never shows a broken-image icon.
+
 | File | Used for | Notes |
 | --- | --- | --- |
-| `logo.svg` | Header / footer lockup | Monogram artwork. Until it exists, the header renders a typographic `R.` lockup — see the comment in each page's `.brand` block to swap it in. |
+| `logo.svg` | Header lockup | The monogram as supplied: dark green `R` with the gold arrow and dot, on transparent. Displayed at 42 px tall. |
+| `logo-light.svg` | Footer lockup | A **light-on-dark export** of the same monogram — cream `R`, gold arrow. The footer sits on `#16302a`, so the dark green original would be almost invisible there. |
 | `favicon.png` | Browser tab | 512×512, transparent background |
-| `apple-touch-icon.png` | iOS home screen | 180×180, opaque cream background |
+| `apple-touch-icon.png` | iOS home screen | 180×180, opaque cream background — iOS does not honour transparency |
 | `og-default.jpg` | Social sharing card | 1200×630 |
+
+A `.png` works in place of either `.svg` if that is what you have — update the
+two `src` attributes in each page's `.brand` block to match the extension.
 
 ## Home — `index.html`
 

@@ -503,6 +503,22 @@ button {
   height: 42px;
 }
 
+/* The monogram artwork. Hidden until site.js confirms the file actually
+   loaded, so a missing logo.svg never shows a broken-image icon. */
+.brand__mark--art {
+  display: none;
+  width: auto;
+  height: 42px;
+}
+
+.brand.has-logo .brand__mark--art {
+  display: block;
+}
+
+.brand.has-logo .brand__mark--type {
+  display: none;
+}
+
 /* Typographic fallback lockup (used until the monogram artwork lands) */
 .brand__mark--type {
   font-family: var(--serif);

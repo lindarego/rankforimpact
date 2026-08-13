@@ -94,9 +94,11 @@ latin subsets in `assets/fonts/` — 125 KB total, no calls to Google Fonts.
 ## Known gaps
 
 - **Photography** — no image files yet; every frame is showing its placeholder.
-- **Logo artwork** — the header renders a typographic `R.` lockup. Add
-  `assets/img/logo.svg` and swap the `.brand__mark` span for an `<img>` (there is
-  a comment marking the spot in each page).
+- **Logo artwork** — not yet in the repo, so the lockup falls back to a
+  typographic `R.` in the brand serif. Add `assets/img/logo.svg` (header) and
+  `assets/img/logo-light.svg` (footer, light-on-dark — the footer's dark green
+  ground would swallow the original) and both are used automatically. No markup
+  or CSS change needed.
 - **Favicon** — `assets/img/favicon.png` and `apple-touch-icon.png` are
   referenced but not present.
 - **Contact form** — GitHub Pages cannot process form posts. Point the form's

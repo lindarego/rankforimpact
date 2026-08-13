@@ -48,6 +48,24 @@
   }
 
   /* ----------------------------------------------------------------------
+     Monogram
+     The header and footer show a typographic lockup by default and upgrade
+     to the real artwork once assets/img/logo.svg loads. Adding the file is
+     the only step — no markup change required.
+     ---------------------------------------------------------------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.brand__mark--art'), function (art) {
+    var brand = art.closest ? art.closest('.brand') : art.parentNode;
+    if (!brand) return;
+
+    var adopt = function () {
+      if (art.naturalWidth > 0) brand.classList.add('has-logo');
+    };
+
+    if (art.complete) adopt();
+    else art.addEventListener('load', adopt);
+  });
+
+  /* ----------------------------------------------------------------------
      Photography placeholders
      A .frame falls back to its art-direction placeholder whenever the
      photograph is missing. Drop the real file in assets/img/ and it takes
