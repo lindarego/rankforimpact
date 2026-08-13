@@ -1243,6 +1243,12 @@ body.nav-open .nav-toggle__close {
   row-gap: 3.75rem;
 }
 
+/* Three-across variant. Declared before the responsive rules below so those
+   still collapse it — an inline grid-template would not. */
+.pillars--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 /* Every pillar carries a divider, cleared on the first of each row. The
    row-start selector tracks the column count at each breakpoint below. */
 .pillar {
@@ -1352,6 +1358,44 @@ body.nav-open .nav-toggle__close {
   .pillars .pillar {
     padding: 0;
     border-left: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile: a collapsed grid reads as one centred stack rather than a column of
+   left-aligned fragments. Section heads come with it, so alignment does not
+   change halfway down a section.
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .pillars-head {
+    max-width: none;
+    text-align: center;
+  }
+
+  .pillars-head .h2 {
+    max-width: 24ch;
+    margin-inline: auto;
+  }
+
+  .pillars .pillar,
+  .cards .card {
+    align-items: center;
+    text-align: center;
+  }
+
+  .steps .step {
+    text-align: center;
+  }
+
+  .steps .step .icon-ring {
+    margin-inline: auto;
+  }
+
+  .pillar__body,
+  .step__body,
+  .card__body {
+    max-width: 36ch;
+    margin-inline: auto;
   }
 }
 
