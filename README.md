@@ -15,6 +15,7 @@ directly by GitHub Pages. No build step, no dependencies, no package manager.
 | `insights.html` | Insights (placeholder articles) |
 | `contact.html` | Contact |
 | `404.html` | Not found |
+| `tree-animation.html` | Scroll-driven tree animation (standalone demo, `noindex`) |
 
 ## Local preview
 
@@ -51,6 +52,25 @@ assets/
   icons/            source SVGs; inlined into each page as a <symbol> sprite
   img/              photography — see assets/img/README.md
 ```
+
+### The tree animation demo
+
+`tree-animation.html` is self-contained and shares nothing with the marketing
+pages but the fonts:
+
+```
+assets/
+  css/tree-animation.css
+  js/tree-animation.js      procedural tree + the scrubbed GSAP timeline
+  js/vendor/gsap/           GSAP 3.13 (no-charge licence), vendored so the
+                            page still makes no third-party requests
+```
+
+The hero tree is grown in JavaScript from a seeded random generator — branch
+colour runs from dark bark at the root to pale beige at the twigs, and the
+canopy is drawn as layered leaf ellipses. Change `HERO_TREE.seed` at the top of
+`tree-animation.js` for a different tree; the rest of `HERO_TREE` controls its
+proportions.
 
 ### Editing content
 

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Growing tree — scroll animation</title>
+<meta name="description" content="A scroll-scrubbed hero animation: a tree grows out of the page, branches into research fields, and releases a moth.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1d3b2f">
+<link rel="icon" href="/assets/img/favicon.png" sizes="any">
+<link rel="stylesheet" href="/assets/css/tree-animation.css">
+</head>
+<body>
+
+<header id="header" class="header">
+  <div class="header-wrapp">
+    <div class="header-left">
+      <div class="header-main">
+        <a href="#" class="header-logo" aria-label="Home">
+          <svg viewBox="0 0 30 30" fill="none" aria-hidden="true">
+            <path d="M15 27V13" stroke="#8f6a45" stroke-width="2" stroke-linecap="round"/>
+            <path d="M15 17C15 9.8 20.4 4 27 3c.6 6.9-4.5 13.6-12 14Z" fill="#2f6f4a"/>
+            <path d="M14 20C14 13.9 9.4 9 3.8 8.2 3.3 14 7.6 19.6 14 20Z" fill="#4b8b4f"/>
+          </svg>
+          <span>cicada</span>
+        </a>
+        <div class="header-title">the — genomics products.</div>
+      </div>
+      <div class="header-search">
+        <div class="header-search__btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1d3b2f" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/>
+          </svg>
+        </div>
+        <label class="visually-hidden" for="search" hidden>Search</label>
+        <input id="search" type="text" class="header-search__input" placeholder="Search">
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="header-contact" type="button">Get in touch</button>
+      <button class="header-menu" type="button" aria-label="Menu">
+        <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <path d="M1 2h14M1 6h14M1 10h14"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main" data-page-id="home">
+
+  <!-- Hero ---------------------------------------------------------------->
+  <section class="banner">
+    <div class="banner-title banner-slide split">Discovering the future of <span>genomics.</span></div>
+    <div class="banner-subtitle banner-slide split">25 years of innovation</div>
+    <div class="banner-text banner-slide split">Our mission is to improve human health by unlocking the power of the genome. We believe that, together, we can use genomics to build a stronger world for the greater good.</div>
+    <div class="banner-tree" aria-hidden="true">
+      <!-- Grown procedurally by tree-animation.js -->
+      <svg id="hero-tree" viewBox="0 0 1900 950" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </section>
+
+  <!-- Moth wings behind the hero ------------------------------------------>
+  <section class="wings" aria-hidden="true">
+    <div class="wings-svg">
+      <svg viewBox="0 0 1357 466" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg-wing" x1="0" y1="0" x2="0" y2="466" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#b9cfae" stop-opacity=".95"/>
+            <stop offset="1" stop-color="#8fb489" stop-opacity=".7"/>
+          </linearGradient>
+          <path id="bg-wing-top" d="M0 0C-100 10 -320 -5 -490 -45C-580 -68 -670 -110 -688 -170C-695 -198 -670 -222 -630 -218C-500 -204 -270 -144 -100 -75C-40 -50 -10 -25 0 0Z"/>
+          <path id="bg-wing-bottom" d="M0 0C-52 52 -132 102 -212 142C-272 172 -342 207 -360 172C-377 140 -342 87 -272 52C-192 12 -62 -8 0 0Z"/>
+          <g id="bg-wing-veins-top" stroke="#6f9a6b" stroke-opacity=".45" stroke-width="2" fill="none">
+            <path d="M-8 -8C-140 -46 -380 -110 -640 -196"/>
+            <path d="M-12 -4C-150 -20 -400 -58 -655 -140"/>
+            <path d="M-16 2C-170 4 -420 -6 -650 -80"/>
+          </g>
+          <g id="bg-wing-veins-bottom" stroke="#6f9a6b" stroke-opacity=".45" stroke-width="2" fill="none">
+            <path d="M-6 4C-90 44 -230 110 -330 160"/>
+            <path d="M-8 10C-110 30 -260 78 -348 128"/>
+          </g>
+        </defs>
+
+        <g fill="url(#bg-wing)">
+          <use href="#bg-wing-top" transform="translate(660 250) scale(.95)"/>
+          <use href="#bg-wing-top" transform="translate(697 250) scale(-.95 .95)"/>
+          <use href="#bg-wing-bottom" transform="translate(645 255) scale(.95)"/>
+          <use href="#bg-wing-bottom" transform="translate(712 255) scale(-.95 .95)"/>
+        </g>
+        <g>
+          <use href="#bg-wing-veins-top" transform="translate(660 250) scale(.95)"/>
+          <use href="#bg-wing-veins-top" transform="translate(697 250) scale(-.95 .95)"/>
+          <use href="#bg-wing-veins-bottom" transform="translate(645 255) scale(.95)"/>
+          <use href="#bg-wing-veins-bottom" transform="translate(712 255) scale(-.95 .95)"/>
+        </g>
+        <ellipse cx="678" cy="262" rx="15" ry="72" fill="#6b4a2c" fill-opacity=".55"/>
+        <circle cx="678" cy="196" r="16" fill="#5a3a21" fill-opacity=".6"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- The tree that grows out of the hero ---------------------------------->
+  <section class="tree">
+    <div class="tree-name">Research</div>
+    <div class="tree-wrapp">
+      <svg class="tree-svg" viewBox="0 0 2556 3440" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bark-grad" x1="1278" y1="3440" x2="1278" y2="1600" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#4a2e19"/>
+            <stop offset=".55" stop-color="#8f6a45"/>
+            <stop offset="1" stop-color="#c8ad84"/>
+          </linearGradient>
+          <radialGradient id="leaf-grad" cx="1278" cy="1716" r="1900" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#1c4a33"/>
+            <stop offset=".55" stop-color="#2f6f4a"/>
+            <stop offset="1" stop-color="#4f9459"/>
+          </radialGradient>
+        </defs>
+        <path class="tree-svg__bottom" d="M1278.07 3439.61L1278.07 1717" stroke="url(#bark-grad)" stroke-width="3.21"/>
+        <path class="tree-svg__top tree-svg__branches" data-position="top" d="M1278.07 1722.61L1278.07 0" stroke="url(#leaf-grad)" stroke-width="3.21"/>
+        <path class="tree-svg__left tree-svg__branches" data-position="left" d="M1278.07 1716.2L2 651.193" stroke="url(#leaf-grad)" stroke-width="3.21"/>
+        <path class="tree-svg__left-top tree-svg__branches" data-position="left-top" d="M1278.07 1716.2L552.609 176.432" stroke="url(#leaf-grad)" stroke-width="3.21"/>
+        <path class="tree-svg__right-top tree-svg__branches" data-position="right-top" d="M1278.08 1716.2L2002.43 176.432" stroke="url(#leaf-grad)" stroke-width="3.21"/>
+        <path class="tree-svg__right tree-svg__branches" data-position="right" d="M1278.07 1716.2L2554.09 651.193" stroke="url(#leaf-grad)" stroke-width="3.21"/>
+      </svg>
+
+      <div class="tree-circle tree-circle__big"></div>
+      <div class="tree-circle tree-circle__small"></div>
+
+      <div class="tree-title tree-title_left" data-position="left">
+        <svg class="tree-title__decor left" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 1H3C1.89543 1 1 1.89543 1 3V3" stroke="#2f6f4a"/>
+        </svg>
+        <span>Cancer</span>
+        <svg class="tree-title__decor right" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 1H7C8.10457 1 9 1.89543 9 3V3" stroke="#2f6f4a"/>
+        </svg>
+      </div>
+      <div class="tree-title tree-title_left-top" data-position="left-top">
+        <svg class="tree-title__decor left" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 1H3C1.89543 1 1 1.89543 1 3V3" stroke="#2f6f4a"/>
+        </svg>
+        <span>Microbiology</span>
+        <svg class="tree-title__decor right" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 1H7C8.10457 1 9 1.89543 9 3V3" stroke="#2f6f4a"/>
+        </svg>
+      </div>
+      <div class="tree-title tree-title_top" data-position="top">
+        <svg class="tree-title__decor left" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 1H3C1.89543 1 1 1.89543 1 3V3" stroke="#2f6f4a"/>
+        </svg>
+        <span>Agrigenomics</span>
+        <svg class="tree-title__decor right" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 1H7C8.10457 1 9 1.89543 9 3V3" stroke="#2f6f4a"/>
+        </svg>
+      </div>
+      <div class="tree-title tree-title_right-top" data-position="right-top">
+        <svg class="tree-title__decor left" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 1H3C1.89543 1 1 1.89543 1 3V3" stroke="#2f6f4a"/>
+        </svg>
+        <span>Complex Disease</span>
+        <svg class="tree-title__decor right" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 1H7C8.10457 1 9 1.89543 9 3V3" stroke="#2f6f4a"/>
+        </svg>
+      </div>
+      <div class="tree-title tree-title_right" data-position="right">
+        <svg class="tree-title__decor left" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 1H3C1.89543 1 1 1.89543 1 3V3" stroke="#2f6f4a"/>
+        </svg>
+        <span>Cellular and Molecular Biology</span>
+        <svg class="tree-title__decor right" viewBox="0 0 10 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 1H7C8.10457 1 9 1.89543 9 3V3" stroke="#2f6f4a"/>
+        </svg>
+      </div>
+
+      <div class="tree-ball tree-ball_left" data-position="left">
+        <span class="tree-ball__1"></span><span class="tree-ball__2"></span><span class="tree-ball__3"></span>
+      </div>
+      <div class="tree-ball tree-ball_left-top" data-position="left-top">
+        <span class="tree-ball__1"></span><span class="tree-ball__2"></span><span class="tree-ball__3"></span>
+      </div>
+      <div class="tree-ball tree-ball_top" data-position="top">
+        <span class="tree-ball__1"></span><span class="tree-ball__2"></span><span class="tree-ball__3"></span>
+      </div>
+      <div class="tree-ball tree-ball_right-top" data-position="right-top">
+        <span class="tree-ball__1"></span><span class="tree-ball__2"></span><span class="tree-ball__3"></span>
+      </div>
+      <div class="tree-ball tree-ball_right" data-position="right">
+        <span class="tree-ball__1"></span><span class="tree-ball__2"></span><span class="tree-ball__3"></span>
+      </div>
+
+      <div class="tree-wings" aria-hidden="true">
+        <div class="tree-wings__item tree-wings__center">
+          <svg viewBox="0 0 134 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#8f6a45" stroke-width="4" stroke-linecap="round" fill="none">
+              <path d="M64 72C52 44 36 22 16 10"/>
+              <path d="M70 72C82 44 98 22 118 10"/>
+            </g>
+            <circle cx="14" cy="8" r="6" fill="#8f6a45"/>
+            <circle cx="120" cy="8" r="6" fill="#8f6a45"/>
+            <circle cx="67" cy="80" r="16" fill="#4a2e19"/>
+            <ellipse cx="67" cy="128" rx="21" ry="44" fill="#5a3a21"/>
+            <path d="M50 158C50 158 55 300 67 316C79 300 84 158 84 158Z" fill="#6b4a2c"/>
+            <g stroke="#3d2716" stroke-opacity=".5" stroke-width="3" stroke-linecap="round">
+              <path d="M53 190H81"/><path d="M55 222H79"/><path d="M58 254H76"/><path d="M62 284H72"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="tree-wings__item tree-wings__top-left">
+          <svg viewBox="-700 -235 715 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="w-tl" x1="0" y1="0" x2="-688" y2="-200" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#2f6f4a"/>
+                <stop offset=".55" stop-color="#4b8b4f"/>
+                <stop offset="1" stop-color="#9cc17c"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 0C-100 10 -320 -5 -490 -45C-580 -68 -670 -110 -688 -170C-695 -198 -670 -222 -630 -218C-500 -204 -270 -144 -100 -75C-40 -50 -10 -25 0 0Z" fill="url(#w-tl)"/>
+            <g stroke="#d8c4a0" stroke-opacity=".55" stroke-width="3" fill="none">
+              <path d="M-8 -8C-140 -46 -380 -110 -640 -196"/>
+              <path d="M-12 -4C-150 -20 -400 -58 -655 -140"/>
+              <path d="M-16 2C-170 4 -420 -6 -650 -80"/>
+            </g>
+            <circle cx="-560" cy="-150" r="18" fill="#d8c4a0" fill-opacity=".6"/>
+          </svg>
+        </div>
+
+        <div class="tree-wings__item tree-wings__top-right">
+          <svg viewBox="-15 -235 715 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="w-tr" x1="0" y1="0" x2="-688" y2="-200" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#2f6f4a"/>
+                <stop offset=".55" stop-color="#4b8b4f"/>
+                <stop offset="1" stop-color="#9cc17c"/>
+              </linearGradient>
+            </defs>
+            <g transform="scale(-1 1)">
+              <path d="M0 0C-100 10 -320 -5 -490 -45C-580 -68 -670 -110 -688 -170C-695 -198 -670 -222 -630 -218C-500 -204 -270 -144 -100 -75C-40 -50 -10 -25 0 0Z" fill="url(#w-tr)"/>
+              <g stroke="#d8c4a0" stroke-opacity=".55" stroke-width="3" fill="none">
+                <path d="M-8 -8C-140 -46 -380 -110 -640 -196"/>
+                <path d="M-12 -4C-150 -20 -400 -58 -655 -140"/>
+                <path d="M-16 2C-170 4 -420 -6 -650 -80"/>
+              </g>
+              <circle cx="-560" cy="-150" r="18" fill="#d8c4a0" fill-opacity=".6"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="tree-wings__item tree-wings__bottom-left">
+          <svg viewBox="-370 -20 380 235" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="w-bl" x1="0" y1="0" x2="-340" y2="190" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#255c3e"/>
+                <stop offset=".6" stop-color="#3f8a51"/>
+                <stop offset="1" stop-color="#8ab866"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 0C-52 52 -132 102 -212 142C-272 172 -342 207 -360 172C-377 140 -342 87 -272 52C-192 12 -62 -8 0 0Z" fill="url(#w-bl)"/>
+            <g stroke="#d8c4a0" stroke-opacity=".5" stroke-width="3" fill="none">
+              <path d="M-6 4C-90 44 -230 110 -330 160"/>
+              <path d="M-8 10C-110 30 -260 78 -348 128"/>
+            </g>
+            <circle cx="-250" cy="120" r="13" fill="#d8c4a0" fill-opacity=".55"/>
+          </svg>
+        </div>
+
+        <div class="tree-wings__item tree-wings__bottom-right">
+          <svg viewBox="-10 -20 380 235" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="w-br" x1="0" y1="0" x2="-340" y2="190" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#255c3e"/>
+                <stop offset=".6" stop-color="#3f8a51"/>
+                <stop offset="1" stop-color="#8ab866"/>
+              </linearGradient>
+            </defs>
+            <g transform="scale(-1 1)">
+              <path d="M0 0C-52 52 -132 102 -212 142C-272 172 -342 207 -360 172C-377 140 -342 87 -272 52C-192 12 -62 -8 0 0Z" fill="url(#w-br)"/>
+              <g stroke="#d8c4a0" stroke-opacity=".5" stroke-width="3" fill="none">
+                <path d="M-6 4C-90 44 -230 110 -330 160"/>
+                <path d="M-8 10C-110 30 -260 78 -348 128"/>
+              </g>
+              <circle cx="-250" cy="120" r="13" fill="#d8c4a0" fill-opacity=".55"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <button class="sound" type="button" aria-label="Toggle ambient sound">
+    <span class="sound-item"></span>
+    <span class="sound-item"></span>
+    <span class="sound-item"></span>
+    <span class="sound-item"></span>
+  </button>
+
+  <audio id="audio" loop>
+    <source src="https://cdn.zajno.com/dev/motion/sounds/motion_bg_low_vol.mp3" type="audio/mp3">
+  </audio>
+</main>
+
+<script src="/assets/js/vendor/gsap/gsap.min.js"></script>
+<script src="/assets/js/vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="/assets/js/vendor/gsap/Observer.min.js"></script>
+<script src="/assets/js/vendor/gsap/SplitText.min.js"></script>
+<script src="/assets/js/vendor/gsap/DrawSVGPlugin.min.js"></script>
+<script src="/assets/js/vendor/gsap/MotionPathPlugin.min.js"></script>
+<script src="/assets/js/vendor/gsap/CustomEase.min.js"></script>
+<script src="/assets/js/tree-animation.js"></script>
+</body>
+</html>
