@@ -35,7 +35,7 @@ adding one without the other works.
 
 | File | Ratio | Shot |
 | --- | --- | --- |
-| `hero-workspace.jpg` | 16:9 | **Supplied.** Bright desk by a window: open laptop, monogrammed mug, notebook and pen. 2400×1340, 207 KB. `hero-workspace-1400.jpg` is the 1400px companion served via `srcset` below ~1400px viewports. |
+| `hero-workspace.jpg` | 16:9 | **Supplied.** Bright desk by a window: laptop showing “Would an AI recommend you?” in gold italic on a forest green screen, monogrammed mug, notebook and pen. 2400×1340, 215 KB. `hero-workspace-1400.jpg` is the 1400px companion served via `srcset`. |
 | `mission-focus.jpg` | 1:1 | Woman at a laptop in a bright open-plan office, candid, natural light. |
 | `mission-collaboration.jpg` | 1:1 | Two colleagues mid-conversation across a table, warm and unposed. |
 | `mission-landscape.jpg` | 1:1 | Green valley and river from above, golden hour, misty ridgelines. |
@@ -82,11 +82,16 @@ in brand tones. Replace alongside the placeholder article copy.
 ## Cropping a wide photograph
 
 The desktop hero column is nearly portrait, so a 16:9 photograph loses roughly
-half its width to `object-fit: cover`. When the subject does not survive a centre
-crop, add `frame--focus-right` or `frame--focus-left` to the frame — they shift
-the `--focus` custom property rather than needing new markup. The home hero uses
-`frame--focus-right` (58%) so the monogrammed mug stays fully in shot down to
-about 1100px, where a centre crop bisected it.
+half its width to `object-fit: cover` — at 1100px only the middle 40% survives.
+When the subject does not sit at the centre of what is kept, add
+`frame--focus-right` or `frame--focus-left` to the frame; they shift the
+`--focus` custom property rather than needing new markup.
+
+The home hero stays at the default centre because its laptop screen carries the
+message and spans 35.0%–63.5% of the frame. Only a focal point between **43%
+and 55%** keeps that screen whole at every breakpoint — anything further right
+clips the first word. If you replace this photograph, measure where the screen
+sits before changing the focal point.
 
 ## Export guidance
 
