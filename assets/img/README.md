@@ -35,7 +35,7 @@ adding one without the other works.
 
 | File | Ratio | Shot |
 | --- | --- | --- |
-| `hero-workspace.jpg` | 4:3+ | Walnut desk, open laptop, black stoneware mug, notebook and pen. Warm raking side-light, soft shadows. |
+| `hero-workspace.jpg` | 16:9 | **Supplied.** Bright desk by a window: open laptop, monogrammed mug, notebook and pen. 2400×1340, 207 KB. `hero-workspace-1400.jpg` is the 1400px companion served via `srcset` below ~1400px viewports. |
 | `mission-focus.jpg` | 1:1 | Woman at a laptop in a bright open-plan office, candid, natural light. |
 | `mission-collaboration.jpg` | 1:1 | Two colleagues mid-conversation across a table, warm and unposed. |
 | `mission-landscape.jpg` | 1:1 | Green valley and river from above, golden hour, misty ridgelines. |
@@ -78,6 +78,15 @@ adding one without the other works.
 
 `insight-1.jpg` … `insight-6.jpg`, 3:2 — editorial still life or abstract texture
 in brand tones. Replace alongside the placeholder article copy.
+
+## Cropping a wide photograph
+
+The desktop hero column is nearly portrait, so a 16:9 photograph loses roughly
+half its width to `object-fit: cover`. When the subject does not survive a centre
+crop, add `frame--focus-right` or `frame--focus-left` to the frame — they shift
+the `--focus` custom property rather than needing new markup. The home hero uses
+`frame--focus-right` (58%) so the monogrammed mug stays fully in shot down to
+about 1100px, where a centre crop bisected it.
 
 ## Export guidance
 

@@ -838,6 +838,17 @@ body.nav-open .nav-toggle__close {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: var(--focus, 50%) center;
+}
+
+/* A wide photograph in a tall frame loses roughly half its width to the crop,
+   so the subject may not sit at the centre of what survives. --focus moves the
+   kept region without touching the markup. */
+.frame--focus-right {
+  --focus: 58%;
+}
+.frame--focus-left {
+  --focus: 42%;
 }
 
 .frame--r1 {
