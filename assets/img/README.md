@@ -35,7 +35,8 @@ adding one without the other works.
 
 | File | Ratio | Shot |
 | --- | --- | --- |
-| `hero-workspace.jpg` | 16:9 | **Supplied.** Bright desk by a window: laptop showing “Would an AI recommend you?” in gold italic on a forest green screen, monogrammed mug, notebook and pen. 2400×1340, 215 KB. `hero-workspace-1400.jpg` is the 1400px companion served via `srcset`. |
+| `hero-forest-poster.jpg` | 16:9 | **Supplied.** First frame of the hero loop (`assets/video/hero-forest.mp4`), shown while the video buffers and whenever it cannot play. 1280×720, 38 KB. Re-cut it from the video if the footage is ever replaced. |
+| `hero-workspace.jpg` | 16:9 | **Unused** since the hero became video, kept for reuse. Bright desk by a window: laptop showing “Would an AI recommend you?” in gold italic on a forest green screen, monogrammed mug, notebook and pen. 2400×1340, 215 KB. `hero-workspace-1400.jpg` is the 1400px companion. |
 | `mission-focus.jpg` | 1:1 | Woman at a laptop in a bright open-plan office, candid, natural light. |
 | `mission-collaboration.jpg` | 1:1 | Two colleagues mid-conversation across a table, warm and unposed. |
 | `mission-landscape.jpg` | 1:1 | Green valley and river from above, golden hour, misty ridgelines. |

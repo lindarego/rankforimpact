@@ -244,6 +244,22 @@
   }
 
   /* ----------------------------------------------------------------------
+     Hero video
+     The loop is decoration, so a reduced-motion preference freezes it on its
+     first frame rather than removing the picture.
+     ---------------------------------------------------------------------- */
+  if (reduce) {
+    Array.prototype.forEach.call(
+      document.querySelectorAll('.hero__video video'),
+      function (video) {
+        video.removeAttribute('autoplay');
+        video.autoplay = false;
+        video.pause();
+      }
+    );
+  }
+
+  /* ----------------------------------------------------------------------
      Footer year
      ---------------------------------------------------------------------- */
   Array.prototype.forEach.call(document.querySelectorAll('[data-year]'), function (el) {

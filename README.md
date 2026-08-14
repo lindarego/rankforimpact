@@ -50,6 +50,7 @@ assets/
   fonts/            self-hosted variable font subsets (no third-party requests)
   icons/            source SVGs; inlined into each page as a <symbol> sprite
   img/              photography — see assets/img/README.md
+  video/            the homepage hero loop
 ```
 
 ### Editing content
@@ -100,7 +101,16 @@ latin subsets in `assets/fonts/` — ~104 KB total, no calls to Google Fonts.
 it, so with JavaScript unavailable the page renders fully visible instead of
 stranding content at `opacity: 0`. Reveals are driven by `IntersectionObserver`
 with per-group stagger; headings ride up from behind a clipping mask
-(`.mask-line`). `prefers-reduced-motion` short-circuits all of it.
+(`.mask-line`). `prefers-reduced-motion` short-circuits all of it, and also
+freezes the homepage hero video on its poster frame.
+
+The homepage hero is a muted, looping video (`assets/video/hero-forest.mp4`,
+1280×720, 2.9 MB) under a gradient scrim, with the headline centred on top. The
+scrim is tuned against the brightest frame of the loop so every line clears its
+contrast target there — lighten it and the gold accent stops holding. The
+eyebrow runs white rather than gold for the same reason. Swapping the footage
+means re-checking both, and re-cutting `assets/img/hero-forest-poster.jpg` from
+the new first frame.
 
 Headings are masked from one selector list (`MASK_TARGETS` in `site.js`) rather
 than tagged per heading, so a new page picks the effect up for free. A heading
