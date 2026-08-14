@@ -47,10 +47,10 @@ adding one without the other works.
 | File | Ratio | Shot |
 | --- | --- | --- |
 | `services-hero.jpg` | 4:3+ | Laptop, monogrammed black mug and notebook on a sunlit desk, tall foliage behind. |
-| `service-link-building.jpg` | 4:3 | Open editorial magazine spread beside a black coffee cup on linen. |
-| `service-authority.jpg` | 4:3 | Styled shelf: framed print, black vase with foliage, hardback book, warm shadow. |
-| `service-aeo.jpg` | 4:3 | Smartphone showing a search result, resting on a linen notebook with a pen. |
-| `service-strategy.jpg` | 4:3 | Laptop showing a muted analytics dashboard on a wooden desk beside a plant. |
+| `service-technical.jpg` | 4:3 | Laptop showing a site audit dashboard on a walnut desk, warm side light. |
+| `service-intelligence.jpg` | 4:3 | Open notebook with hand-annotated competitor notes beside a black mug. |
+| `service-content.jpg` | 4:3 | Smartphone showing an AI answer with citations, resting on a linen notebook. |
+| `service-outreach.jpg` | 4:3 | Open editorial magazine spread beside a black coffee cup on linen. |
 | `service-reporting.jpg` | 4:3 | Printed report pages fanned out with a pen and notebook on a pale desk. |
 | `cta-mug-books.jpg` | tall | Black monogrammed mug resting on a stack of design books, warm light. |
 
