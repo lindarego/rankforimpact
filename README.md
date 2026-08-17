@@ -101,7 +101,7 @@ latin subsets in `assets/fonts/` — ~104 KB total, no calls to Google Fonts.
 The contact page replaces the old enquiry form with an inline Cal.com widget.
 `assets/js/cal-embed.js` loads only on that page and is the site's **only
 third-party request**; the event link sits in a single `CAL_LINK` constant at the
-top of the file.
+top of the file, currently `rankforimpact/15min`.
 
 The booking panel reserves 640 px of height so the page does not jump when the
 widget mounts, and a fallback button plus the email address sit inside that space
@@ -149,9 +149,10 @@ useful when snapshotting or embedding the pages elsewhere.
   typographic `R.` if its file is ever missing.
 - **Favicon** — present, resampled from the supplied monogram. The
   apple-touch-icon is flattened onto cream because iOS ignores alpha.
-- **Booking link** — the contact page embeds Cal.com, and the event link is a
-  placeholder. Set `CAL_LINK` at the top of `assets/js/cal-embed.js` to the real
-  event (the part after `cal.com/`), and update the matching fallback `href` in
-  `contact.html` to keep the two in step. Until then the widget will not resolve
-  and visitors get the fallback link and the email address.
+- ~~**Booking link**~~ — set. The contact page embeds
+  [cal.com/rankforimpact/15min](https://cal.com/rankforimpact/15min) via
+  `CAL_LINK` in `assets/js/cal-embed.js`. Changing the event means updating that
+  constant and the matching fallback `href` in `contact.html`. Worth loading the
+  page once in a browser to confirm the widget mounts — it could not be checked
+  here, since this environment blocks `app.cal.com`.
 - **Insights articles** — the six cards are placeholder copy.

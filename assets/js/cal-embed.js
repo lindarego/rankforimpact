@@ -2,12 +2,11 @@
    Cal.com inline booking embed — contact page only
    ==========================================================================
 
-   >>> CHANGE THIS ONE LINE to the real event link, then nothing else. <<<
+   CAL_LINK is the live booking event — whatever follows cal.com/ in the URL.
+   This one resolves to https://cal.com/rankforimpact/15min.
 
-   The value is whatever follows cal.com/ in the booking URL. For
-   https://cal.com/rankforimpact/15min the link is "rankforimpact/15min".
-   It is also used to build the plain-link fallback in contact.html, so keep
-   the two in step if you change it.
+   If the event ever changes, update the fallback <a href> in contact.html to
+   match: that link is what visitors get when the widget cannot mount.
 */
 var CAL_LINK = 'rankforimpact/15min';
 
