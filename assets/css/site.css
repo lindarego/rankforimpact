@@ -1357,10 +1357,14 @@ body.nav-open .nav-toggle__close {
   row-gap: 3.75rem;
 }
 
-/* Three-across variant. Declared before the responsive rules below so those
-   still collapse it — an inline grid-template would not. */
+/* Narrower variants. Declared before the responsive rules below so those still
+   collapse them — an inline grid-template would not. */
 .pillars--3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pillars--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 /* Every pillar carries a divider, cleared on the first of each row. The
@@ -1464,6 +1468,15 @@ body.nav-open .nav-toggle__close {
   .pillar:nth-child(odd) {
     padding-left: 0;
     border-left: 0;
+  }
+}
+
+/* A two-item row must not inherit the generic 3-column step above, which would
+   leave an empty third column. Declared after those media queries so it wins,
+   and before the single-column rule below so that still takes over. */
+@media (min-width: 601px) {
+  .pillars--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2325,12 +2338,74 @@ body.nav-open .nav-toggle__close {
   color: var(--muted);
 }
 
+/* --------------------------------------------------------------------------
+   Booking embed (Cal.com, contact page)
+   -------------------------------------------------------------------------- */
+
+/* Reserving height keeps the page from jumping when the widget mounts, and
+   gives the fallback somewhere to sit while the script is in flight. */
+.booker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 640px;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.booker__embed {
+  width: 100%;
+}
+
+/* Cal replaces the mount point with an iframe. While there isn't one — no
+   JavaScript, a blocked third-party script, a bad event link — the fallback
+   stays put, so the page never dead-ends. */
+.booker__fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 34ch;
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.booker:has(iframe) .booker__fallback {
+  display: none;
+}
+
+.booker:has(iframe) {
+  min-height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+@media (max-width: 700px) {
+  .booker {
+    min-height: 560px;
+  }
+}
+
 .detail-list {
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
   padding: clamp(1.75rem, 3vw, 2.5rem);
   background: var(--cream-lo);
+}
+
+/* Beneath a full-width booking widget the details read as a strip, not a
+   sidebar. */
+.detail-list--row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
 }
 
 .detail {

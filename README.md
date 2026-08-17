@@ -47,6 +47,7 @@ each page's `<head>`.
 assets/
   css/site.css      all styling, organised in numbered sections
   js/site.js        sticky header, mobile nav, image fallbacks, scroll reveal
+  js/cal-embed.js   Cal.com booking widget — contact page only
   fonts/            self-hosted variable font subsets (no third-party requests)
   icons/            source SVGs; inlined into each page as a <symbol> sprite
   img/              photography — see assets/img/README.md
@@ -95,6 +96,19 @@ from [Simple Icons](https://simpleicons.org) (CC0). Sources are kept in
 Cormorant Garamond (display) and Jost (body), self-hosted as variable WOFF2
 latin subsets in `assets/fonts/` — ~104 KB total, no calls to Google Fonts.
 
+### Booking
+
+The contact page replaces the old enquiry form with an inline Cal.com widget.
+`assets/js/cal-embed.js` loads only on that page and is the site's **only
+third-party request**; the event link sits in a single `CAL_LINK` constant at the
+top of the file.
+
+The booking panel reserves 640 px of height so the page does not jump when the
+widget mounts, and a fallback button plus the email address sit inside that space
+until it does. `.booker:has(iframe)` hides the fallback and drops the placeholder
+frame once Cal has mounted, so no-JavaScript visitors, a blocked script or a
+wrong event link all still get a way to book.
+
 ### Motion
 
 `site.js` adds a `js` class to `<html>`, and every motion rule is gated behind
@@ -135,7 +149,9 @@ useful when snapshotting or embedding the pages elsewhere.
   typographic `R.` if its file is ever missing.
 - **Favicon** — present, resampled from the supplied monogram. The
   apple-touch-icon is flattened onto cream because iOS ignores alpha.
-- **Contact form** — GitHub Pages cannot process form posts. Point the form's
-  `action` at Formspree, Basin, Netlify Forms or similar, then delete the notice
-  under the submit button. The direct `mailto:` link works today.
+- **Booking link** — the contact page embeds Cal.com, and the event link is a
+  placeholder. Set `CAL_LINK` at the top of `assets/js/cal-embed.js` to the real
+  event (the part after `cal.com/`), and update the matching fallback `href` in
+  `contact.html` to keep the two in step. Until then the widget will not resolve
+  and visitors get the fallback link and the email address.
 - **Insights articles** — the six cards are placeholder copy.

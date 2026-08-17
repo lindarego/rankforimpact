@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Cal.com inline booking embed — contact page only
+   ==========================================================================
+
+   >>> CHANGE THIS ONE LINE to the real event link, then nothing else. <<<
+
+   The value is whatever follows cal.com/ in the booking URL. For
+   https://cal.com/rankforimpact/15min the link is "rankforimpact/15min".
+   It is also used to build the plain-link fallback in contact.html, so keep
+   the two in step if you change it.
+*/
+var CAL_LINK = 'rankforimpact/15min';
+
+/* --------------------------------------------------------------------------
+   Nothing below needs editing.
+
+   The loader is Cal's documented snippet. It injects app.cal.com/embed/embed.js
+   and queues calls until that arrives — the only third-party request the site
+   makes, and only on this page.
+
+   If the script never loads, no iframe is created and the .booker__fallback
+   link stays visible (see the :has() rule in site.css), so the page still
+   offers a way to book.
+   -------------------------------------------------------------------------- */
+(function (C, A, L) {
+  var p = function (a, ar) { a.q.push(ar); };
+  var d = C.document;
+  C.Cal = C.Cal || function () {
+    var cal = C.Cal;
+    var ar = arguments;
+    if (!cal.loaded) {
+      cal.ns = {};
+      cal.q = cal.q || [];
+      d.head.appendChild(d.createElement('script')).src = A;
+      cal.loaded = true;
+    }
+    if (ar[0] === L) {
+      var api = function () { p(api, arguments); };
+      var namespace = ar[1];
+      api.q = api.q || [];
+      if (typeof namespace === 'string') {
+        cal.ns[namespace] = api;
+        p(api, ar);
+      } else {
+        p(cal, ar);
+      }
+      return;
+    }
+    p(cal, ar);
+  };
+})(window, 'https://app.cal.com/embed/embed.js', 'init');
+
+Cal('init', { origin: 'https://cal.com' });
+
+Cal('inline', {
+  elementOrSelector: '#cal-booking',
+  calLink: CAL_LINK,
+  layout: 'month_view'
+});
+
+/* Brand the widget: deep green actions, the site's own body face, light theme
+   to sit on the cream page. */
+Cal('ui', {
+  theme: 'light',
+  layout: 'month_view',
+  hideEventTypeDetails: false,
+  cssVarsPerTheme: {
+    light: {
+      'cal-brand': '#123328',
+      'cal-bg': '#ffffff',
+      'cal-text': '#1c1c1a',
+      'cal-text-emphasis': '#123328',
+      'cal-border': '#ddd7cb',
+      'cal-border-subtle': '#e7e2d6'
+    }
+  },
+  styles: { branding: { brandColor: '#123328' } }
+});
