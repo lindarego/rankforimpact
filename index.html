@@ -179,6 +179,88 @@
     </figure></div>
 </section>
 
+<!-- ========================= Ripple effect ====================== -->
+<!-- The canvas draws the curves and the gold ripples that follow the pointer;
+     every word is real text in the markup, so the section reads the same
+     stacked on a phone, printed, or with the drawing switched off. -->
+<section class="section ripple-band" id="ripple">
+  <div class="wrap center">
+    <!-- The mission block above states the ripple effect in three lines; this
+         is the same claim, traced out. -->
+    <span class="eyebrow">The Ripple Effect, Traced</span>
+    <h2 class="h2" data-mask-auto>One business. Six orders of <em class="accent">impact.</em></h2>
+  </div>
+  <div class="wrap">
+    <div class="ripple" data-ripple>
+      <canvas class="ripple__canvas" data-ripple-canvas aria-hidden="true"></canvas>
+      <p class="ripple__origin">One business</p>
+      <!-- --x/--y place the label and, read back by site.js, the end of the
+           curve that reaches it. --i sets its place in the fade-in. -->
+      <ul class="ripple__branches">
+        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:30%;--y:27%;--i:0">
+          <span class="ripple__num">Branch 01</span>
+          <span class="ripple__name">Visibility</span>
+          <ul class="ripple__steps">
+            <li>Search rankings</li>
+            <li>Discoverability</li>
+            <li>Relevant traffic</li>
+          </ul>
+        </li>
+        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:54%;--y:25%;--i:1">
+          <span class="ripple__num">Branch 02</span>
+          <span class="ripple__name">Attention</span>
+          <ul class="ripple__steps">
+            <li>More visitors</li>
+            <li>More engagement</li>
+            <li>More consideration</li>
+          </ul>
+        </li>
+        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:79%;--y:27%;--i:2">
+          <span class="ripple__num">Branch 03</span>
+          <span class="ripple__name">Growth</span>
+          <ul class="ripple__steps">
+            <li>Qualified leads</li>
+            <li>Conversions</li>
+            <li>Revenue</li>
+          </ul>
+        </li>
+        <li class="ripple__branch ripple__branch--under" data-ripple-branch tabindex="0" style="--x:79%;--y:73%;--i:3">
+          <span class="ripple__num">Branch 04</span>
+          <span class="ripple__name">Momentum</span>
+          <ul class="ripple__steps">
+            <li>Brand authority</li>
+            <li>Trust</li>
+            <li>Market presence</li>
+          </ul>
+        </li>
+        <li class="ripple__branch ripple__branch--under" data-ripple-branch tabindex="0" style="--x:54%;--y:75%;--i:4">
+          <span class="ripple__num">Branch 05</span>
+          <span class="ripple__name">Compounding</span>
+          <ul class="ripple__steps">
+            <li>Referrals</li>
+            <li>Repeat customers</li>
+            <li>Organic growth</li>
+          </ul>
+        </li>
+        <li class="ripple__branch ripple__branch--under" data-ripple-branch tabindex="0" style="--x:30%;--y:73%;--i:5">
+          <span class="ripple__num">Branch 06</span>
+          <span class="ripple__name">Impact</span>
+          <ul class="ripple__steps">
+            <li>New opportunities</li>
+            <li>New markets</li>
+            <li>Sustainable growth</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="ripple__foot">
+      <p class="ripple__fig">Fig. 01 &mdash; Second-order effects, traced<!-- The invitation only makes sense once the diagram is on screen; the
+             stacked list shows every step already. --><span class="ripple__hint">Hover a branch to trace it</span></p>
+      <p class="ripple__note">Search authority rarely stops at search. One business ranking well sets off effects it never paid for&mdash;and the further out they travel, the more they compound.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============================ CTA ============================ -->
 <section class="cta cta--leaf" id="contact">
   <div class="cta__leaf" aria-hidden="true">

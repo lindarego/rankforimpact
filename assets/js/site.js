@@ -176,7 +176,8 @@
     ['.cta__copy, .cta__actions', 130],
     ['.footer__grid > *', 90],
     ['.rows > .row', 60],
-    ['.posts .post', 100]
+    ['.posts .post', 100],
+    ['.ripple__foot > *', 110]
   ].forEach(function (group) {
     Array.prototype.forEach.call(
       document.querySelectorAll(group[0]),
@@ -209,6 +210,397 @@
       observer.observe(el);
     });
   }
+
+  /* ----------------------------------------------------------------------
+     Ripple diagram — one business, the effects that follow
+     Draws the curves between the branch labels, then answers the pointer with
+     gold ripples: rings off the origin while the diagram is hovered, and a
+     travelling pulse along whichever branch is under the cursor or focus.
+
+     None of it carries meaning: every branch, step and label is real text in
+     the markup, which the stylesheet lays out as a plain list below 900px, in
+     print, and any time this code does not run.
+     ---------------------------------------------------------------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function (root) {
+    var canvas = root.querySelector('[data-ripple-canvas]');
+    var branchEls = Array.prototype.slice.call(root.querySelectorAll('[data-ripple-branch]'));
+    var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+
+    /* Bailing out leaves the stacked list in place: the diagram layout waits on
+       the .ripple--on class set below, not on scripting being available. */
+    if (!ctx || !branchEls.length) return;
+
+    /* Colours come off the brand tokens rather than being restated here, so a
+       palette change in the stylesheet carries into the drawing. Alpha rides
+       on globalAlpha instead of being baked into colour strings. */
+    var tokens = window.getComputedStyle(document.documentElement);
+    var token = function (name, fallback) {
+      return tokens.getPropertyValue(name).trim() || fallback;
+    };
+    var GOLD = token('--gold', '#c19a63');
+    var GREEN = token('--green', '#123328');
+    var INK = token('--ink', '#1c1c1a');
+
+    var ORIGIN_X = 0.08;
+    var ORIGIN_Y = 0.5;
+    /* Where the three step words of a branch sit along its curve. */
+    var STOPS = [0.3, 0.52, 0.74];
+    var GROW = 1.25; /* seconds for one curve to draw itself in */
+    var STAGGER = 0.16;
+
+    /* Endpoints are read back from the same --x/--y the stylesheet uses to
+       place the label, so a curve can never end up pointing somewhere else. */
+    var branches = [];
+    branchEls.forEach(function (el) {
+      var style = window.getComputedStyle(el);
+      var x = parseFloat(style.getPropertyValue('--x'));
+      var y = parseFloat(style.getPropertyValue('--y'));
+      if (isNaN(x) || isNaN(y)) return;
+      branches.push({ el: el, x: x / 100, y: y / 100, heat: 0 });
+    });
+
+    if (!branches.length) return;
+
+    /* From here the drawing is real, so the stylesheet may switch layouts.
+       Set before first paint, so nothing reflows under the reader. */
+    root.classList.add('ripple--on');
+
+    /* The pinned labels fade in once the section arrives; is-live is what
+       releases them. */
+    var live = function () {
+      root.classList.add('is-live');
+    };
+
+    var w = 0;
+    var h = 0;
+    var visible = false;
+    var started = 0; /* rAF timestamp of the first frame, so growth is relative */
+    var hover = 0; /* eased 0 → 1 while the pointer is over the diagram */
+    var hoverTarget = 0;
+    var hot = -1; /* index of the branch under the pointer or focus */
+    var pulses = []; /* taps and clicks, drawn as a gold ring from the point */
+    var raf = 0;
+    var last = 0;
+
+    var measure = function () {
+      var rect = canvas.getBoundingClientRect();
+      /* Zero while the stacked layout is showing — the canvas is display:none
+         there, and there is nothing to draw. */
+      if (!rect.width || !rect.height) {
+        w = h = 0;
+        return false;
+      }
+      /* Capped at 2, past which the extra pixels cost more than they show. */
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      w = rect.width;
+      h = rect.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return true;
+    };
+
+    var clamp01 = function (v) {
+      return v < 0 ? 0 : v > 1 ? 1 : v;
+    };
+
+    /* Control points for branch i: it leaves the origin almost level, then
+       bows away from the centre line before settling on its label. The bow
+       scales with how far the branch reaches, so a short one does not overshoot
+       its own endpoint and hook back. */
+    var curveOf = function (b) {
+      var ox = ORIGIN_X * w;
+      var oy = ORIGIN_Y * h;
+      var tx = b.x * w;
+      var ty = b.y * h;
+      var bow = (ty < oy ? -1 : 1) * (16 + 30 * ((tx - ox) / w));
+      return [
+        ox, oy,
+        ox + (tx - ox) * 0.42, oy + (ty - oy) * 0.1,
+        ox + (tx - ox) * 0.74, ty + bow,
+        tx, ty
+      ];
+    };
+
+    var pointOn = function (c, t) {
+      var u = 1 - t;
+      var a = u * u * u;
+      var b = 3 * u * u * t;
+      var d = 3 * u * t * t;
+      var e = t * t * t;
+      return [
+        a * c[0] + b * c[2] + d * c[4] + e * c[6],
+        a * c[1] + b * c[3] + d * c[5] + e * c[7]
+      ];
+    };
+
+    var line = function (c, upto, color, alpha, width) {
+      if (upto <= 0 || alpha <= 0.004) return;
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      for (var s = 0; s <= 48; s++) {
+        var p = pointOn(c, (s / 48) * upto);
+        if (s === 0) ctx.moveTo(p[0], p[1]);
+        else ctx.lineTo(p[0], p[1]);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    };
+
+    var dot = function (x, y, r, color, alpha) {
+      if (alpha <= 0.004) return;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    };
+
+    var ring = function (x, y, r, color, alpha) {
+      if (alpha <= 0.004 || r <= 0) return;
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    };
+
+    var render = function (el) {
+      ctx.clearRect(0, 0, w, h);
+      var ox = ORIGIN_X * w;
+      var oy = ORIGIN_Y * h;
+
+      branches.forEach(function (b, i) {
+        /* A reduced-motion reader gets the finished diagram, not the drawing
+           of it — the curves are already in place on the first frame. */
+        var t = reduce ? 1 : clamp01((el - i * STAGGER) / GROW);
+        if (t <= 0) return;
+        var grown = t * t * (3 - 2 * t); /* smoothstep, so the line eases in */
+        var c = curveOf(b);
+
+        line(c, grown, GREEN, 0.32, 1);
+        line(c, grown, GOLD, b.heat * 0.9, 1.4);
+
+        for (var k = 0; k < STOPS.length; k++) {
+          if (STOPS[k] > grown) break;
+          var stop = pointOn(c, STOPS[k]);
+          dot(stop[0], stop[1], 1.8, INK, 0.34 * (1 - b.heat));
+          dot(stop[0], stop[1], 2.1, GOLD, b.heat);
+          /* Each step sends out its own ring, a beat behind the one before it,
+             so the eye travels the branch in the order the words are listed. */
+          if (!reduce && b.heat > 0.01) {
+            var s = (el * 0.5 + k * 0.33) % 1;
+            ring(stop[0], stop[1], 5 + s * 26, GOLD, b.heat * 0.5 * (1 - s));
+          }
+        }
+
+        if (grown < 0.999) return;
+        var tip = pointOn(c, 1);
+        dot(tip[0], tip[1], 3.2, GREEN, 0.85 * (1 - b.heat));
+        dot(tip[0], tip[1], 3.2 + b.heat * 1.4, GOLD, b.heat);
+
+        if (reduce) return;
+        if (b.heat > 0.01) {
+          var out = (el * 0.45) % 1;
+          ring(tip[0], tip[1], 6 + out * 40, GOLD, b.heat * 0.45 * (1 - out));
+        }
+        /* One gold pulse runs each branch while the diagram is hovered, and
+           runs brighter on the branch actually being read. */
+        if (hover > 0.01) {
+          var travel = (el * 0.24 + i * 0.16) % 1;
+          var q = pointOn(c, travel);
+          dot(q[0], q[1], 2.4, GOLD, hover * (0.28 + b.heat * 0.55));
+        }
+      });
+
+      dot(ox, oy, 5, GREEN, 1);
+      /* Rings off the origin are the hover state itself: at rest the diagram
+         is a still drawing, which is also why the loop can stop. */
+      if (!reduce && hover > 0.01) {
+        for (var r = 0; r < 3; r++) {
+          var spread = (el * 0.28 + r / 3) % 1;
+          ring(ox, oy, 9 + spread * 74, GOLD, hover * 0.38 * (1 - spread));
+        }
+      }
+
+      for (var p = 0; p < pulses.length; p++) {
+        ring(pulses[p].x, pulses[p].y, 6 + pulses[p].t * 90, GOLD, 0.5 * (1 - pulses[p].t));
+      }
+    };
+
+    var settling = function () {
+      if (hover !== hoverTarget || pulses.length) return true;
+      for (var i = 0; i < branches.length; i++) {
+        if (branches[i].heat !== (i === hot ? 1 : 0)) return true;
+      }
+      return false;
+    };
+
+    var needsFrame = function () {
+      if (!visible || !w) return false;
+      /* Still drawing itself in? */
+      if ((last - started) / 1000 < branches.length * STAGGER + GROW) return true;
+      return hover > 0 || settling();
+    };
+
+    var frame = function (now) {
+      raf = 0;
+      if (!started) started = now;
+      var dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
+      last = now;
+
+      /* Eased towards their targets and snapped on arrival, so the values
+         settle exactly and the loop has a frame it can stop on. */
+      hover += (hoverTarget - hover) * Math.min(1, dt * 7);
+      if (Math.abs(hoverTarget - hover) < 0.01) hover = hoverTarget;
+      branches.forEach(function (b, i) {
+        var target = i === hot ? 1 : 0;
+        b.heat += (target - b.heat) * Math.min(1, dt * 9);
+        if (Math.abs(target - b.heat) < 0.01) b.heat = target;
+      });
+      pulses = pulses.filter(function (pulse) {
+        pulse.t += dt * 0.9;
+        return pulse.t < 1;
+      });
+
+      render((now - started) / 1000);
+      if (needsFrame()) raf = requestAnimationFrame(frame);
+    };
+
+    /* With motion reduced there is no loop at all: the finished diagram is
+       painted once, and again whenever the hover state or the size changes. */
+    var paint = function () {
+      if (!w) return;
+      hover = hoverTarget;
+      branches.forEach(function (b, i) {
+        b.heat = i === hot ? 1 : 0;
+      });
+      pulses = [];
+      render(0);
+    };
+
+    var run = function () {
+      if (!w) return;
+      if (reduce) {
+        paint();
+        return;
+      }
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+
+    var setHot = function (i) {
+      if (hot === i) return;
+      hot = i;
+      run();
+    };
+
+    root.addEventListener('pointerenter', function () {
+      hoverTarget = 1;
+      run();
+    });
+
+    /* pointerenter fires once on the way in, so a pointer that was already
+       resting over the section when it scrolled back into view would find the
+       ripples switched off. The first move re-arms them. */
+    root.addEventListener(
+      'pointermove',
+      function () {
+        if (hoverTarget === 1) return;
+        hoverTarget = 1;
+        run();
+      },
+      { passive: true }
+    );
+
+    root.addEventListener('pointerleave', function () {
+      hoverTarget = 0;
+      hot = -1;
+      run();
+    });
+
+    /* A tap or click drops a ring where it landed — the one piece of the
+       effect a touch reader would otherwise never see. */
+    root.addEventListener('pointerdown', function (event) {
+      if (!w || reduce) return;
+      var rect = canvas.getBoundingClientRect();
+      pulses.push({
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+        t: 0
+      });
+      if (pulses.length > 6) pulses.shift();
+      hoverTarget = 1;
+      run();
+    });
+
+    branches.forEach(function (b, i) {
+      b.el.addEventListener('pointerenter', function () {
+        setHot(i);
+      });
+      b.el.addEventListener('pointerleave', function () {
+        if (hot === i) setHot(-1);
+      });
+      /* Keyboard readers get the same branch lit as they tab through it. */
+      b.el.addEventListener('focus', function () {
+        hoverTarget = 1;
+        setHot(i);
+      });
+      b.el.addEventListener('blur', function () {
+        if (hot !== i) return;
+        hoverTarget = 0;
+        setHot(-1);
+      });
+    });
+
+    var resizing = false;
+    window.addEventListener(
+      'resize',
+      function () {
+        if (resizing) return;
+        resizing = true;
+        requestAnimationFrame(function () {
+          resizing = false;
+          if (measure()) run();
+        });
+      },
+      { passive: true }
+    );
+
+    measure();
+
+    if (reduce || !('IntersectionObserver' in window)) {
+      visible = true;
+      live();
+      paint();
+    } else {
+      /* The curves draw themselves in when the section arrives, and the loop
+         idles whenever it is off screen. */
+      var rippleObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            visible = entry.isIntersecting;
+            if (!visible) {
+              /* Nothing can be hovering a section that is off screen, and a
+                 hover left switched on would keep the loop awake. */
+              hoverTarget = 0;
+              hot = -1;
+              return;
+            }
+            live();
+            if (!w) measure();
+            run();
+          });
+        },
+        { threshold: 0.15 }
+      );
+      rippleObserver.observe(root);
+    }
+  });
 
   /* ----------------------------------------------------------------------
      Active nav link follows the visible section (in-page anchors only)
