@@ -1357,6 +1357,13 @@ body.nav-open .nav-toggle__close {
   row-gap: 3.75rem;
 }
 
+/* Two-across variant (the contact page's next steps). Declared before the
+   responsive rules below so those still collapse it — an inline
+   grid-template would not. */
+.pillars--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 /* Every pillar carries a divider, cleared on the first of each row. The
    row-start selector tracks the column count at each breakpoint below. */
 .pillar {
@@ -1458,6 +1465,15 @@ body.nav-open .nav-toggle__close {
   .pillar:nth-child(odd) {
     padding-left: 0;
     border-left: 0;
+  }
+}
+
+/* A two-item row must not inherit the generic 3-column step above, which would
+   leave an empty third column. Declared after those media queries so it wins,
+   and before the single-column rule below so that still takes over. */
+@media (min-width: 601px) {
+  .pillars--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2265,7 +2281,7 @@ body.nav-open .nav-toggle__close {
   place-items: center;
   min-height: 640px;
   padding: clamp(1rem, 2vw, 1.75rem);
-  background: #fff;
+  background: var(--cream-hi);
   border: 1px solid var(--line);
 }
 
@@ -2293,7 +2309,10 @@ body.nav-open .nav-toggle__close {
   display: none;
 }
 
+/* Once Cal has mounted, get out of its way entirely: the centring grid and the
+   reserved height would otherwise fight the widget's own sizing. */
 .booker:has(iframe) {
+  display: block;
   min-height: 0;
   padding: 0;
   background: none;
