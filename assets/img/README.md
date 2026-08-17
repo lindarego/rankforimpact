@@ -11,18 +11,32 @@ stock-looking.
 
 ## Brand assets
 
+All present. Each lockup still falls back to a typographic `R.` in the brand
+serif if its file ever goes missing, so a broken-image icon never appears.
+
+`favicon.png`, `apple-touch-icon.png` and `og-default.jpg` were derived from the
+supplied artwork by resampling and compositing — no new artwork was drawn.
+Replace them freely if you would rather art-direct the social card.
+
 | File | Used for | Notes |
 | --- | --- | --- |
-| `logo.svg` | Header / footer lockup | Monogram artwork. Until it exists, the header renders a typographic `R.` lockup — see the comment in each page's `.brand` block to swap it in. |
-| `favicon.png` | Browser tab | 512×512, transparent background |
-| `apple-touch-icon.png` | iOS home screen | 180×180, opaque cream background |
+| `logo-mark.png` | Header lockup | The square monogram — dark green `R` with the gold arrow and dot, transparent background. 512×512; rendered 52 px tall, shrinking to 42 px once the header sticks. |
+| `logo-full.png` | Footer lockup | The full lockup: monogram over `RANKFORIMPACT` and the "Authority creates opportunity." line. 1200×685. Because it is dark-ink artwork it sits on a cream plate in the footer, which keeps it legible on the dark green. |
+| `logo-full-480.png` | Footer lockup, 1× | 480 px wide version of the same artwork, served via `srcset`. |
+| `favicon.png` | Browser tab | 512×512, transparent background — the monogram alone |
+| `apple-touch-icon.png` | iOS home screen | 180×180, opaque cream background — iOS does not honour transparency |
 | `og-default.jpg` | Social sharing card | 1200×630 |
+
+Using `.svg` instead is fine — update the `src`/`srcset` attributes in each
+page's `.brand` block to match. The header and footer upgrade independently, so
+adding one without the other works.
 
 ## Home — `index.html`
 
 | File | Ratio | Shot |
 | --- | --- | --- |
-| `hero-workspace.jpg` | 4:3+ | Walnut desk, open laptop, black stoneware mug, notebook and pen. Warm raking side-light, soft shadows. |
+| `hero-forest-poster.jpg` | 16:9 | **Supplied.** First frame of the hero loop (`assets/video/hero-forest.mp4`), shown while the video buffers and whenever it cannot play. 1280×720, 38 KB. Re-cut it from the video if the footage is ever replaced. |
+| `hero-workspace.jpg` | 16:9 | **Unused** since the hero became video, kept for reuse. Bright desk by a window: laptop showing “Would an AI recommend you?” in gold italic on a forest green screen, monogrammed mug, notebook and pen. 2400×1340, 215 KB. `hero-workspace-1400.jpg` is the 1400px companion. |
 | `mission-focus.jpg` | 1:1 | Woman at a laptop in a bright open-plan office, candid, natural light. |
 | `mission-collaboration.jpg` | 1:1 | Two colleagues mid-conversation across a table, warm and unposed. |
 | `mission-landscape.jpg` | 1:1 | Green valley and river from above, golden hour, misty ridgelines. |
@@ -34,10 +48,10 @@ stock-looking.
 | File | Ratio | Shot |
 | --- | --- | --- |
 | `services-hero.jpg` | 4:3+ | Laptop, monogrammed black mug and notebook on a sunlit desk, tall foliage behind. |
-| `service-link-building.jpg` | 4:3 | Open editorial magazine spread beside a black coffee cup on linen. |
-| `service-authority.jpg` | 4:3 | Styled shelf: framed print, black vase with foliage, hardback book, warm shadow. |
-| `service-aeo.jpg` | 4:3 | Smartphone showing a search result, resting on a linen notebook with a pen. |
-| `service-strategy.jpg` | 4:3 | Laptop showing a muted analytics dashboard on a wooden desk beside a plant. |
+| `service-technical.jpg` | 4:3 | Laptop showing a site audit dashboard on a walnut desk, warm side light. |
+| `service-intelligence.jpg` | 4:3 | Open notebook with hand-annotated competitor notes beside a black mug. |
+| `service-content.jpg` | 4:3 | Smartphone showing an AI answer with citations, resting on a linen notebook. |
+| `service-outreach.jpg` | 4:3 | Open editorial magazine spread beside a black coffee cup on linen. |
 | `service-reporting.jpg` | 4:3 | Printed report pages fanned out with a pen and notebook on a pale desk. |
 | `cta-mug-books.jpg` | tall | Black monogrammed mug resting on a stack of design books, warm light. |
 
@@ -65,6 +79,20 @@ stock-looking.
 
 `insight-1.jpg` … `insight-6.jpg`, 3:2 — editorial still life or abstract texture
 in brand tones. Replace alongside the placeholder article copy.
+
+## Cropping a wide photograph
+
+The desktop hero column is nearly portrait, so a 16:9 photograph loses roughly
+half its width to `object-fit: cover` — at 1100px only the middle 40% survives.
+When the subject does not sit at the centre of what is kept, add
+`frame--focus-right` or `frame--focus-left` to the frame; they shift the
+`--focus` custom property rather than needing new markup.
+
+The home hero stays at the default centre because its laptop screen carries the
+message and spans 35.0%–63.5% of the frame. Only a focal point between **43%
+and 55%** keeps that screen whole at every breakpoint — anything further right
+clips the first word. If you replace this photograph, measure where the screen
+sits before changing the focal point.
 
 ## Export guidance
 

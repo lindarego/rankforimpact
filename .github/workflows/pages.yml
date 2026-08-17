@@ -23,6 +23,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pages must be switched on once by a repository admin, at
+      # Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+      # Until then this step fails with "Get Pages site failed ... Not Found".
+      #
+      # configure-pages has an `enablement: true` option that creates the site
+      # over the API, but it does not help here: GITHUB_TOKEN cannot create a
+      # Pages site even with `pages: write`, and the run fails on "Create Pages
+      # site failed. Resource not accessible by integration". Enabling it needs
+      # admin rights, so it stays a one-time manual step.
       - uses: actions/configure-pages@v5
 
       # The site is plain static HTML — the repository root is the artifact.
