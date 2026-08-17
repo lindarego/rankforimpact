@@ -23,13 +23,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # enablement turns Pages on through the API on the first run, using the
-      # pages: write permission above, so the deploy does not fail with
-      # "Get Pages site failed ... Not Found" on a repository where Pages has
-      # never been switched on. It is a no-op once Pages exists.
+      # Pages must be switched on once by a repository admin, at
+      # Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+      # Until then this step fails with "Get Pages site failed ... Not Found".
+      #
+      # configure-pages has an `enablement: true` option that creates the site
+      # over the API, but it does not help here: GITHUB_TOKEN cannot create a
+      # Pages site even with `pages: write`, and the run fails on "Create Pages
+      # site failed. Resource not accessible by integration". Enabling it needs
+      # admin rights, so it stays a one-time manual step.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       # The site is plain static HTML — the repository root is the artifact.
       - uses: actions/upload-pages-artifact@v3

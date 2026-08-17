@@ -28,8 +28,16 @@ python3 -m http.server 8000
 ## Deploying
 
 A workflow at `.github/workflows/pages.yml` publishes the repository root to
-GitHub Pages on every push to `main`. Enable it once, in the repository
-settings: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+GitHub Pages on every push to `main`, and can also be run by hand from the
+Actions tab (`workflow_dispatch`) to publish any branch.
+
+**Enable Pages first**, once, at **Settings → Pages → Build and deployment →
+Source: GitHub Actions**. Until that is done every run fails at
+`actions/configure-pages` with `Get Pages site failed … Not Found`. This cannot
+be automated: the action's `enablement: true` option needs admin rights, and the
+workflow's `GITHUB_TOKEN` is refused with `Resource not accessible by
+integration` even though `pages: write` is granted. A repository admin has to
+click it.
 
 `.nojekyll` is present so Pages serves the files verbatim rather than running
 them through Jekyll.
