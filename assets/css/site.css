@@ -1181,13 +1181,15 @@ body.nav-open .nav-toggle__close {
   padding: 2.5rem 2.25rem 2.25rem;
   background: #fff;
   border: 1px solid var(--line);
-  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
+  transition: border-color 0.25s var(--ease), translate 0.25s var(--ease),
     box-shadow 0.25s var(--ease);
 }
 
+/* `translate`, not a transform — the scroll reveal owns transform on this
+   element. See the note in section 22. */
 .card:hover {
   border-color: var(--gold);
-  transform: translateY(-3px);
+  translate: 0 -3px;
   box-shadow: 0 18px 40px -28px rgba(18, 51, 40, 0.35);
 }
 
@@ -1251,87 +1253,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   13. Process band (horizontal steps)
-   -------------------------------------------------------------------------- */
-.steps {
-  --rail-gap: 44px;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: start;
-  column-gap: var(--rail-gap);
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-}
-
-.step {
-  position: relative;
-}
-
-.step .icon-ring {
-  width: 64px;
-  height: 64px;
-  margin-bottom: 1.75rem;
-  color: var(--gold-soft);
-  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease),
-    color 0.4s var(--ease);
-}
-
-.step:hover .icon-ring {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--green);
-}
-
-.step__title {
-  margin-bottom: 0.625rem;
-  font-family: var(--sans);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #fff;
-  letter-spacing: 0.02em;
-}
-
-.step__body {
-  max-width: 24ch;
-  font-size: 0.875rem;
-  line-height: 1.7;
-}
-
-/* Connector, centred between this ring and the next: half a column, plus half
-   a ring, plus half the gap. */
-.step__link {
-  position: absolute;
-  top: 32px;
-  left: calc(50% + 32px + var(--rail-gap) / 2);
-  transform: translate(-50%, -50%);
-  line-height: 0;
-  color: rgba(255, 255, 255, 0.45);
-  pointer-events: none;
-}
-
-@media (max-width: 1080px) {
-  /* Two per row — drop each row's trailing connector so it never points
-     into empty space. */
-  .steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 3.25rem;
-  }
-  .step:nth-child(2n) .step__link {
-    display: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .steps {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 2.75rem;
-  }
-  .step__link {
-    display: none;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   14. Principles / value columns
+   13. Principles / value columns
    -------------------------------------------------------------------------- */
 .split-heading {
   display: grid;
@@ -1490,6 +1412,72 @@ body.nav-open .nav-toggle__close {
   }
 }
 
+/* Tiled variant (the homepage's "Why RankForImpact", on dark green).
+   Each column becomes a card in its own right, so the dividers and their
+   per-breakpoint row-start bookkeeping above are all replaced by a gap. These
+   rules sit after every one of those so they win on source order at each
+   breakpoint — a plain `.pillars--tiles .pillar` ties on specificity with
+   `.pillars .pillar`, and later wins. */
+.pillars--tiles {
+  gap: 1.25rem;
+}
+
+.pillars--tiles .pillar {
+  padding: 2.125rem 1.5rem 1.875rem;
+  /* Lifted just off the green rather than a flat panel, so the tile reads as
+     raised without introducing a fourth surface colour. */
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--on-dark-line);
+  border-top: 2px solid var(--gold);
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease),
+    translate 0.25s var(--ease);
+}
+
+/* Gold already owns the top edge; hover carries it around the other three.
+   `translate` rather than a transform: see the note in section 22. */
+.pillars--tiles .pillar:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--gold);
+  translate: 0 -3px;
+}
+
+/* `.pillar .icon--lg` sets the green used on cream and would otherwise beat
+   the gold `.dark .icon--lg` passes down, leaving dark green on dark green. */
+.pillars--tiles .pillar .icon--lg {
+  color: var(--gold-light);
+}
+
+/* The gold rule the service cards draw under their title on hover. It spans
+   the title box rather than the text, exactly as `.card__title::after` does —
+   a flex item is stretched to the column width whatever its display value. */
+.pillars--tiles .pillar__title {
+  position: relative;
+}
+
+.pillars--tiles .pillar__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.45s var(--ease);
+}
+
+.pillars--tiles .pillar:hover .pillar__title::after {
+  transform: scaleX(1);
+}
+
+/* Five tiles across need every pixel; below that they have room to breathe. */
+@media (max-width: 1200px) {
+  .pillars--tiles .pillar {
+    padding: 2.5rem 1.875rem 2.25rem;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Mobile: a collapsed grid reads as one centred stack rather than a column of
    left-aligned fragments. Section heads come with it, so alignment does not
@@ -1512,16 +1500,7 @@ body.nav-open .nav-toggle__close {
     text-align: center;
   }
 
-  .steps .step {
-    text-align: center;
-  }
-
-  .steps .step .icon-ring {
-    margin-inline: auto;
-  }
-
   .pillar__body,
-  .step__body,
   .card__body {
     max-width: 36ch;
     margin-inline: auto;
@@ -1529,7 +1508,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   15. Alternating feature rows (services / approach steps)
+   14. Alternating feature rows (services / approach steps)
    -------------------------------------------------------------------------- */
 .rows {
   display: flex;
@@ -1727,11 +1706,24 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   16. Mission split (dark copy + image mosaic)
+   15. Mission split (copy + image mosaic)
    -------------------------------------------------------------------------- */
 .mission {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+}
+
+/* The copy column runs on the warm beige band rather than dark green, so the
+   mosaic beside it carries the section's weight on its own. Everything else
+   here follows from simply not carrying `.dark`: headings go to --ink, the
+   eyebrow and accent to --gold-ink, body copy to --body.
+
+   The promise block is deliberately left on --green-deep. Its internals set
+   their colours explicitly rather than inheriting from `.dark`, so it survives
+   the switch untouched, and a deep green plate anchors the beige column and
+   keeps its gold top rule reading. */
+.mission--light {
+  background: var(--cream);
 }
 
 .mission__copy {
@@ -1946,7 +1938,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   17. Two-up split (image + copy, e.g. About mission / approach)
+   16. Two-up split (image + copy, e.g. About mission / approach)
    -------------------------------------------------------------------------- */
 .duo {
   display: grid;
@@ -1995,7 +1987,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   18. Quote band
+   17. Quote band
    -------------------------------------------------------------------------- */
 .quote {
   padding-block: clamp(3.5rem, 7vw, 6rem);
@@ -2031,7 +2023,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   19. CTA bands
+   18. CTA bands
    -------------------------------------------------------------------------- */
 .cta {
   position: relative;
@@ -2118,6 +2110,14 @@ body.nav-open .nav-toggle__close {
 
 /* Foliage bled into the left edge of the light CTA band, faded out with a mask
    so it reads as texture rather than a hard-edged panel. */
+/* The only CTA band that is not dark, and on the homepage it now follows the
+   beige mission section — same cream, so without a rule the two run together as
+   one undifferentiated stretch. The foliage bleed alone does not carry the
+   seam, since it only covers the left 230px. */
+.cta--leaf {
+  border-top: 1px solid var(--line);
+}
+
 .cta--leaf .cta__inner {
   padding-block: 3.125rem;
 }
@@ -2208,7 +2208,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   20. Insights cards
+   19. Insights cards
    -------------------------------------------------------------------------- */
 .posts {
   display: grid;
@@ -2222,11 +2222,11 @@ body.nav-open .nav-toggle__close {
   flex-direction: column;
   background: var(--cream-hi);
   border: 1px solid var(--line-soft);
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  transition: translate 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 
 .post:hover {
-  transform: translateY(-5px);
+  translate: 0 -5px;
   box-shadow: 0 26px 50px -32px rgba(22, 48, 42, 0.4);
 }
 
@@ -2270,7 +2270,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   21. Booking embed (Cal.com — contact page)
+   20. Booking embed (Cal.com — contact page)
    -------------------------------------------------------------------------- */
 
 /* The booker opens in a Cal-hosted modal on click, so this panel only has to
@@ -2315,7 +2315,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   22. Footer
+   21. Footer
    -------------------------------------------------------------------------- */
 .footer {
   padding-top: clamp(3rem, 6vw, 4.5rem);
@@ -2445,7 +2445,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   22b. Interaction — the homepage's hover language, applied site-wide
+   21b. Interaction — the homepage's hover language, applied site-wide
    The vocabulary established on the homepage is: photography scales gently,
    circled icons fill gold, and a gold rule draws in under the title. These
    rules carry it to the components that only appear on the other pages.
@@ -2527,17 +2527,27 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   23. Scroll reveal
+   22. Scroll reveal
    -------------------------------------------------------------------------- */
 /* Gated behind .js (set by site.js) so the page renders fully visible if the
    script never runs — an ungated rule leaves everything permanently at
    opacity 0 for no-JS readers. */
+/* The reveal owns `transform` on these elements, and its settled rule is both
+   more specific and later in the file than any component's `:hover` — so a card
+   that lifted with `transform: translateY(-3px)` stopped lifting the moment it
+   was revealed, which is every visitor with JavaScript. Hover lifts therefore
+   use `translate`, an independent property that composes with `transform`
+   instead of replacing it, and it is listed here so the reveal's own
+   `transition` shorthand does not strip its timing. */
 .js .reveal,
 .js [data-reveal] {
   opacity: 0;
   transform: translateY(22px);
-  transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
-  transition-delay: var(--d, 0ms);
+  /* The stagger delay is attached per property rather than through
+     transition-delay, which would also hold up a hover lift by however long
+     this element's place in the group happens to be. */
+  transition: opacity 0.85s var(--ease) var(--d, 0ms),
+    transform 0.85s var(--ease) var(--d, 0ms), translate 0.3s var(--ease);
 }
 
 .js .reveal.is-in,
@@ -2600,11 +2610,9 @@ body.nav-open .nav-toggle__close {
     transform: none;
     transition: none;
   }
-  /* Every hover transform is cancelled; colour changes are kept, since they
+  /* Every hover movement is cancelled; colour changes are kept, since they
      convey the same affordance without motion. */
   .btn:hover,
-  .card:hover,
-  .post:hover,
   .tile:hover .frame,
   .row:hover .row__media .frame,
   .duo__media:hover .frame,
@@ -2616,10 +2624,17 @@ body.nav-open .nav-toggle__close {
   .detail:hover .icon {
     transform: none;
   }
+  /* The card lifts ride on `translate` rather than `transform`, so cancelling
+     them means cancelling that property instead. */
+  .card:hover,
+  .post:hover,
+  .pillars--tiles .pillar:hover {
+    translate: none;
+  }
 }
 
 /* --------------------------------------------------------------------------
-   24. Print
+   23. Print
    -------------------------------------------------------------------------- */
 @media print {
   .header,

@@ -153,9 +153,21 @@ markup and skipped automatically.
 
 The hover vocabulary is shared across every page: photography scales to 1.04,
 circled icons fill gold, a gold rule draws in under the title, and cards lift
-with a gold border. Section `22b` of the stylesheet carries it to the components
+with a gold border. Section `21b` of the stylesheet carries it to the components
 that only appear away from the homepage (feature rows, article cards, the
 about-page splits).
+
+Card lifts use the `translate` property rather than a `transform`, and this is
+load-bearing: the scroll reveal owns `transform` on the same elements, and its
+settled rule outranks any component's `:hover`, so a `transform: translateY(-3px)`
+lift silently stopped working the moment the card was revealed — i.e. for every
+visitor with JavaScript. `translate` composes with `transform` instead of
+replacing it. The reveal's `transition` shorthand lists `translate` explicitly so
+the lift keeps its own short duration, and the stagger delay is attached per
+property so a card near the end of a group does not wait out its reveal offset
+before responding to the pointer. Adding a new hover lift means using `translate`
+and cancelling it under `prefers-reduced-motion`, where `transform: none` no
+longer reaches it.
 
 Note that a page rendered without the `js` class shows its final settled state —
 useful when snapshotting or embedding the pages elsewhere.

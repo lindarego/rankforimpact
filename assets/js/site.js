@@ -170,7 +170,6 @@
   [
     ['.hero__copy > .eyebrow, .hero__copy .prose > *, .hero__copy .btn-row', 90],
     ['.cards .card', 120],
-    ['.steps > .step', 90],
     ['.pillars .pillar', 90],
     ['.mission__inner > *', 80],
     ['.collage .tile', 120],
