@@ -47,7 +47,7 @@ each page's `<head>`.
 assets/
   css/site.css      all styling, organised in numbered sections
   js/site.js        sticky header, mobile nav, image fallbacks, scroll reveal
-  js/cal-embed.js   Cal.com booking widget — contact page only
+  js/cal-embed.js   Cal.com booking modal, opened by every "Book 15-min call"
   fonts/            self-hosted variable font subsets (no third-party requests)
   icons/            source SVGs; inlined into each page as a <symbol> sprite
   img/              photography — see assets/img/README.md
@@ -98,20 +98,36 @@ latin subsets in `assets/fonts/` — ~104 KB total, no calls to Google Fonts.
 
 ### Booking
 
-The contact page *is* the booker: header, the Cal.com widget, footer. There is no
-heading, intro copy or contact strip around it, because the widget carries its own
-title and competing with that only added noise. The page keeps an `h1` for
-assistive tech and search, marked `sr-only` so it is read but not seen.
+Every "Book 15-min call" button on the site opens the Cal.com booker in a modal,
+rather than one page carrying an inline calendar. A button becomes a trigger by
+carrying three attributes, which `btn(..., cal=True)` in the generator stamps on:
 
-`assets/js/cal-embed.js` loads only on that page and is the site's **only
-third-party request**; the event link sits in a single `CAL_LINK` constant at the
-top of the file, currently `rankforimpact/15min`.
+```html
+data-cal-link="rankforimpact/15min"
+data-cal-namespace="15min"
+data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'
+```
 
-The booking panel reserves 640 px of height so the page does not jump when the
-widget mounts, and a fallback button plus the email address sit inside that space
-until it does. `.booker:has(iframe)` hides the fallback and drops the placeholder
-frame once Cal has mounted, so no-JavaScript visitors, a blocked script or a
-wrong event link all still get a way to book.
+Those buttons keep a real `href` to `https://cal.com/rankforimpact/15min`, so
+without JavaScript — or with the script blocked, or the namespace mistyped — the
+click still lands on a working booking page instead of doing nothing.
+
+`assets/js/cal-embed.js` carries Cal's loader and is the site's **only
+third-party request**. It loads on *every* page, because the header CTA is on
+every page. The event and namespace sit in the `CAL_LINK` / `CAL_NS` constants at
+the top of that file, and must match `CAL_LINK` / `CAL_NS` in the generator.
+
+The modal is themed through Cal's own design tokens (`cssVarsPerTheme`) rather
+than by overriding its CSS, so the whole widget follows the palette: cream
+surfaces, deep green on the primary action and the selected day, gold on the
+emphasis and border states. `theme` is pinned to `light` rather than `auto` —
+only the light set is defined, and the site itself pins `color-scheme: light`, so
+following the visitor's OS would leave a dark modal wearing cream tokens. Green
+carries the primary action rather than gold because white on `#c19a63` measures
+about 2.6:1, too weak for a button label; gold does the decorative work.
+
+The contact page's own booking panel is a cream CTA block (`.booker`) holding one
+line of copy, that trigger button, and the email address as an alternative.
 
 ### Motion
 
@@ -153,10 +169,11 @@ useful when snapshotting or embedding the pages elsewhere.
   typographic `R.` if its file is ever missing.
 - **Favicon** — present, resampled from the supplied monogram. The
   apple-touch-icon is flattened onto cream because iOS ignores alpha.
-- ~~**Booking link**~~ — set. The contact page embeds
-  [cal.com/rankforimpact/15min](https://cal.com/rankforimpact/15min) via
-  `CAL_LINK` in `assets/js/cal-embed.js`. Changing the event means updating that
-  constant and the matching fallback `href` in `contact.html`. Worth loading the
-  page once in a browser to confirm the widget mounts — it could not be checked
-  here, since this environment blocks `app.cal.com`.
+- ~~**Booking link**~~ — set to
+  [cal.com/rankforimpact/15min](https://cal.com/rankforimpact/15min). Changing the
+  event means updating `CAL_LINK` in `assets/js/cal-embed.js` **and** in the
+  generator, which stamps it onto each button along with the fallback `href`.
+  Worth clicking one button in a real browser to confirm the modal mounts and
+  wears the cream palette — that could not be checked here, since this
+  environment blocks `app.cal.com`.
 - **Insights articles** — the six cards are placeholder copy.

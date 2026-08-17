@@ -2273,56 +2273,45 @@ body.nav-open .nav-toggle__close {
    21. Booking embed (Cal.com — contact page)
    -------------------------------------------------------------------------- */
 
-/* Reserving height keeps the page from jumping when the widget mounts, and
-   gives the fallback somewhere to sit while the script is in flight. */
+/* The booker opens in a Cal-hosted modal on click, so this panel only has to
+   present the invitation — no height is reserved for an inline widget. */
 .booker {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 640px;
-  padding: clamp(1rem, 2vw, 1.75rem);
-  background: var(--cream-hi);
-  border: 1px solid var(--line);
-}
-
-.booker__embed {
-  width: 100%;
-}
-
-/* Cal replaces the mount point with an iframe. While there isn't one — no
-   JavaScript, a blocked third-party script, a bad event link — the fallback
-   stays put, so the page never dead-ends. */
-.booker__fallback {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 3rem);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  text-align: center;
+}
+
+.booker__lead {
+  max-width: 26ch;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.booker__note {
   max-width: 34ch;
   margin: 0;
-  text-align: center;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.7;
 }
 
-.booker:has(iframe) .booker__fallback {
-  display: none;
+.booker__note a {
+  color: var(--green);
+  border-bottom: 1px solid var(--line);
+  transition: border-color 0.3s var(--ease);
 }
 
-/* Once Cal has mounted, get out of its way entirely: the centring grid and the
-   reserved height would otherwise fight the widget's own sizing. */
-.booker:has(iframe) {
-  display: block;
-  min-height: 0;
-  padding: 0;
-  background: none;
-  border: 0;
-}
-
-@media (max-width: 700px) {
-  .booker {
-    min-height: 560px;
-  }
+.booker__note a:hover {
+  border-bottom-color: var(--gold);
 }
 
 /* --------------------------------------------------------------------------

@@ -18,8 +18,8 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/cormorant.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/jost.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css">
 <link rel="preconnect" href="https://app.cal.com" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -28,9 +28,9 @@
     <a class="brand" href="index.html" aria-label="RankForImpact — home"><!-- Drop assets/img/logo-mark.png in and it replaces the type lockup automatically. Nothing to edit. --><img class="brand__mark brand__mark--art" src="assets/img/logo-mark.png" alt="" width="512" height="512"><span class="brand__mark brand__mark--type" aria-hidden="true">R</span><span class="brand__word">Rank<em>For</em>Impact</span></a>
     <nav class="nav" id="nav" aria-label="Primary">
       <a class="nav__link" href="services.html">Services</a><a class="nav__link" href="approach.html">Our Approach</a><a class="nav__link" href="about.html">About</a><a class="nav__link" href="insights.html">Insights</a><a class="nav__link" href="contact.html" aria-current="page">Contact</a>
-      <a class="btn btn--dark" href="contact.html">Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+      <a class="btn btn--dark" href="contact.html" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
     </nav>
-    <a class="btn btn--dark header__cta" href="contact.html">Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+    <a class="btn btn--dark header__cta" href="contact.html" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav">
       <span class="sr-only">Menu</span>
       <span class="nav-toggle__open"><svg class="icon" aria-hidden="true"><use href="#i-menu"></use></svg></span>
@@ -51,21 +51,15 @@
 
 <!-- =========================== Booking ========================== -->
 <section class="section" id="book" style="padding-top:0">
-  <div class="wrap">
+  <div class="wrap wrap--narrow">
     <div class="booker">
-      <!-- Cal.com mounts the booking widget here. The event link lives in one
-           place: CAL_LINK at the top of assets/js/cal-embed.js. -->
-      <div id="cal-booking" class="booker__embed"></div>
+      <p class="booker__lead">Fifteen minutes, on a day that suits you.</p>
 
-      <!-- Visible until Cal injects its iframe, so the page always offers a way
-           to book: no JavaScript, blocked third-party script, or a bad link all
-           land here. Keep the href in step with CAL_LINK. -->
-      <p class="booker__fallback">
-        <a class="btn btn--dark" href="https://cal.com/rankforimpact/15min" target="_blank" rel="noopener">
-          Open the booking page<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"></use></svg>
-        </a>
-        <span>Or email <a href="mailto:hello@rankforimpact.com">hello@rankforimpact.com</a> and we will find a time.</span>
-      </p>
+      <!-- The Cal trigger. It opens the booker in a modal; the href is the
+           no-JavaScript fallback, going straight to the booking page. -->
+      <a class="btn btn--dark" href="https://cal.com/rankforimpact/15min" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+
+      <p class="booker__note">Or email <a href="mailto:hello@rankforimpact.com">hello@rankforimpact.com</a> and we will find a time.</p>
     </div>
   </div>
 </section>

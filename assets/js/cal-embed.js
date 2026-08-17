@@ -1,26 +1,26 @@
 /* ==========================================================================
-   Cal.com inline booking embed — contact page only
+   Cal.com element-click booking embed
    ==========================================================================
 
-   CAL_LINK is the live booking event — whatever follows cal.com/ in the URL.
-   This one resolves to https://cal.com/rankforimpact/15min.
+   Every "Book 15-min call" button on the site opens the booker in a modal.
+   A button becomes a trigger by carrying three attributes, which the page
+   generator adds for us:
 
-   If the event ever changes, update the fallback <a href> in contact.html to
-   match: that link is what visitors get when the widget cannot mount.
-*/
-var CAL_LINK = 'rankforimpact/15min';
+     data-cal-link="rankforimpact/15min"
+     data-cal-namespace="15min"
+     data-cal-config='{"layout":"month_view", ...}'
 
-/* --------------------------------------------------------------------------
-   Nothing below needs editing.
+   Those buttons also keep a real href, so without JavaScript the click still
+   goes somewhere useful instead of doing nothing.
 
-   The loader is Cal's documented snippet. It injects app.cal.com/embed/embed.js
-   and queues calls until that arrives — the only third-party request the site
-   makes, and only on this page.
-
-   If the script never loads, no iframe is created and the .booker__fallback
-   link stays visible (see the :has() rule in site.css), so the page still
-   offers a way to book.
+   If the event or namespace changes, update CAL_LINK / CAL_NS below and the
+   matching values in gen.py, which stamps them onto the buttons.
    -------------------------------------------------------------------------- */
+var CAL_LINK = 'rankforimpact/15min';
+var CAL_NS = '15min';
+
+/* Cal's own loader. Queues calls until app.cal.com/embed/embed.js arrives —
+   the only third-party request the site makes. */
 (function (C, A, L) {
   var p = function (a, ar) { a.q.push(ar); };
   var d = C.document;
@@ -38,8 +38,9 @@ var CAL_LINK = 'rankforimpact/15min';
       var namespace = ar[1];
       api.q = api.q || [];
       if (typeof namespace === 'string') {
-        cal.ns[namespace] = api;
-        p(api, ar);
+        cal.ns[namespace] = cal.ns[namespace] || api;
+        p(cal.ns[namespace], ar);
+        p(cal, ['initNamespace', namespace]);
       } else {
         p(cal, ar);
       }
@@ -49,30 +50,31 @@ var CAL_LINK = 'rankforimpact/15min';
   };
 })(window, 'https://app.cal.com/embed/embed.js', 'init');
 
-Cal('init', { origin: 'https://cal.com' });
+Cal('init', CAL_NS, { origin: 'https://app.cal.com' });
 
-Cal('inline', {
-  elementOrSelector: '#cal-booking',
-  calLink: CAL_LINK,
-  layout: 'month_view'
-});
+Cal.config = Cal.config || {};
+Cal.config.forwardQueryParams = true;
 
-/* Brand the widget into the site's palette: cream surfaces, deep green for the
-   primary action and the selected day, gold on the emphasis states.
+/* --------------------------------------------------------------------------
+   Brand the modal into the site's palette: cream surfaces, deep green for the
+   primary action and the selected day, gold on the emphasis and border states.
 
    These are Cal's own design tokens, so the whole widget follows rather than
-   just the button colour. `theme: 'light'` is pinned deliberately — only the
-   light set is defined below, so letting it follow the visitor's OS would leave
-   a dark widget with cream tokens.
+   just the button colour.
 
-   Green carries the primary action rather than gold: white on #c19a63 measures
-   about 2.6:1, which is too weak for a button label. Gold does the emphasis and
-   hover work instead, where it is decoration rather than something to read.
-   To flip them, swap cal-brand and cal-bg-emphasis. */
-Cal('ui', {
-  theme: 'light',
-  layout: 'month_view',
+   theme is pinned to light rather than the snippet's "auto": only the light set
+   is defined here, and the site itself pins color-scheme: light, so following
+   the visitor's OS would leave a dark modal wearing cream tokens.
+
+   Green carries the primary action rather than gold — white on #c19a63 measures
+   about 2.6:1, too weak for a button label. Gold does the emphasis work, where
+   it is decoration rather than something to read. To flip them, swap cal-brand
+   and cal-bg-emphasis.
+   -------------------------------------------------------------------------- */
+Cal.ns[CAL_NS]('ui', {
   hideEventTypeDetails: false,
+  layout: 'month_view',
+  theme: 'light',
   cssVarsPerTheme: {
     light: {
       /* Primary action, selected day */
