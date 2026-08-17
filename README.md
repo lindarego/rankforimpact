@@ -98,7 +98,11 @@ latin subsets in `assets/fonts/` — ~104 KB total, no calls to Google Fonts.
 
 ### Booking
 
-The contact page replaces the old enquiry form with an inline Cal.com widget.
+The contact page *is* the booker: header, the Cal.com widget, footer. There is no
+heading, intro copy or contact strip around it, because the widget carries its own
+title and competing with that only added noise. The page keeps an `h1` for
+assistive tech and search, marked `sr-only` so it is read but not seen.
+
 `assets/js/cal-embed.js` loads only on that page and is the site's **only
 third-party request**; the event link sits in a single `CAL_LINK` constant at the
 top of the file, currently `rankforimpact/15min`.
