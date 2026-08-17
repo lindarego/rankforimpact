@@ -23,7 +23,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # enablement turns Pages on through the API on the first run, using the
+      # pages: write permission above, so the deploy does not fail with
+      # "Get Pages site failed ... Not Found" on a repository where Pages has
+      # never been switched on. It is a no-op once Pages exists.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       # The site is plain static HTML — the repository root is the artifact.
       - uses: actions/upload-pages-artifact@v3
