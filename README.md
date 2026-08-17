@@ -108,9 +108,19 @@ data-cal-namespace="15min"
 data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'
 ```
 
-Those buttons keep a real `href` to `https://cal.com/rankforimpact/15min`, so
-without JavaScript — or with the script blocked, or the namespace mistyped — the
-click still lands on a working booking page instead of doing nothing.
+Each trigger is a real `<button type="button">` carrying **no `href`**, and that
+is deliberate: with an href present the navigation beat Cal's click handler and
+the modal never opened. `btn()` raises if a caller passes an href alongside
+`cal=True`, so the fix cannot be undone by accident.
+
+`<button>` rather than an `<a>` with the href stripped out — an anchor without an
+href stops being focusable and loses its semantics, while a button stays
+keyboard-operable (Enter and Space) and announces itself correctly.
+
+The trade-off is that a trigger now does nothing at all if the embed script is
+blocked or fails, where before it fell back to the booking page. The contact
+page's booking panel carries the email address beside the button for that case,
+and it is the reason to keep an eye on the script loading.
 
 `assets/js/cal-embed.js` carries Cal's loader and is the site's **only
 third-party request**. It loads on *every* page, because the header CTA is on
@@ -182,10 +192,10 @@ useful when snapshotting or embedding the pages elsewhere.
 - **Favicon** — present, resampled from the supplied monogram. The
   apple-touch-icon is flattened onto cream because iOS ignores alpha.
 - ~~**Booking link**~~ — set to
-  [cal.com/rankforimpact/15min](https://cal.com/rankforimpact/15min). Changing the
-  event means updating `CAL_LINK` in `assets/js/cal-embed.js` **and** in the
-  generator, which stamps it onto each button along with the fallback `href`.
-  Worth clicking one button in a real browser to confirm the modal mounts and
-  wears the cream palette — that could not be checked here, since this
-  environment blocks `app.cal.com`.
+  [cal.com/rankforimpact/15min](https://cal.com/rankforimpact/15min), and the
+  modal is confirmed opening. Changing the event means updating `CAL_LINK` in
+  `assets/js/cal-embed.js` **and** in the generator, which stamps it onto every
+  trigger. The modal's cream palette has not been eyeballed here — this
+  environment blocks `app.cal.com`, so it could only be verified as far as the
+  tokens being handed to Cal.
 - **Insights articles** — the six cards are placeholder copy.

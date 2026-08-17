@@ -130,11 +130,18 @@ ol {
   list-style: none;
 }
 
+/* appearance and margin are reset alongside the rest because the booking
+   triggers are real <button> elements wearing .btn, and iOS Safari otherwise
+   rounds their corners and repaints the background regardless of what .btn
+   asks for. */
 button {
   font: inherit;
   color: inherit;
   background: none;
   border: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
 }
 
@@ -466,25 +473,6 @@ button {
   --btn-wipe: var(--green-deep);
   --btn-fg-hover: #fff;
   --btn-bd-hover: var(--green-deep);
-}
-
-.btn--outline-light {
-  --btn-bg: transparent;
-  --btn-fg: var(--on-dark);
-  --btn-bd: var(--on-dark-line);
-  --btn-wipe: var(--cream-hi);
-  --btn-fg-hover: var(--green);
-  --btn-bd-hover: var(--cream-hi);
-}
-
-/* Outlined on a light ground: white plate, ink label, wipes to green. */
-.btn--paper {
-  --btn-bg: #fff;
-  --btn-fg: var(--ink);
-  --btn-bd: var(--line);
-  --btn-wipe: var(--green);
-  --btn-fg-hover: #fff;
-  --btn-bd-hover: var(--green);
 }
 
 .btn-row {
