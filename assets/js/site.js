@@ -243,10 +243,18 @@
 
     var ORIGIN_X = 0.08;
     var ORIGIN_Y = 0.5;
-    /* Where the three step words of a branch sit along its curve. */
-    var STOPS = [0.3, 0.52, 0.74];
+    /* The stretch of curve the effects are spread over. It starts well clear of
+       the origin, where all six branches are still bunched together, and stops
+       short of the tip, which the branch's own name has. */
+    var STOP_FROM = 0.34;
+    var STOP_TO = 0.62;
     var GROW = 1.25; /* seconds for one curve to draw itself in */
     var STAGGER = 0.16;
+
+    /* How hard each branch bows out of the fan. Uniform bows made six curves
+       read as one mechanism repeated; varying them per branch keeps the spray
+       irregular, which is what the endpoints in the markup are going for too. */
+    var BOWS = [1, 0.72, 1.24, 0.86, 1.16, 0.94];
 
     /* Endpoints are read back from the same --x/--y the stylesheet uses to
        place the label, so a curve can never end up pointing somewhere else. */
@@ -256,7 +264,15 @@
       var x = parseFloat(style.getPropertyValue('--x'));
       var y = parseFloat(style.getPropertyValue('--y'));
       if (isNaN(x) || isNaN(y)) return;
-      branches.push({ el: el, x: x / 100, y: y / 100, heat: 0 });
+      branches.push({
+        el: el,
+        x: x / 100,
+        y: y / 100,
+        bow: BOWS[branches.length % BOWS.length],
+        /* One element per effect, in the order they sit along the curve. */
+        stops: Array.prototype.slice.call(el.querySelectorAll('.ripple__step')),
+        heat: 0
+      });
     });
 
     if (!branches.length) return;
@@ -297,6 +313,7 @@
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      placeStops();
       return true;
     };
 
@@ -304,16 +321,23 @@
       return v < 0 ? 0 : v > 1 ? 1 : v;
     };
 
-    /* Control points for branch i: it leaves the origin almost level, then
-       bows away from the centre line before settling on its label. The bow
-       scales with how far the branch reaches, so a short one does not overshoot
-       its own endpoint and hook back. */
+    /* Where the nth of a branch's effects sits along its curve. */
+    var stopAt = function (k, count) {
+      if (count < 2) return (STOP_FROM + STOP_TO) / 2;
+      return STOP_FROM + (k / (count - 1)) * (STOP_TO - STOP_FROM);
+    };
+
+    /* Control points for a branch: it leaves the origin almost level, then bows
+       away from the centre line before settling on its label. The bow scales
+       with how far the branch reaches, so a short one does not overshoot its own
+       endpoint and hook back, and with the branch's own factor, so no two
+       curves have quite the same shape. */
     var curveOf = function (b) {
       var ox = ORIGIN_X * w;
       var oy = ORIGIN_Y * h;
       var tx = b.x * w;
       var ty = b.y * h;
-      var bow = (ty < oy ? -1 : 1) * (16 + 30 * ((tx - ox) / w));
+      var bow = (ty < oy ? -1 : 1) * (16 + 30 * ((tx - ox) / w)) * b.bow;
       return [
         ox, oy,
         ox + (tx - ox) * 0.42, oy + (ty - oy) * 0.1,
@@ -332,6 +356,23 @@
         a * c[0] + b * c[2] + d * c[4] + e * c[6],
         a * c[1] + b * c[3] + d * c[5] + e * c[7]
       ];
+    };
+
+    /* Hands each effect the point on the curve it names, as an offset from the
+       branch's node — which is the branch element's own position, so the
+       stylesheet needs nothing but the two numbers. Positions only change with
+       the box, so this runs on measure rather than on hover. */
+    var placeStops = function () {
+      branches.forEach(function (b) {
+        var c = curveOf(b);
+        var nx = b.x * w;
+        var ny = b.y * h;
+        b.stops.forEach(function (stopEl, k) {
+          var p = pointOn(c, stopAt(k, b.stops.length));
+          stopEl.style.setProperty('--sx', Math.round(p[0] - nx) + 'px');
+          stopEl.style.setProperty('--sy', Math.round(p[1] - ny) + 'px');
+        });
+      });
     };
 
     var line = function (c, upto, color, alpha, width) {
@@ -386,9 +427,10 @@
         line(c, grown, GREEN, 0.32, 1);
         line(c, grown, GOLD, b.heat * 0.9, 1.4);
 
-        for (var k = 0; k < STOPS.length; k++) {
-          if (STOPS[k] > grown) break;
-          var stop = pointOn(c, STOPS[k]);
+        for (var k = 0; k < b.stops.length; k++) {
+          var at = stopAt(k, b.stops.length);
+          if (at > grown) break;
+          var stop = pointOn(c, at);
           dot(stop[0], stop[1], 1.8, INK, 0.34 * (1 - b.heat));
           dot(stop[0], stop[1], 2.1, GOLD, b.heat);
           /* Each step sends out its own ring, a beat behind the one before it,
@@ -496,6 +538,9 @@
     var setHot = function (i) {
       if (hot === i) return;
       hot = i;
+      /* While one branch is being read the rest of the fan steps back, which is
+         also what keeps a pinned effect off a neighbour's name. */
+      root.classList.toggle('is-tracing', i > -1);
       run();
     };
 
@@ -519,7 +564,7 @@
 
     root.addEventListener('pointerleave', function () {
       hoverTarget = 0;
-      hot = -1;
+      setHot(-1);
       run();
     });
 
@@ -588,7 +633,7 @@
               /* Nothing can be hovering a section that is off screen, and a
                  hover left switched on would keep the loop awake. */
               hoverTarget = 0;
-              hot = -1;
+              setHot(-1);
               return;
             }
             live();

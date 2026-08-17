@@ -2600,16 +2600,6 @@ body.nav-open .nav-toggle__close {
   background: var(--gold);
 }
 
-.ripple__num {
-  display: block;
-  color: var(--muted);
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.24em;
-  line-height: 1.6;
-  text-transform: uppercase;
-}
-
 .ripple__name {
   display: block;
   color: var(--ink);
@@ -2628,7 +2618,7 @@ body.nav-open .nav-toggle__close {
   margin-top: 0.35rem;
 }
 
-.ripple__steps li {
+.ripple__step {
   color: var(--body);
   font-size: 0.8rem;
   line-height: 1.65;
@@ -2666,9 +2656,9 @@ body.nav-open .nav-toggle__close {
 
 /* -- Diagram layout ------------------------------------------------------- */
 @media (min-width: 900px) {
-  /* The floor is set by the labels, not the drawing: an upper branch opens its
-     three steps above its name, and the highest node sits at 25% of the band,
-     where that stack needs some 135px of clear air above it. */
+  /* The floor is set by the labels, not the drawing: the highest node sits at
+     13% of the band and hangs its name above itself, which wants some 50px of
+     clear air. */
   .ripple--on {
     height: clamp(580px, 46vw, 640px);
     border-top: 1px solid var(--line);
@@ -2687,7 +2677,7 @@ body.nav-open .nav-toggle__close {
     margin: 0;
     padding: 0 0.5rem;
     background: var(--band);
-    transform: translate(-50%, 1.6rem);
+    transform: translate(-50%, 2.1rem);
     white-space: nowrap;
   }
 
@@ -2706,21 +2696,18 @@ body.nav-open .nav-toggle__close {
   }
 
   /* --x/--y are the branch endpoint, set once in the markup and read back by
-     site.js for the curve — so a label and its curve cannot drift apart. */
+     site.js for the curve — so a label and its curve cannot drift apart. The
+     branch itself collapses to that point: a zero-size anchor every label on
+     the branch is then placed against, in the canvas's own coordinates. */
   .ripple--on .ripple__branch {
     position: absolute;
     left: var(--x);
     top: var(--y);
-    width: max-content;
-    max-width: 11rem;
-    padding: 0.25rem 0.5rem;
-    background: var(--band);
+    width: 0;
+    height: 0;
+    padding: 0;
+    background: none;
     border: 0;
-    text-align: center;
-    pointer-events: auto;
-    /* Labels above the fold-line sit above their node; the lower three sit
-       below theirs, so nothing crowds the centre of the fan. */
-    transform: translate(-50%, calc(-100% - 0.8rem));
     opacity: 0;
     transition: opacity 0.8s var(--ease) calc(var(--i, 0) * 130ms + 350ms);
   }
@@ -2729,46 +2716,107 @@ body.nav-open .nav-toggle__close {
     display: none;
   }
 
-  .ripple--on .ripple__branch--under {
-    transform: translate(-50%, 0.8rem);
-  }
-
   .ripple--on.is-live .ripple__branch {
     opacity: 1;
   }
 
-  /* Absolutely placed so revealing them never nudges the label off its node. */
-  .ripple--on .ripple__steps {
+  /* The branch being read comes forward, so its effects sit over the rest of
+     the fan rather than tangling with it — each label carries a plate in the
+     band's own colour, which is what hides the line and any neighbour behind
+     the words. */
+  .ripple--on .ripple__branch:hover,
+  .ripple--on .ripple__branch:focus-within {
+    z-index: 2;
+  }
+
+  /* The name is the hover target, and the only part of the branch with a box.
+     Labels above the fold-line sit above their node, the lower ones below, so
+     nothing crowds the centre of the fan. */
+  .ripple--on .ripple__name {
     position: absolute;
-    left: 50%;
-    top: 100%;
+    left: 0;
+    top: 0;
     width: max-content;
     max-width: 11rem;
-    margin: 0;
-    padding: 0.2rem 0.5rem;
+    padding: 0.25rem 0.5rem;
     background: var(--band);
+    text-align: center;
+    pointer-events: auto;
+    transform: translate(-50%, calc(-100% - 0.8rem));
+    transition: color 0.4s var(--ease), opacity 0.4s var(--ease);
+  }
+
+  /* While one branch is traced the others step back. site.js sets is-tracing,
+     since it is the thing that knows which branch the pointer or the keyboard
+     is on. */
+  .ripple--on.is-tracing .ripple__name {
+    opacity: 0.38;
+  }
+
+  .ripple--on.is-tracing .ripple__branch:hover .ripple__name,
+  .ripple--on.is-tracing .ripple__branch:focus-within .ripple__name {
+    opacity: 1;
+  }
+
+  .ripple--on .ripple__branch--under .ripple__name {
+    transform: translate(-50%, 0.8rem);
+  }
+
+  /* The anchor has no box to ring, so focus shows on the name instead. */
+  .ripple--on .ripple__branch:focus-visible {
+    outline: 0;
+  }
+
+  .ripple--on .ripple__branch:focus-visible .ripple__name {
+    outline: 2px solid var(--gold-ink);
+    outline-offset: 3px;
+  }
+
+  /* The three effects are not a list here — each one names the node it sits on,
+     along the branch. site.js takes those points off the same curve it draws
+     and writes them out as --sx/--sy, offsets from the branch's own node;
+     nothing about the geometry is restated in CSS. */
+  .ripple--on .ripple__steps {
+    margin: 0;
+  }
+
+  .ripple--on .ripple__step {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: max-content;
+    max-width: 9rem;
+    padding: 0.1rem 0.4rem;
+    background: var(--band);
+    color: var(--muted);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transform: translate(-50%, 0.5rem);
-    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    /* Sits clear of the curve on the same side as its branch label. */
+    transform: translate(calc(var(--sx, 0px) - 50%), calc(var(--sy, 0px) - 100% - 6px));
+    transition: opacity 0.45s var(--ease);
   }
 
-  /* An upper label opens its steps upwards, away from the drawing. */
-  .ripple--on .ripple__branch:not(.ripple__branch--under) .ripple__steps {
-    top: auto;
-    bottom: 100%;
-    transform: translate(-50%, -0.5rem);
+  .ripple--on .ripple__branch--under .ripple__step {
+    transform: translate(calc(var(--sx, 0px) - 50%), calc(var(--sy, 0px) + 6px));
   }
 
-  .ripple--on .ripple__branch:hover .ripple__steps,
-  .ripple--on .ripple__branch:focus-visible .ripple__steps {
+  /* Lit in the order they happen, matching the rings the canvas sends out from
+     the same three points. */
+  .ripple--on .ripple__branch:hover .ripple__step,
+  .ripple--on .ripple__branch:focus-visible .ripple__step {
     opacity: 1;
-    transform: translate(-50%, 0);
   }
 
-  .ripple--on .ripple__steps li {
-    font-size: 0.75rem;
-    line-height: 1.6;
+  .ripple--on .ripple__step:nth-child(2) {
+    transition-delay: 0.12s;
+  }
+
+  .ripple--on .ripple__step:nth-child(3) {
+    transition-delay: 0.24s;
   }
 
   /* The caption sits beside the diagram rather than inside it, so the hint
@@ -2895,15 +2943,6 @@ body.nav-open .nav-toggle__close {
   }
 }
 
-/* The steps' reveal is a colour/opacity change, which is kept — only the
-   slide-in that carries it is dropped. */
-@media (prefers-reduced-motion: reduce) and (min-width: 900px) {
-  .ripple--on .ripple__steps,
-  .ripple--on .ripple__branch:not(.ripple__branch--under) .ripple__steps {
-    transform: translate(-50%, 0);
-  }
-}
-
 /* --------------------------------------------------------------------------
    24. Print
    -------------------------------------------------------------------------- */
@@ -2938,16 +2977,21 @@ body.nav-open .nav-toggle__close {
   }
   .ripple--on .ripple__origin,
   .ripple--on .ripple__branch,
-  .ripple--on .ripple__steps,
-  .ripple--on .ripple__branch:not(.ripple__branch--under) .ripple__steps {
+  .ripple--on .ripple__name,
+  .ripple--on .ripple__branch--under .ripple__name,
+  .ripple--on .ripple__step,
+  .ripple--on .ripple__branch--under .ripple__step {
     position: static;
+    width: auto;
+    height: auto;
+    max-width: none;
     opacity: 1;
     transform: none;
     background: none;
+    text-align: left;
+    white-space: normal;
   }
   .ripple--on .ripple__branch {
-    max-width: none;
     margin-bottom: 1rem;
-    text-align: left;
   }
 }
