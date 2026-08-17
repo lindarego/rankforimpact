@@ -1,6 +1,6 @@
 # RankForImpact
 
-Marketing site for RankForImpact — premium editorial SEO and AEO for B2B SaaS.
+Marketing site for RankForImpact — premium editorial SEO and AEO for B2B companies.
 Plain static HTML, CSS and a little vanilla JavaScript, built to be served
 directly by GitHub Pages. No build step, no dependencies, no package manager.
 
