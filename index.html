@@ -193,12 +193,14 @@
   <div class="wrap">
     <div class="ripple" data-ripple>
       <canvas class="ripple__canvas" data-ripple-canvas aria-hidden="true"></canvas>
-      <p class="ripple__origin">One business</p>
-      <!-- --x/--y place the branch name and, read back by site.js, the end of
-           the curve that reaches it; each effect below is pinned to its own
-           node on that curve. --i sets the name's place in the fade-in. -->
+      <p class="ripple__origin">Your business</p>
+      <!-- Two endpoints per branch: --x/--y for the wide fan, --mx/--my for the
+           narrow one that spreads downward instead. Each places the branch name
+           and, read back by site.js, the end of the curve that reaches it; the
+           effects below are pinned to their own nodes on that curve. --i sets
+           the name's place in the fade-in. -->
       <ul class="ripple__branches">
-        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:34%;--y:17%;--i:0">
+        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:34%;--y:17%;--i:0;--mx:30%;--my:42%">
           <span class="ripple__name">Visibility</span>
           <ul class="ripple__steps">
             <li class="ripple__step">Search rankings</li>
@@ -206,7 +208,7 @@
             <li class="ripple__step">Relevant traffic</li>
           </ul>
         </li>
-        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:55%;--y:12%;--i:1">
+        <li class="ripple__branch ripple__branch--right" data-ripple-branch tabindex="0" style="--x:55%;--y:12%;--i:1;--mx:72%;--my:52%">
           <span class="ripple__name">Momentum</span>
           <ul class="ripple__steps">
             <li class="ripple__step">More visitors</li>
@@ -214,7 +216,7 @@
             <li class="ripple__step">More considerations</li>
           </ul>
         </li>
-        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:76%;--y:27%;--i:2">
+        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:76%;--y:27%;--i:2;--mx:24%;--my:62%">
           <span class="ripple__name">Scale</span>
           <ul class="ripple__steps">
             <li class="ripple__step">Qualified leads</li>
@@ -222,7 +224,7 @@
             <li class="ripple__step">Revenue</li>
           </ul>
         </li>
-        <li class="ripple__branch ripple__branch--under" data-ripple-branch tabindex="0" style="--x:86%;--y:52%;--i:3">
+        <li class="ripple__branch ripple__branch--under ripple__branch--right" data-ripple-branch tabindex="0" style="--x:86%;--y:52%;--i:3;--mx:74%;--my:72%">
           <span class="ripple__name">Impact</span>
           <ul class="ripple__steps">
             <li class="ripple__step">Brand authority</li>
@@ -230,7 +232,7 @@
             <li class="ripple__step">Market presence</li>
           </ul>
         </li>
-        <li class="ripple__branch ripple__branch--under" data-ripple-branch tabindex="0" style="--x:69%;--y:86%;--i:4">
+        <li class="ripple__branch ripple__branch--under" data-ripple-branch tabindex="0" style="--x:69%;--y:86%;--i:4;--mx:32%;--my:82%">
           <span class="ripple__name">Compounding</span>
           <ul class="ripple__steps">
             <li class="ripple__step">Referrals</li>
@@ -238,7 +240,7 @@
             <li class="ripple__step">Organic growth</li>
           </ul>
         </li>
-        <li class="ripple__branch ripple__branch--under" data-ripple-branch tabindex="0" style="--x:38%;--y:74%;--i:5">
+        <li class="ripple__branch ripple__branch--under ripple__branch--right" data-ripple-branch tabindex="0" style="--x:38%;--y:74%;--i:5;--mx:68%;--my:90%">
           <span class="ripple__name">Expansion</span>
           <ul class="ripple__steps">
             <li class="ripple__step">New opportunities</li>
@@ -250,7 +252,7 @@
     </div>
     <div class="ripple__foot">
       <p class="ripple__fig">Fig. 01 &mdash; Second-order effects, traced<!-- The invitation only makes sense once the diagram is on screen; the
-             stacked list shows every step already. --><span class="ripple__hint">Hover a branch to trace it</span></p>
+             stacked list shows every step already. --><span class="ripple__hint"><span class="ripple__hint--pointer">Hover</span><span class="ripple__hint--touch">Tap</span> a branch to trace it</span></p>
       <p class="ripple__note">Search authority rarely stops at search. One business ranking well sets off effects it never paid for&mdash;and the further out they travel, the more they compound.</p>
     </div>
   </div>

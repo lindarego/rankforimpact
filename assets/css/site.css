@@ -2648,183 +2648,270 @@ body.nav-open .nav-toggle__close {
   display: none;
 }
 
+/* A thumb cannot hover, so each device is told what it can actually do. */
+.ripple__hint--touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .ripple__hint--pointer {
+    display: none;
+  }
+
+  .ripple__hint--touch {
+    display: inline;
+  }
+}
+
 @media (min-width: 900px) {
   .ripple__foot {
     grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
   }
 }
 
-/* -- Diagram layout ------------------------------------------------------- */
+/* -- Diagram layout -------------------------------------------------------- */
+/* Shared between the two orientations. Everything that differs — which way the
+   fan spreads, which endpoint each branch uses, and where its labels sit — is
+   in the two blocks below. --orient is how site.js learns which one is live, so
+   the breakpoint is written once, here in the stylesheet. */
+.ripple--on {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.ripple--on .ripple__canvas {
+  display: block;
+}
+
+/* The canvas draws the origin node itself, so the label only names it. */
+.ripple--on .ripple__origin {
+  position: absolute;
+  margin: 0;
+  padding: 0 0.5rem;
+  background: var(--band);
+  white-space: nowrap;
+}
+
+.ripple--on .ripple__origin::before {
+  display: none;
+}
+
+/* The list covers the whole drawing, so it hands pointer events back to
+   everything underneath and only the labels themselves take them. */
+.ripple--on .ripple__branches {
+  position: absolute;
+  inset: 0;
+  display: block;
+  gap: 0;
+  pointer-events: none;
+}
+
+/* The branch collapses to its endpoint: a zero-size anchor every label on the
+   branch is placed against, in the canvas's own coordinates. The endpoint
+   itself is set per orientation and read back by site.js for the curve, so a
+   label and its curve cannot drift apart. */
+.ripple--on .ripple__branch {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease) calc(var(--i, 0) * 130ms + 350ms);
+}
+
+.ripple--on .ripple__branch::before {
+  display: none;
+}
+
+.ripple--on.is-live .ripple__branch {
+  opacity: 1;
+}
+
+/* The branch being read comes forward, so its effects sit over the rest of the
+   fan rather than tangling with it — each label carries a plate in the band's
+   own colour, which is what hides the line and any neighbour behind the
+   words. */
+.ripple--on .ripple__branch:hover,
+.ripple--on .ripple__branch:focus-within {
+  z-index: 2;
+}
+
+/* The name is the hover target, and the only part of the branch with a box. */
+.ripple--on .ripple__name {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  padding: 0.25rem 0.5rem;
+  background: var(--band);
+  text-align: center;
+  pointer-events: auto;
+  transition: color 0.4s var(--ease), opacity 0.4s var(--ease);
+}
+
+/* While one branch is traced the others step back. site.js sets is-tracing,
+   since it is the thing that knows which branch the pointer or the keyboard
+   is on. */
+.ripple--on.is-tracing .ripple__name {
+  opacity: 0.38;
+}
+
+.ripple--on.is-tracing .ripple__branch:hover .ripple__name,
+.ripple--on.is-tracing .ripple__branch:focus-within .ripple__name {
+  opacity: 1;
+}
+
+/* The anchor has no box to ring, so focus shows on the name instead. */
+.ripple--on .ripple__branch:focus-visible {
+  outline: 0;
+}
+
+.ripple--on .ripple__branch:focus-visible .ripple__name {
+  outline: 2px solid var(--gold-ink);
+  outline-offset: 3px;
+}
+
+/* The three effects are not a list here — each one names the node it sits on,
+   along the branch. site.js takes those points off the same curve it draws and
+   writes them out as --sx/--sy, offsets from the branch's own node; nothing
+   about the geometry is restated in CSS. */
+.ripple--on .ripple__steps {
+  margin: 0;
+}
+
+.ripple--on .ripple__step {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  padding: 0.1rem 0.4rem;
+  background: var(--band);
+  color: var(--muted);
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s var(--ease);
+}
+
+/* Lit in the order they happen, matching the rings the canvas sends out from
+   the same three points. */
+.ripple--on .ripple__branch:hover .ripple__step,
+.ripple--on .ripple__branch:focus-visible .ripple__step {
+  opacity: 1;
+}
+
+.ripple--on .ripple__step:nth-child(2) {
+  transition-delay: 0.12s;
+}
+
+.ripple--on .ripple__step:nth-child(3) {
+  transition-delay: 0.24s;
+}
+
+/* The caption sits beside the diagram rather than inside it, so the hint
+   follows the diagram from its sibling. */
+.ripple--on ~ .ripple__foot .ripple__hint {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--gold-ink);
+}
+
+/* -- Wide: the fan spreads to the right ------------------------------------ */
 @media (min-width: 900px) {
   /* The floor is set by the labels, not the drawing: the highest node sits at
-     13% of the band and hangs its name above itself, which wants some 50px of
+     12% of the band and hangs its name above itself, which wants some 50px of
      clear air. */
   .ripple--on {
+    --orient: landscape;
     height: clamp(580px, 46vw, 640px);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
   }
 
-  .ripple--on .ripple__canvas {
-    display: block;
-  }
-
-  /* The canvas draws the origin node itself, so the label only names it. */
-  .ripple--on .ripple__origin {
-    position: absolute;
-    left: 8%;
-    top: 50%;
-    margin: 0;
-    padding: 0 0.5rem;
-    background: var(--band);
-    transform: translate(-50%, 2.1rem);
-    white-space: nowrap;
-  }
-
-  .ripple--on .ripple__origin::before {
-    display: none;
-  }
-
-  /* The list covers the whole drawing, so it hands pointer events back to
-     everything underneath and only the labels themselves take them. */
-  .ripple--on .ripple__branches {
-    position: absolute;
-    inset: 0;
-    display: block;
-    gap: 0;
-    pointer-events: none;
-  }
-
-  /* --x/--y are the branch endpoint, set once in the markup and read back by
-     site.js for the curve — so a label and its curve cannot drift apart. The
-     branch itself collapses to that point: a zero-size anchor every label on
-     the branch is then placed against, in the canvas's own coordinates. */
   .ripple--on .ripple__branch {
-    position: absolute;
     left: var(--x);
     top: var(--y);
-    width: 0;
-    height: 0;
-    padding: 0;
-    background: none;
-    border: 0;
-    opacity: 0;
-    transition: opacity 0.8s var(--ease) calc(var(--i, 0) * 130ms + 350ms);
   }
 
-  .ripple--on .ripple__branch::before {
-    display: none;
+  .ripple--on .ripple__origin {
+    left: 8%;
+    top: 50%;
+    transform: translate(-50%, 2.1rem);
   }
 
-  .ripple--on.is-live .ripple__branch {
-    opacity: 1;
-  }
-
-  /* The branch being read comes forward, so its effects sit over the rest of
-     the fan rather than tangling with it — each label carries a plate in the
-     band's own colour, which is what hides the line and any neighbour behind
-     the words. */
-  .ripple--on .ripple__branch:hover,
-  .ripple--on .ripple__branch:focus-within {
-    z-index: 2;
-  }
-
-  /* The name is the hover target, and the only part of the branch with a box.
-     Labels above the fold-line sit above their node, the lower ones below, so
+  /* Labels above the fold-line sit above their node, the lower ones below, so
      nothing crowds the centre of the fan. */
   .ripple--on .ripple__name {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: max-content;
     max-width: 11rem;
-    padding: 0.25rem 0.5rem;
-    background: var(--band);
-    text-align: center;
-    pointer-events: auto;
     transform: translate(-50%, calc(-100% - 0.8rem));
-    transition: color 0.4s var(--ease), opacity 0.4s var(--ease);
-  }
-
-  /* While one branch is traced the others step back. site.js sets is-tracing,
-     since it is the thing that knows which branch the pointer or the keyboard
-     is on. */
-  .ripple--on.is-tracing .ripple__name {
-    opacity: 0.38;
-  }
-
-  .ripple--on.is-tracing .ripple__branch:hover .ripple__name,
-  .ripple--on.is-tracing .ripple__branch:focus-within .ripple__name {
-    opacity: 1;
   }
 
   .ripple--on .ripple__branch--under .ripple__name {
     transform: translate(-50%, 0.8rem);
   }
 
-  /* The anchor has no box to ring, so focus shows on the name instead. */
-  .ripple--on .ripple__branch:focus-visible {
-    outline: 0;
-  }
-
-  .ripple--on .ripple__branch:focus-visible .ripple__name {
-    outline: 2px solid var(--gold-ink);
-    outline-offset: 3px;
-  }
-
-  /* The three effects are not a list here — each one names the node it sits on,
-     along the branch. site.js takes those points off the same curve it draws
-     and writes them out as --sx/--sy, offsets from the branch's own node;
-     nothing about the geometry is restated in CSS. */
-  .ripple--on .ripple__steps {
-    margin: 0;
-  }
-
   .ripple--on .ripple__step {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: max-content;
     max-width: 9rem;
-    padding: 0.1rem 0.4rem;
-    background: var(--band);
-    color: var(--muted);
     font-size: 0.72rem;
-    line-height: 1.5;
-    text-align: center;
     white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    /* Sits clear of the curve on the same side as its branch label. */
     transform: translate(calc(var(--sx, 0px) - 50%), calc(var(--sy, 0px) - 100% - 6px));
-    transition: opacity 0.45s var(--ease);
   }
 
   .ripple--on .ripple__branch--under .ripple__step {
     transform: translate(calc(var(--sx, 0px) - 50%), calc(var(--sy, 0px) + 6px));
   }
+}
 
-  /* Lit in the order they happen, matching the rings the canvas sends out from
-     the same three points. */
-  .ripple--on .ripple__branch:hover .ripple__step,
-  .ripple--on .ripple__branch:focus-visible .ripple__step {
-    opacity: 1;
+/* -- Narrow: the same fan, turned to spread downward ----------------------- */
+/* A phone has height to spare and no width, so the diagram rotates rather than
+   falling back to a list: the origin moves to the top, the branches descend
+   alternating sides, names hang below their node and effects sit outboard of
+   the vine where there is room for them. */
+@media (max-width: 899px) {
+  .ripple--on {
+    --orient: portrait;
+    height: clamp(520px, 145vw, 700px);
   }
 
-  .ripple--on .ripple__step:nth-child(2) {
-    transition-delay: 0.12s;
+  .ripple--on .ripple__branch {
+    left: var(--mx);
+    top: var(--my);
   }
 
-  .ripple--on .ripple__step:nth-child(3) {
-    transition-delay: 0.24s;
+  .ripple--on .ripple__origin {
+    left: 50%;
+    top: 8%;
+    transform: translate(-50%, calc(-100% - 0.7rem));
   }
 
-  /* The caption sits beside the diagram rather than inside it, so the hint
-     follows the diagram from its sibling. */
-  .ripple--on ~ .ripple__foot .ripple__hint {
-    display: block;
-    margin-top: 0.5rem;
-    color: var(--gold-ink);
+  .ripple--on .ripple__name {
+    max-width: 8rem;
+    font-size: 1.05rem;
+    transform: translate(-50%, 0.7rem);
+  }
+
+  /* The fan is tighter here, so a traced effect can land across a neighbour's
+     name. Sent further back than on a wide screen, the neighbour reads as
+     receded rather than half-covered. */
+  .ripple--on.is-tracing .ripple__name {
+    opacity: 0.14;
+  }
+
+  /* Two short lines beat one long one at this width, so the effects wrap. They
+     sit on the inboard side of their branch — the middle of the band, where the
+     width is — and their plates cover whatever the other curves are doing
+     behind the words. */
+  .ripple--on .ripple__step {
+    max-width: 6rem;
+    font-size: 0.68rem;
+    text-align: left;
+    white-space: normal;
+    transform: translate(calc(var(--sx, 0px) + 8px), calc(var(--sy, 0px) - 50%));
+  }
+
+  .ripple--on .ripple__branch--right .ripple__step {
+    text-align: right;
+    transform: translate(calc(var(--sx, 0px) - 100% - 8px), calc(var(--sy, 0px) - 50%));
   }
 }
 
@@ -2980,7 +3067,8 @@ body.nav-open .nav-toggle__close {
   .ripple--on .ripple__name,
   .ripple--on .ripple__branch--under .ripple__name,
   .ripple--on .ripple__step,
-  .ripple--on .ripple__branch--under .ripple__step {
+  .ripple--on .ripple__branch--under .ripple__step,
+  .ripple--on .ripple__branch--right .ripple__step {
     position: static;
     width: auto;
     height: auto;

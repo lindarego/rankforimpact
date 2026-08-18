@@ -241,13 +241,23 @@
     var GREEN = token('--green', '#123328');
     var INK = token('--ink', '#1c1c1a');
 
-    var ORIGIN_X = 0.08;
-    var ORIGIN_Y = 0.5;
-    /* The stretch of curve the effects are spread over. It starts well clear of
-       the origin, where all six branches are still bunched together, and stops
-       short of the tip, which the branch's own name has. */
-    var STOP_FROM = 0.34;
-    var STOP_TO = 0.62;
+    /* Where the fan starts, per orientation: in from the left edge when it
+       spreads to the right, down from the top when it spreads downward. */
+    var ORIGINS = {
+      landscape: [0.08, 0.5],
+      portrait: [0.5, 0.08]
+    };
+    /* The stretch of curve the effects are spread over, per orientation. Wide,
+       it starts clear of the origin — where all six branches are still bunched
+       together — and stops short of the tip, which the branch's own name hangs
+       over. Narrow, the name sits below the tip and the effects sit beside the
+       curve instead, so they can run almost its whole length: they need that
+       room, because three labels stacked down a branch take far more of it than
+       three strung along one. */
+    var SPANS = {
+      landscape: [0.34, 0.62],
+      portrait: [0.22, 0.86]
+    };
     var GROW = 1.25; /* seconds for one curve to draw itself in */
     var STAGGER = 0.16;
 
@@ -256,18 +266,25 @@
        irregular, which is what the endpoints in the markup are going for too. */
     var BOWS = [1, 0.72, 1.24, 0.86, 1.16, 0.94];
 
-    /* Endpoints are read back from the same --x/--y the stylesheet uses to
-       place the label, so a curve can never end up pointing somewhere else. */
+    /* Endpoints are read back from the same custom properties the stylesheet
+       uses to place the label — --x/--y wide, --mx/--my narrow — so a curve can
+       never end up pointing somewhere else. */
     var branches = [];
     branchEls.forEach(function (el) {
       var style = window.getComputedStyle(el);
-      var x = parseFloat(style.getPropertyValue('--x'));
-      var y = parseFloat(style.getPropertyValue('--y'));
+      var read = function (prop, fallback) {
+        var v = parseFloat(style.getPropertyValue(prop));
+        return isNaN(v) ? fallback : v / 100;
+      };
+      var x = read('--x', NaN);
+      var y = read('--y', NaN);
       if (isNaN(x) || isNaN(y)) return;
       branches.push({
         el: el,
-        x: x / 100,
-        y: y / 100,
+        ends: {
+          landscape: [x, y],
+          portrait: [read('--mx', x), read('--my', y)]
+        },
         bow: BOWS[branches.length % BOWS.length],
         /* One element per effect, in the order they sit along the curve. */
         stops: Array.prototype.slice.call(el.querySelectorAll('.ripple__step')),
@@ -298,6 +315,15 @@
     var raf = 0;
     var last = 0;
 
+    /* The stylesheet owns the breakpoint and states the result as --orient, so
+       the two never disagree about which way the fan is pointing. */
+    var orient = 'landscape';
+    var origin = ORIGINS.landscape;
+
+    var endOf = function (b) {
+      return b.ends[orient] || b.ends.landscape;
+    };
+
     var measure = function () {
       var rect = canvas.getBoundingClientRect();
       /* Zero while the stacked layout is showing — the canvas is display:none
@@ -313,6 +339,10 @@
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      orient = window.getComputedStyle(root).getPropertyValue('--orient').trim() === 'portrait'
+        ? 'portrait'
+        : 'landscape';
+      origin = ORIGINS[orient];
       placeStops();
       return true;
     };
@@ -323,25 +353,44 @@
 
     /* Where the nth of a branch's effects sits along its curve. */
     var stopAt = function (k, count) {
-      if (count < 2) return (STOP_FROM + STOP_TO) / 2;
-      return STOP_FROM + (k / (count - 1)) * (STOP_TO - STOP_FROM);
+      var span = SPANS[orient] || SPANS.landscape;
+      if (count < 2) return (span[0] + span[1]) / 2;
+      return span[0] + (k / (count - 1)) * (span[1] - span[0]);
     };
 
-    /* Control points for a branch: it leaves the origin almost level, then bows
-       away from the centre line before settling on its label. The bow scales
-       with how far the branch reaches, so a short one does not overshoot its own
-       endpoint and hook back, and with the branch's own factor, so no two
-       curves have quite the same shape. */
+    /* Control points for a branch. It leaves the origin almost square to the
+       way the fan spreads, then bows off that line before settling on its
+       label. The bow scales with how far the branch reaches, so a short one
+       does not overshoot its own endpoint and hook back, and with the branch's
+       own factor, so no two curves have quite the same shape.
+
+       The two orientations are the same curve with the axes swapped: wide, the
+       fan reaches along x and bows in y; narrow, it reaches along y and bows in
+       x. Writing it once this way keeps both from drifting. */
     var curveOf = function (b) {
-      var ox = ORIGIN_X * w;
-      var oy = ORIGIN_Y * h;
-      var tx = b.x * w;
-      var ty = b.y * h;
-      var bow = (ty < oy ? -1 : 1) * (16 + 30 * ((tx - ox) / w)) * b.bow;
+      var end = endOf(b);
+      var ox = origin[0] * w;
+      var oy = origin[1] * h;
+      var tx = end[0] * w;
+      var ty = end[1] * h;
+      var dx = tx - ox;
+      var dy = ty - oy;
+      var down = orient === 'portrait';
+      var reach = down ? dy / h : dx / w;
+      var bow = (16 + 30 * Math.abs(reach)) * b.bow;
+
+      if (down) {
+        return [
+          ox, oy,
+          ox + dx * 0.1, oy + dy * 0.42,
+          tx + (tx < ox ? -bow : bow), oy + dy * 0.74,
+          tx, ty
+        ];
+      }
       return [
         ox, oy,
-        ox + (tx - ox) * 0.42, oy + (ty - oy) * 0.1,
-        ox + (tx - ox) * 0.74, ty + bow,
+        ox + dx * 0.42, oy + dy * 0.1,
+        ox + dx * 0.74, ty + (ty < oy ? -bow : bow),
         tx, ty
       ];
     };
@@ -365,8 +414,9 @@
     var placeStops = function () {
       branches.forEach(function (b) {
         var c = curveOf(b);
-        var nx = b.x * w;
-        var ny = b.y * h;
+        var end = endOf(b);
+        var nx = end[0] * w;
+        var ny = end[1] * h;
         b.stops.forEach(function (stopEl, k) {
           var p = pointOn(c, stopAt(k, b.stops.length));
           stopEl.style.setProperty('--sx', Math.round(p[0] - nx) + 'px');
@@ -413,8 +463,8 @@
 
     var render = function (el) {
       ctx.clearRect(0, 0, w, h);
-      var ox = ORIGIN_X * w;
-      var oy = ORIGIN_Y * h;
+      var ox = origin[0] * w;
+      var oy = origin[1] * h;
 
       branches.forEach(function (b, i) {
         /* A reduced-motion reader gets the finished diagram, not the drawing
@@ -462,11 +512,15 @@
 
       dot(ox, oy, 5, GREEN, 1);
       /* Rings off the origin are the hover state itself: at rest the diagram
-         is a still drawing, which is also why the loop can stop. */
+         is a still drawing, which is also why the loop can stop. They reach as
+         far as the nearest edge allows — turned upright the origin sits near the
+         top of the band, and a ring cut off by the hairline reads as a mistake
+         rather than a ripple. */
       if (!reduce && hover > 0.01) {
+        var reach = Math.min(83, Math.min(ox, oy, w - ox, h - oy) * 0.95);
         for (var r = 0; r < 3; r++) {
           var spread = (el * 0.28 + r / 3) % 1;
-          ring(ox, oy, 9 + spread * 74, GOLD, hover * 0.38 * (1 - spread));
+          ring(ox, oy, 9 + spread * (reach - 9), GOLD, hover * 0.38 * (1 - spread));
         }
       }
 
