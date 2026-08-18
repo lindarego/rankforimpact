@@ -822,7 +822,17 @@ body.nav-open .nav-toggle__close {
   isolation: isolate;
 }
 
+/* Absolutely filled rather than `width/height: 100%` in flow. Most frames take
+   their height from `min-height` (the row, duo and hero media columns) rather
+   than a resolved `height`, and a percentage height against a parent whose own
+   height is content-derived resolves to `auto` — so the image kept its intrinsic
+   height and the frame's gradient showed through beneath it, by 141px on the
+   narrowest services row. Every frame gets its height from min-height,
+   aspect-ratio, `--fill` or absolute positioning, never from this image, so
+   taking it out of flow costs nothing. `.frame__ph` is already inset: 0. */
 .frame > img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1507,8 +1517,15 @@ body.nav-open .nav-toggle__close {
   gap: 0;
 }
 
+/* The row centres its items so the copy sits vertically centred, but that left
+   this column at its own content height — so the frame's `height: 100%` had
+   nothing definite to resolve against and the photograph stopped at its
+   min-height, banding cream above and below it by up to 188px. Stretching just
+   this item gives the frame the full row height while the copy stays centred.
+   `.duo` and `.hero__grid` already stretch, which is why only rows showed it. */
 .row__media {
   position: relative;
+  align-self: stretch;
   min-height: 100%;
 }
 

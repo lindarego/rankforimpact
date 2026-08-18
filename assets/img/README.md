@@ -50,13 +50,22 @@ The hero is centred type with no photograph, and the page closes on the shared
 `services-hero.jpg` and `cta-mug-books.jpg` were dropped along with those two
 slots.
 
-| File | Ratio | Shot |
+All five **supplied**. Each was resized to 1600px wide and re-encoded at quality
+80, progressive, EXIF stripped — 4.75 MB of originals down to 0.66 MB, with no
+visible loss at the size these frames render. Replacements are best given the
+same treatment; a 2 MB photograph in a 420px-tall frame costs load time and buys
+nothing.
+
+The rows band is full-bleed, so a media column can reach roughly half the
+viewport. 1600px covers a 1600-wide column, or an 800px one on a 2× screen.
+
+| File | Size | Shot |
 | --- | --- | --- |
-| `service-technical.jpg` | 4:3 | Laptop showing a site audit dashboard on a walnut desk, warm side light. |
-| `service-intelligence.jpg` | 4:3 | Open notebook with hand-annotated competitor notes beside a black mug. |
-| `service-content.jpg` | 4:3 | Smartphone showing an AI answer with citations, resting on a linen notebook. |
-| `service-outreach.jpg` | 4:3 | Open editorial magazine spread beside a black coffee cup on linen. |
-| `service-reporting.jpg` | 4:3 | Printed report pages fanned out with a pen and notebook on a pale desk. |
+| `service-technical.jpg` | 1600×900, 170 KB | Writing in a spiral notebook at a dark desk, green cup and pencils, laptop at the edge. |
+| `service-intelligence.jpg` | 1500×750, 46 KB | Pale 3D render: magnifying glass beside blocks printed with search and analytics icons. |
+| `service-content.jpg` | 1600×893, 115 KB | Laptop showing “Would an AI recommend you?” beside a monogrammed mug and open notebook. |
+| `service-outreach.jpg` | 1600×1069, 201 KB | Two colleagues mid-conversation over a laptop in a warm wood-panelled office. |
+| `service-reporting.jpg` | 1600×1067, 145 KB | Close-up of a laptop screen showing a dark analytics dashboard, plant behind. |
 
 ## Our Approach — `approach.html`
 
