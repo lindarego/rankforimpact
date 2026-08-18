@@ -2683,13 +2683,19 @@ body.nav-open .nav-toggle__close {
   display: block;
 }
 
-/* The canvas draws the origin node itself, so the label only names it. */
+/* The canvas draws the origin node itself, so the label only names it. Every
+   label in the diagram — this one, the six names, the eighteen effects — is put
+   where site.js measured room for it: --lx/--ly are the offset from the point
+   the label names, chosen to clear the other labels and the curves. */
 .ripple--on .ripple__origin {
   position: absolute;
+  left: var(--ox, 8%);
+  top: var(--oy, 50%);
   margin: 0;
   padding: 0 0.5rem;
-  background: var(--band);
+  background: radial-gradient(closest-side, var(--band) 62%, transparent 100%);
   white-space: nowrap;
+  transform: translate(calc(var(--lx, 0px) - 50%), calc(var(--ly, 0px) - 50%));
 }
 
 .ripple--on .ripple__origin::before {
@@ -2738,16 +2744,18 @@ body.nav-open .nav-toggle__close {
   z-index: 2;
 }
 
-/* The name is the hover target, and the only part of the branch with a box. */
+/* The name is the hover target, and the only part of the branch with a box. It
+   carries on the way its branch was heading, as far as there is room to. */
 .ripple--on .ripple__name {
   position: absolute;
   left: 0;
   top: 0;
   width: max-content;
   padding: 0.25rem 0.5rem;
-  background: var(--band);
+  background: radial-gradient(closest-side, var(--band) 62%, transparent 100%);
   text-align: center;
   pointer-events: auto;
+  transform: translate(calc(var(--lx, 0px) - 50%), calc(var(--ly, 0px) - 50%));
   transition: color 0.4s var(--ease), opacity 0.4s var(--ease);
 }
 
@@ -2773,10 +2781,8 @@ body.nav-open .nav-toggle__close {
   outline-offset: 3px;
 }
 
-/* The three effects are not a list here — each one names the node it sits on,
-   along the branch. site.js takes those points off the same curve it draws and
-   writes them out as --sx/--sy, offsets from the branch's own node; nothing
-   about the geometry is restated in CSS. */
+/* The three effects are not a list here — each one names a node along its
+   branch, set beside the curve rather than on it. */
 .ripple--on .ripple__steps {
   margin: 0;
 }
@@ -2787,11 +2793,12 @@ body.nav-open .nav-toggle__close {
   top: 0;
   width: max-content;
   padding: 0.1rem 0.4rem;
-  background: var(--band);
+  background: radial-gradient(closest-side, var(--band) 62%, transparent 100%);
   color: var(--muted);
   line-height: 1.5;
   opacity: 0;
   pointer-events: none;
+  transform: translate(calc(var(--lx, 0px) - 50%), calc(var(--ly, 0px) - 50%));
   transition: opacity 0.45s var(--ease);
 }
 
@@ -2833,32 +2840,14 @@ body.nav-open .nav-toggle__close {
     top: var(--y);
   }
 
-  .ripple--on .ripple__origin {
-    left: 8%;
-    top: 50%;
-    transform: translate(-50%, 2.1rem);
-  }
-
-  /* Labels above the fold-line sit above their node, the lower ones below, so
-     nothing crowds the centre of the fan. */
   .ripple--on .ripple__name {
     max-width: 11rem;
-    transform: translate(-50%, calc(-100% - 0.8rem));
-  }
-
-  .ripple--on .ripple__branch--under .ripple__name {
-    transform: translate(-50%, 0.8rem);
   }
 
   .ripple--on .ripple__step {
     max-width: 9rem;
     font-size: 0.72rem;
     white-space: nowrap;
-    transform: translate(calc(var(--sx, 0px) - 50%), calc(var(--sy, 0px) - 100% - 6px));
-  }
-
-  .ripple--on .ripple__branch--under .ripple__step {
-    transform: translate(calc(var(--sx, 0px) - 50%), calc(var(--sy, 0px) + 6px));
   }
 }
 
@@ -2878,16 +2867,9 @@ body.nav-open .nav-toggle__close {
     top: var(--my);
   }
 
-  .ripple--on .ripple__origin {
-    left: 50%;
-    top: 8%;
-    transform: translate(-50%, calc(-100% - 0.7rem));
-  }
-
   .ripple--on .ripple__name {
     max-width: 8rem;
     font-size: 1.05rem;
-    transform: translate(-50%, 0.7rem);
   }
 
   /* The fan is tighter here, so a traced effect can land across a neighbour's
@@ -2897,21 +2879,11 @@ body.nav-open .nav-toggle__close {
     opacity: 0.14;
   }
 
-  /* Two short lines beat one long one at this width, so the effects wrap. They
-     sit on the inboard side of their branch — the middle of the band, where the
-     width is — and their plates cover whatever the other curves are doing
-     behind the words. */
+  /* Two short lines beat one long one at this width, so the effects wrap. */
   .ripple--on .ripple__step {
     max-width: 6rem;
     font-size: 0.68rem;
-    text-align: left;
     white-space: normal;
-    transform: translate(calc(var(--sx, 0px) + 8px), calc(var(--sy, 0px) - 50%));
-  }
-
-  .ripple--on .ripple__branch--right .ripple__step {
-    text-align: right;
-    transform: translate(calc(var(--sx, 0px) - 100% - 8px), calc(var(--sy, 0px) - 50%));
   }
 }
 
@@ -3065,10 +3037,7 @@ body.nav-open .nav-toggle__close {
   .ripple--on .ripple__origin,
   .ripple--on .ripple__branch,
   .ripple--on .ripple__name,
-  .ripple--on .ripple__branch--under .ripple__name,
-  .ripple--on .ripple__step,
-  .ripple--on .ripple__branch--under .ripple__step,
-  .ripple--on .ripple__branch--right .ripple__step {
+  .ripple--on .ripple__step {
     position: static;
     width: auto;
     height: auto;

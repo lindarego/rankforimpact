@@ -224,6 +224,7 @@
   Array.prototype.forEach.call(document.querySelectorAll('[data-ripple]'), function (root) {
     var canvas = root.querySelector('[data-ripple-canvas]');
     var branchEls = Array.prototype.slice.call(root.querySelectorAll('[data-ripple-branch]'));
+    var originEl = root.querySelector('.ripple__origin');
     var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
 
     /* Bailing out leaves the stacked list in place: the diagram layout waits on
@@ -286,6 +287,7 @@
           portrait: [read('--mx', x), read('--my', y)]
         },
         bow: BOWS[branches.length % BOWS.length],
+        nameEl: el.querySelector('.ripple__name'),
         /* One element per effect, in the order they sit along the curve. */
         stops: Array.prototype.slice.call(el.querySelectorAll('.ripple__step')),
         heat: 0
@@ -343,7 +345,7 @@
         ? 'portrait'
         : 'landscape';
       origin = ORIGINS[orient];
-      placeStops();
+      layoutLabels();
       return true;
     };
 
@@ -411,16 +413,153 @@
        branch's node — which is the branch element's own position, so the
        stylesheet needs nothing but the two numbers. Positions only change with
        the box, so this runs on measure rather than on hover. */
-    var placeStops = function () {
+    /* ---- Label placement -------------------------------------------------
+       Nothing here is positioned by rule. Each label is offered a ring of
+       places around the point it names and takes the cheapest one that clears
+       the labels already down, the drawn curves, and the band's own edges — so
+       a name never lands on a line and have its plate chop it, and no two
+       labels sit on each other at any width or in either orientation.
+
+       Effects are placed per branch against the six names, not against each
+       other's branches: only one branch is ever traced, so two branches may
+       reuse the same patch of air. */
+    var RING = 16; /* directions tried around the anchor */
+    var GAPS = [8, 14, 22, 32]; /* and how far out, in turn */
+
+    var overlaps = function (a, b) {
+      return a.l < b.r && b.l < a.r && a.t < b.b && b.t < a.b;
+    };
+
+    /* Every curve, sampled densely enough that a label-sized box cannot slip
+       between two points of a line that crosses it. */
+    var curveInk = function () {
+      var pts = [];
+      branches.forEach(function (b) {
+        var c = curveOf(b);
+        for (var s = 0; s <= 72; s++) pts.push(pointOn(c, s / 72));
+      });
+      return pts;
+    };
+
+    var unit = function (dx, dy) {
+      var len = Math.sqrt(dx * dx + dy * dy) || 1;
+      return [dx / len, dy / len];
+    };
+
+    /* Places one label and returns the box it took, so later labels can avoid
+       it. `wants` is the direction or directions it would rather sit in. */
+    var place = function (el, ax, ay, wants, blockers, ink, relTo) {
+      var lw = el.offsetWidth;
+      var lh = el.offsetHeight;
+      if (!lw || !lh) return null;
+      var best = null;
+
+      for (var d = 0; d < RING; d++) {
+        var angle = (d / RING) * Math.PI * 2;
+        var ux = Math.cos(angle);
+        var uy = Math.sin(angle);
+        /* How far the label's own box reaches this way, so the gap left around
+           the point it names is the same in every direction. */
+        var reach = (Math.abs(ux) * lw + Math.abs(uy) * lh) / 2;
+        var aim = 0;
+        for (var k = 0; k < wants.length; k++) {
+          aim = Math.max(aim, ux * wants[k][0] + uy * wants[k][1]);
+        }
+
+        for (var g = 0; g < GAPS.length; g++) {
+          var out = GAPS[g] + reach;
+          var cx = ax + ux * out;
+          var cy = ay + uy * out;
+          var box = { l: cx - lw / 2, t: cy - lh / 2, r: cx + lw / 2, b: cy + lh / 2 };
+          var cost = 0;
+
+          if (box.l < 4 || box.t < 4 || box.r > w - 4 || box.b > h - 4) cost += 900;
+          for (var i = 0; i < blockers.length; i++) {
+            if (overlaps(box, blockers[i])) cost += 300;
+          }
+          for (var p = 0; p < ink.length; p++) {
+            if (ink[p][0] > box.l && ink[p][0] < box.r && ink[p][1] > box.t && ink[p][1] < box.b) {
+              cost += 5;
+            }
+          }
+          /* Then the preferences, weighted so a label would rather graze a line
+             than drift away from the node it names — a word floating in open air
+             belongs to nothing, which is worse than a line passing behind it. */
+          cost += (1 - aim) * 45 + g * 22;
+
+          if (!best || cost < best.cost) {
+            best = { cost: cost, x: cx - ax, y: cy - ay, box: box };
+          }
+        }
+      }
+
+      if (!best) return null;
+      var rx = relTo ? relTo[0] : ax;
+      var ry = relTo ? relTo[1] : ay;
+      el.style.setProperty('--lx', Math.round(ax + best.x - rx) + 'px');
+      el.style.setProperty('--ly', Math.round(ay + best.y - ry) + 'px');
+      return best.box;
+    };
+
+    var layoutLabels = function () {
+      var ink = curveInk();
+      var ox = origin[0] * w;
+      var oy = origin[1] * h;
+      var taken = [];
+
+      /* The origin label goes first, facing back the way the fan came from. */
+      if (originEl) {
+        originEl.style.setProperty('--ox', Math.round(ox) + 'px');
+        originEl.style.setProperty('--oy', Math.round(oy) + 'px');
+        var away = [0, 0];
+        branches.forEach(function (b) {
+          var end = endOf(b);
+          away[0] += ox - end[0] * w;
+          away[1] += oy - end[1] * h;
+        });
+        var box = place(originEl, ox, oy, [unit(away[0], away[1])], [], ink);
+        if (box) taken.push(box);
+      }
+
+      /* Then the names, each carrying on the way its own branch was heading. */
+      var names = [];
+      branches.forEach(function (b) {
+        var c = curveOf(b);
+        var tip = pointOn(c, 1);
+        var back = pointOn(c, 0.94);
+        var nameBox = place(
+          b.nameEl,
+          tip[0], tip[1],
+          [unit(tip[0] - back[0], tip[1] - back[1])],
+          taken,
+          ink
+        );
+        if (nameBox) {
+          taken.push(nameBox);
+          names.push(nameBox);
+        }
+      });
+
+      /* Then each branch's effects, which would rather sit off to the side of
+         the curve than along it — either side, whichever is clear. */
       branches.forEach(function (b) {
         var c = curveOf(b);
         var end = endOf(b);
         var nx = end[0] * w;
         var ny = end[1] * h;
+        var siblings = [];
+
         b.stops.forEach(function (stopEl, k) {
-          var p = pointOn(c, stopAt(k, b.stops.length));
-          stopEl.style.setProperty('--sx', Math.round(p[0] - nx) + 'px');
-          stopEl.style.setProperty('--sy', Math.round(p[1] - ny) + 'px');
+          var t = stopAt(k, b.stops.length);
+          var at = pointOn(c, t);
+          var ahead = pointOn(c, Math.min(1, t + 0.04));
+          var behind = pointOn(c, Math.max(0, t - 0.04));
+          var along = unit(ahead[0] - behind[0], ahead[1] - behind[1]);
+          var side = [[-along[1], along[0]], [along[1], -along[0]]];
+          /* Positioned against the branch's node, not the point it names, so the
+             offset is written relative to that. */
+          var box = place(stopEl, at[0], at[1], side, taken.concat(siblings), ink, [nx, ny]);
+          if (box) siblings.push(box);
         });
       });
     };
@@ -671,6 +810,17 @@
     );
 
     measure();
+
+    /* Placement is measured off the labels themselves, so it is worth redoing
+       once the brand faces have replaced the fallback metrics. */
+    if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+      document.fonts.ready.then(function () {
+        if (measure()) {
+          if (reduce) paint();
+          else run();
+        }
+      });
+    }
 
     if (reduce || !('IntersectionObserver' in window)) {
       visible = true;
