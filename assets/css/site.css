@@ -1378,13 +1378,26 @@ body.nav-open .nav-toggle__close {
    per-breakpoint row-start bookkeeping above are all replaced by a gap. These
    rules sit after every one of those so they win on source order at each
    breakpoint — a plain `.pillars--tiles .pillar` ties on specificity with
-   `.pillars .pillar`, and later wins. */
+   `.pillars .pillar`, and later wins.
+
+   Flex rather than the grid the other variants use, and that is the whole point:
+   five tiles never divide evenly, so some row is always short. `justify-content:
+   center` centres whichever row is — three then two here, and two then two then
+   one once it drops to pairs. A grid would anchor those leftovers left and leave
+   a hole at the end of the row, which is what this replaced. */
 .pillars--tiles {
-  gap: 1.25rem;
+  --tile-gap: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--tile-gap);
 }
 
+/* Three across. `flex: 0 1 <basis>` rather than a grow factor, so a short row
+   keeps its tiles the same width as a full one instead of stretching them. */
 .pillars--tiles .pillar {
-  padding: 2.125rem 1.5rem 1.875rem;
+  flex: 0 1 calc((100% - 2 * var(--tile-gap)) / 3);
+  padding: 2.5rem 1.875rem 2.25rem;
   /* Lifted just off the green rather than a flat panel, so the tile reads as
      raised without introducing a fourth surface colour. */
   background: rgba(255, 255, 255, 0.045);
@@ -1432,10 +1445,16 @@ body.nav-open .nav-toggle__close {
   transform: scaleX(1);
 }
 
-/* Five tiles across need every pixel; below that they have room to breathe. */
-@media (max-width: 1200px) {
+/* Two across, leaving the fifth tile centred on its own row. */
+@media (max-width: 860px) {
   .pillars--tiles .pillar {
-    padding: 2.5rem 1.875rem 2.25rem;
+    flex-basis: calc((100% - var(--tile-gap)) / 2);
+  }
+}
+
+@media (max-width: 600px) {
+  .pillars--tiles .pillar {
+    flex-basis: 100%;
   }
 }
 
