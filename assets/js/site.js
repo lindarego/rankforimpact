@@ -143,7 +143,6 @@
     '.hero__copy .h1',
     '.wrap > .h1',
     '.wrap > .h2',
-    '.pillars-head .h2',
     '.duo__copy .h2',
     '.cta__copy .h2',
     '.quote blockquote'

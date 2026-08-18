@@ -1234,17 +1234,6 @@ body.nav-open .nav-toggle__close {
   align-items: start;
 }
 
-/* The heading sits above the row rather than beside it: the container caps at
-   1240px, so side by side the five pillars were stuck at ~150px each. */
-.pillars-head {
-  max-width: 34ch;
-  margin-bottom: clamp(3rem, 5vw, 4.75rem);
-}
-
-.pillars-head .h2 {
-  max-width: 16ch;
-}
-
 .pillars {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1456,16 +1445,6 @@ body.nav-open .nav-toggle__close {
    change halfway down a section.
    -------------------------------------------------------------------------- */
 @media (max-width: 600px) {
-  .pillars-head {
-    max-width: none;
-    text-align: center;
-  }
-
-  .pillars-head .h2 {
-    max-width: 24ch;
-    margin-inline: auto;
-  }
-
   .pillars .pillar,
   .cards .card {
     align-items: center;
