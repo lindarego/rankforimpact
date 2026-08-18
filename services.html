@@ -41,18 +41,16 @@
 </header>
 <main id="main">
 <!-- ============================ Hero ============================ -->
-<section class="hero">
-  <div class="hero__grid">
-    <div class="hero__copy">
-      <span class="eyebrow">Our Services</span>
-      <h1 class="h1">Search Authority,<br>Built for <em class="accent">Sustainable Growth.</em></h1>
-      <div class="prose prose--wide" style="margin-top:2rem">
-        <p class="lede">At RankForImpact, we don&rsquo;t chase rankings. We build authority. Through solid technical foundations, sharper search intelligence, product-led content and genuine editorial relationships, we help ambitious B2B companies become the brands search engines&mdash;and people&mdash;trust.</p>
-        <p class="lede">Every strategy is designed with long-term growth in mind. No shortcuts. No manipulative tactics. Just sustainable SEO built on credibility.</p>
-      </div>
-    </div>
-    <div class="hero__media">
-      <figure class="frame"><img src="assets/img/services-hero.jpg" alt="A laptop, monogrammed mug and notebook on a sunlit desk" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Hero photograph</span><span class="frame__note">Laptop, monogrammed black mug and notebook on a sunlit desk, tall foliage behind.</span></div></figure>
+<!-- Centred type, no photograph: the same hero pattern as Insights and
+     Contact. The h1 stays a direct child of .wrap so `.wrap > .h1` in
+     MASK_TARGETS still picks it up for the clipped reveal. -->
+<section class="section--tight tone-hi">
+  <div class="wrap wrap--narrow center">
+    <span class="eyebrow">Our Services</span>
+    <h1 class="h1">Search Authority,<br>Built for <em class="accent">Sustainable Growth.</em></h1>
+    <div class="prose prose--wide" style="margin-top:1.75rem">
+      <p class="lede">At RankForImpact, we don&rsquo;t chase rankings. We build authority. Through solid technical foundations, sharper search intelligence, product-led content and genuine editorial relationships, we help ambitious B2B companies become the brands search engines&mdash;and people&mdash;trust.</p>
+      <p class="lede">Every strategy is designed with long-term growth in mind. No shortcuts. No manipulative tactics. Just sustainable SEO built on credibility.</p>
     </div>
   </div>
 </section>
@@ -70,6 +68,7 @@
         <h2 class="h3">Technical Foundations</h2>
         <p><strong>Rankings are built on a site search engines can actually read.</strong></p>
         <p>We audit crawlability, indexation, site architecture, Core Web Vitals and structured data, then fix what is holding you back. No amount of content or coverage compensates for a foundation that leaks.</p>
+        <div class="btn-row row__cta"><button class="btn btn--dark" type="button" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button></div>
       </div>
       <div class="checklist">
           <span class="checklist__title">Best for</span>
@@ -87,6 +86,7 @@
         <h2 class="h3">Search Intelligence</h2>
         <p><strong>Know exactly which queries are worth winning.</strong></p>
         <p>We map real demand in your category, separate the queries that convert from the ones that only flatter a dashboard, and study how your competitors earn the positions they hold.</p><p><strong>You get a prioritised roadmap, not a spreadsheet of four thousand keywords.</strong></p>
+        <div class="btn-row row__cta"><button class="btn btn--dark" type="button" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button></div>
       </div>
       
     </div>
@@ -101,6 +101,7 @@
         <h2 class="h3">Answer-Ready Content</h2>
         <p><strong>Content built to be found, quoted and trusted.</strong></p>
         <p>Your buyers increasingly meet you through AI assistants and answer engines rather than a page of blue links. We create product-led content that shows your software solving a real problem, structured so those systems can cite it cleanly.</p><p>Written for buyers first and machines second &mdash; in that order.</p>
+        <div class="btn-row row__cta"><button class="btn btn--dark" type="button" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button></div>
       </div>
       
     </div>
@@ -115,6 +116,7 @@
         <h2 class="h3">Earned Coverage</h2>
         <p><strong>Authority is earned through trusted recommendations.</strong></p>
         <p>We secure contextual editorial placements and brand mentions on publications your buyers already read, through personalised outreach and genuine publisher relationships.</p><p><strong>Every placement is chosen for relevance and readership, never volume.</strong></p>
+        <div class="btn-row row__cta"><button class="btn btn--dark" type="button" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button></div>
       </div>
       
     </div>
@@ -129,6 +131,7 @@
         <h2 class="h3">Transparent Reporting</h2>
         <p><strong>Every recommendation should have a purpose.</strong></p>
         <p>Our reporting goes beyond rankings to show meaningful progress, opportunities, and strategic next steps&mdash;so you always understand where your investment is creating value.</p>
+        <div class="btn-row row__cta"><button class="btn btn--dark" type="button" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button></div>
       </div>
       
     </div>
@@ -168,19 +171,17 @@
 </section>
 
 <!-- ============================ CTA ============================ -->
-<section class="cta cta--triple">
-  <div class="cta__edge">
-    <div class="frame frame--fill"><img src="assets/img/cta-mug-books.jpg" alt="" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Band photograph</span><span class="frame__note">Black monogrammed mug resting on a stack of design books, warm light.</span></div></div>
+<section class="cta cta--leaf" id="contact">
+  <div class="cta__leaf" aria-hidden="true">
+    <div class="frame frame--leaf frame--fill"><img src="assets/img/cta-foliage.jpg" alt="" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Band texture</span><span class="frame__note">Soft-focus olive foliage against a pale plaster wall, very low contrast.</span></div></div>
   </div>
   <div class="wrap cta__inner">
     <div class="cta__copy">
-      <span class="eyebrow">Ready to build authority?</span>
-      <h2 class="h2">Let&rsquo;s Build Something That Lasts.</h2>
-      <p style="margin-top:1rem">If you&rsquo;re ready to strengthen your authority and grow your business through ethical, relationship-driven SEO, we&rsquo;d love to hear from you.</p>
+      <h2 class="h2" data-mask-auto>Ready to build authority that lasts?</h2>
+      <p>Let&rsquo;s grow your brand and create impact&mdash;together.</p>
     </div>
-    <div>
-      <button class="btn btn--dark" type="button" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>
-      <p class="cta__foot">No pressure. Just a conversation.</p>
+    <div class="cta__actions">
+      <button class="btn btn--gold" type="button" data-cal-link="rankforimpact/15min" data-cal-namespace="15min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book 15-min call<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>
     </div>
   </div>
 </section>

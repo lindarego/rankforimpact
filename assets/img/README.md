@@ -45,15 +45,18 @@ adding one without the other works.
 
 ## Services — `services.html`
 
+The hero is centred type with no photograph, and the page closes on the shared
+`cta-foliage.jpg` band, so the five service rows are the only images it needs.
+`services-hero.jpg` and `cta-mug-books.jpg` were dropped along with those two
+slots.
+
 | File | Ratio | Shot |
 | --- | --- | --- |
-| `services-hero.jpg` | 4:3+ | Laptop, monogrammed black mug and notebook on a sunlit desk, tall foliage behind. |
 | `service-technical.jpg` | 4:3 | Laptop showing a site audit dashboard on a walnut desk, warm side light. |
 | `service-intelligence.jpg` | 4:3 | Open notebook with hand-annotated competitor notes beside a black mug. |
 | `service-content.jpg` | 4:3 | Smartphone showing an AI answer with citations, resting on a linen notebook. |
 | `service-outreach.jpg` | 4:3 | Open editorial magazine spread beside a black coffee cup on linen. |
 | `service-reporting.jpg` | 4:3 | Printed report pages fanned out with a pen and notebook on a pale desk. |
-| `cta-mug-books.jpg` | tall | Black monogrammed mug resting on a stack of design books, warm light. |
 
 ## Our Approach — `approach.html`
 
