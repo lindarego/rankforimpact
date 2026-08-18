@@ -1602,11 +1602,6 @@ body.nav-open .nav-toggle__close {
   order: 2;
 }
 
-/* Rows carrying a third copy column need more width than the media half. */
-.row--3col {
-  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
-}
-
 /* Icon and step number read as one horizontal cluster beside the heading. */
 .row__aside {
   flex-direction: row;
@@ -1616,53 +1611,6 @@ body.nav-open .nav-toggle__close {
 .row--stepped .row__aside {
   flex-direction: column;
   align-items: center;
-}
-
-/* Extra column, e.g. "Best for" checklist */
-.row__copy--wide {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  align-items: start;
-}
-
-.row__copy--wide .row__aside {
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 1.1rem;
-}
-
-.checklist {
-  padding-left: clamp(1.25rem, 2.5vw, 2rem);
-  border-left: 1px solid var(--line);
-}
-
-.checklist__title {
-  display: block;
-  margin-bottom: 1.15rem;
-  color: var(--gold-ink);
-  font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.checklist li {
-  display: flex;
-  gap: 0.7rem;
-  font-size: 0.86rem;
-  line-height: 1.6;
-}
-
-.checklist li + li {
-  margin-top: 0.95rem;
-}
-
-.checklist .icon {
-  width: 1.05em;
-  height: 1.05em;
-  margin-top: 0.32em;
-  color: var(--gold-ink);
 }
 
 /* Vertical connector line for numbered approach steps */
@@ -1675,8 +1623,7 @@ body.nav-open .nav-toggle__close {
 }
 
 @media (max-width: 900px) {
-  .row,
-  .row__copy--wide {
+  .row {
     grid-template-columns: 1fr;
   }
   .row__media,
@@ -1693,15 +1640,6 @@ body.nav-open .nav-toggle__close {
   }
   .row__copy {
     padding-inline: var(--gutter);
-  }
-  .row__copy--wide {
-    gap: 1.75rem;
-  }
-  .checklist {
-    padding-left: 0;
-    border-left: 0;
-    border-top: 1px solid var(--line);
-    padding-top: 1.5rem;
   }
   .row--stepped .row__aside::after {
     display: none;
@@ -2500,14 +2438,6 @@ body.nav-open .nav-toggle__close {
   border-color: var(--gold);
 }
 
-/* Checklist ticks brighten with their row. */
-.checklist .icon {
-  transition: color 0.4s var(--ease), transform 0.4s var(--ease);
-}
-
-.row:hover .checklist .icon {
-  color: var(--gold);
-}
 
 /* --------------------------------------------------------------------------
    22. Scroll reveal
