@@ -19,6 +19,10 @@
 var CAL_LINK = 'rankforimpact/15min';
 var CAL_NS = '15min';
 
+/* The contact page mounts the calendar in the page instead of behind a click.
+   Every other page only has the modal triggers. */
+var CAL_INLINE_TARGET = '#my-cal-inline-15min';
+
 /* Cal's own loader. Queues calls until app.cal.com/embed/embed.js arrives —
    the only third-party request the site makes. */
 (function (C, A, L) {
@@ -105,3 +109,25 @@ Cal.ns[CAL_NS]('ui', {
     }
   }
 });
+
+/* --------------------------------------------------------------------------
+   Inline booker — the contact page only
+
+   Mounts the calendar into the page rather than waiting for a click. Guarded on
+   the container being present because this file loads on every page: asking Cal
+   to mount into a selector that matches nothing leaves it holding a booker with
+   nowhere to go.
+
+   No second `ui` call goes with this. Cal keeps one UI config per namespace, so
+   repeating it here — as the embed snippet Cal hands out does — would replace
+   the themed one above and take the cream and green palette with it. The inline
+   embed and the modal triggers share that one config, which is what keeps them
+   looking like the same product.
+   -------------------------------------------------------------------------- */
+if (document.querySelector(CAL_INLINE_TARGET)) {
+  Cal.ns[CAL_NS]('inline', {
+    elementOrSelector: CAL_INLINE_TARGET,
+    calLink: CAL_LINK,
+    config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' }
+  });
+}
