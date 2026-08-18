@@ -173,8 +173,7 @@
     ['.cta__copy, .cta__actions', 130],
     ['.footer__grid > *', 90],
     ['.rows > .row', 60],
-    ['.posts .post', 100],
-    ['.ripple__foot > *', 110]
+    ['.posts .post', 100]
   ].forEach(function (group) {
     Array.prototype.forEach.call(
       document.querySelectorAll(group[0]),

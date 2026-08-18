@@ -2294,47 +2294,13 @@ body.nav-open .nav-toggle__close {
   line-height: 1.65;
 }
 
-.ripple__foot {
-  margin-top: clamp(1.75rem, 3vw, 2.5rem);
-  text-align: center;
-}
-
-/* Only the diagram is worth hovering, so the invitation appears with it — and
-   only once site.js has a drawable canvas, since the stacked list below 900px
-   already shows every step without being asked. */
-.ripple__hint {
-  display: none;
-  font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  line-height: 1.7;
-  text-transform: uppercase;
-}
-
-/* A thumb cannot hover, so each device is told what it can actually do. */
-.ripple__hint--touch {
-  display: none;
-}
-
-@media (hover: none) {
-  .ripple__hint--pointer {
-    display: none;
-  }
-
-  .ripple__hint--touch {
-    display: inline;
-  }
-}
-
 /* -- Diagram layout -------------------------------------------------------- */
 /* Shared between the two orientations. Everything that differs — which way the
    fan spreads, which endpoint each branch uses, and where its labels sit — is
    in the two blocks below. --orient is how site.js learns which one is live, so
    the breakpoint is written once, here in the stylesheet. */
-.ripple--on {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
+/* The diagram carries no rules bracketing it: the fan is the only thing in the
+   section below its heading, so it needs no frame to read as one figure. */
 
 .ripple--on .ripple__canvas {
   display: block;
@@ -2472,19 +2438,6 @@ body.nav-open .nav-toggle__close {
 
 .ripple--on .ripple__step:nth-child(3) {
   transition-delay: 0.24s;
-}
-
-/* The caption sits beside the diagram rather than inside it, so the hint
-   follows the diagram from its sibling. */
-/* --muted rather than the gold this carried on its own branch. It is the only
-   thing telling a reader the diagram responds at all, and gold on this band
-   measures 2.08:1 — the site tolerates that on eyebrows, where the heading
-   underneath carries the meaning, but not on the one instruction that makes the
-   section interactive. --muted reads 5.45:1 here; the gold stays in the tracing,
-   where it is decoration. */
-.ripple--on ~ .ripple__foot .ripple__hint {
-  display: block;
-  color: var(--muted);
 }
 
 /* -- Wide: the fan spreads to the right ------------------------------------ */
