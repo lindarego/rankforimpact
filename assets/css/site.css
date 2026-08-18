@@ -879,31 +879,8 @@ body.nav-open .nav-toggle__close {
 /* Per-photograph placeholder tints. Each stands in for a specific shot, so the
    holding page reads as art direction rather than a row of identical blocks.
    A real file at the frame's src takes over and hides all of this. */
-.frame--desk {
-  background:
-    radial-gradient(120% 90% at 78% 12%, rgba(255, 244, 222, 0.85), rgba(255, 244, 222, 0) 55%),
-    linear-gradient(160deg, #e6dccb 0%, #cbb695 30%, #8b6f4e 62%, #4a3527 100%);
-}
-.frame--office {
-  background: linear-gradient(150deg, #f0e6d6, #c9ab84 45%, #7d6448);
-}
-.frame--meeting {
-  background: linear-gradient(200deg, #efe4d2, #b79a76 50%, #6d5740);
-}
-.frame--valley {
-  background: linear-gradient(180deg, #9fb8a2, #4e7d5c 45%, #22402f);
-}
-.frame--portrait {
-  background: linear-gradient(160deg, #e7d8c2, #9d7f5e 45%, #2f2a22);
-}
 .frame--leaf {
   background: linear-gradient(115deg, #dfe4d3, #b9c4a5 55%, #8fa07c);
-}
-
-/* Inside a collage tile the frame is the backdrop, so its caption would fight
-   the tile's own. Needs to outrank `.frame.is-empty .frame__ph`. */
-.tile .frame.is-empty .frame__ph {
-  display: none;
 }
 
 /* Placeholder rendered only while the photograph is absent. */
@@ -1652,239 +1629,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   15. Mission split (copy + image mosaic)
-   -------------------------------------------------------------------------- */
-.mission {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-}
-
-/* The copy column runs on the warm beige band rather than dark green, so the
-   mosaic beside it carries the section's weight on its own. Everything else
-   here follows from simply not carrying `.dark`: headings go to --ink, the
-   eyebrow and accent to --gold-ink, body copy to --body.
-
-   The promise block is deliberately left on --green-deep. Its internals set
-   their colours explicitly rather than inheriting from `.dark`, so it survives
-   the switch untouched, and a deep green plate anchors the beige column and
-   keeps its gold top rule reading. */
-.mission--light {
-  background: var(--cream);
-}
-
-.mission__copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(3rem, 6vw, 6rem) var(--gutter) clamp(3rem, 6vw, 6.5rem);
-}
-
-.mission__inner {
-  width: 100%;
-  max-width: 470px;
-  margin-left: auto;
-}
-
-.mission__copy .lede {
-  max-width: 46ch;
-  font-size: 0.9375rem;
-}
-
-/* Pinwheel mosaic: two tall tiles on opposite corners. */
-.collage {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  min-height: 600px;
-  background: var(--green);
-}
-
-.collage .c1 {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-}
-.collage .c2 {
-  grid-column: 2;
-  grid-row: 1;
-}
-.collage .c3 {
-  grid-column: 1;
-  grid-row: 3;
-}
-.collage .c4 {
-  grid-column: 2;
-  grid-row: 2 / span 2;
-}
-
-.tile {
-  position: relative;
-  margin: 0;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.tile .frame {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  transition: transform 0.7s var(--ease);
-}
-
-/* Veil sits above the image, below the caption. */
-.tile::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    to top,
-    rgba(13, 38, 32, 0.95) 0%,
-    rgba(13, 38, 32, 0.78) 42%,
-    rgba(13, 38, 32, 0.16) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.45s var(--ease);
-}
-
-.tile__cap {
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.75rem 1.75rem 1.625rem;
-  color: #fff;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
-}
-
-.tile__key {
-  display: block;
-  margin-bottom: 0.625rem;
-  color: var(--gold-soft);
-  font-size: 0.656rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.tile__cap p {
-  font-family: var(--serif);
-  font-size: 1.125rem;
-  line-height: 1.42;
-  color: #fff;
-}
-
-.tile:hover .frame {
-  transform: scale(1.05);
-}
-.tile:hover::after,
-.tile:focus-visible::after {
-  opacity: 1;
-}
-.tile:hover .tile__cap,
-.tile:focus-visible .tile__cap {
-  opacity: 1;
-  transform: none;
-}
-.tile:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: -2px;
-}
-
-/* No hover to reveal on touch, so the captions stay visible. */
-@media (hover: none) {
-  .tile::after,
-  .tile__cap {
-    opacity: 1;
-  }
-  .tile__cap {
-    transform: none;
-  }
-}
-
-/* The promise block lives in the copy column, not over the collage, where it
-   covered a tile's hover caption. */
-.promise {
-  margin-top: 2.875rem;
-  padding: 1.75rem 1.875rem 1.625rem;
-  background: var(--green-deep);
-  border-top: 2px solid var(--gold);
-}
-
-.promise__head {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.promise .icon-ring {
-  width: 52px;
-  height: 52px;
-  border-color: rgba(255, 255, 255, 0.22);
-  color: var(--gold-soft);
-}
-
-.promise__key {
-  margin: 0;
-  color: var(--gold);
-  font-size: 0.656rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.promise__list li {
-  padding: 0.6875rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.94);
-}
-
-.promise__list li:first-child {
-  padding-top: 0;
-  border-top: 0;
-}
-
-.promise__list li:last-child {
-  padding-bottom: 0;
-}
-
-@media (max-width: 900px) {
-  .mission {
-    grid-template-columns: 1fr;
-  }
-  .mission__copy {
-    padding: clamp(2.75rem, 9vw, 4.5rem) var(--gutter);
-  }
-  .mission__inner {
-    max-width: none;
-    margin: 0;
-  }
-  .collage {
-    min-height: 560px;
-  }
-}
-
-@media (max-width: 600px) {
-  .collage {
-    min-height: 0;
-    grid-template-rows: repeat(3, 180px);
-  }
-  .tile__cap {
-    padding: 1.25rem;
-  }
-  .tile__cap p {
-    font-size: 1rem;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   16. Two-up split (image + copy, e.g. About mission / approach)
+   15. Two-up split (image + copy, e.g. About mission / approach)
    -------------------------------------------------------------------------- */
 .duo {
   display: grid;
@@ -1933,7 +1678,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   17. Quote band
+   16. Quote band
    -------------------------------------------------------------------------- */
 .quote {
   padding-block: clamp(3.5rem, 7vw, 6rem);
@@ -1969,7 +1714,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   18. CTA bands
+   17. CTA bands
    -------------------------------------------------------------------------- */
 .cta {
   position: relative;
@@ -2129,7 +1874,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   19. Insights cards
+   18. Insights cards
    -------------------------------------------------------------------------- */
 .posts {
   display: grid;
@@ -2191,7 +1936,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   20. Booking embed (Cal.com — contact page)
+   19. Booking embed (Cal.com — contact page)
    -------------------------------------------------------------------------- */
 
 /* The booker opens in a Cal-hosted modal on click, so this panel only has to
@@ -2236,7 +1981,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   21. Footer
+   20. Footer
    -------------------------------------------------------------------------- */
 .footer {
   padding-top: clamp(3rem, 6vw, 4.5rem);
@@ -2366,7 +2111,7 @@ body.nav-open .nav-toggle__close {
 }
 
 /* --------------------------------------------------------------------------
-   21b. Interaction — the homepage's hover language, applied site-wide
+   20b. Interaction — the homepage's hover language, applied site-wide
    The vocabulary established on the homepage is: photography scales gently,
    circled icons fill gold, and a gold rule draws in under the title. These
    rules carry it to the components that only appear on the other pages.
@@ -2438,6 +2183,371 @@ body.nav-open .nav-toggle__close {
   border-color: var(--gold);
 }
 
+
+/* --------------------------------------------------------------------------
+   21. Ripple diagram — one business, the effects that follow
+   Two layouts from one block of markup. By default — small screens, no
+   JavaScript, print — the branches are a plain stacked list with every step
+   visible. From 900px up, the diagram claims the same list as labels pinned
+   over a canvas that draws the curves between them. That layout is gated on
+   .ripple--on, which site.js sets only once it holds a drawable canvas, so a
+   script that never runs leaves the readable list rather than pinned labels
+   with nothing behind them. The drawing is decoration only — no wording lives
+   inside the canvas.
+   -------------------------------------------------------------------------- */
+.ripple-band {
+  /* One local token for the band colour: the branch labels sit on plates of
+     the same colour so their text stays readable where a curve passes behind
+     it, and a plate that drifted from the band would show as a patch. */
+  --band: var(--cream-lo);
+  background: var(--band);
+  border-top: 1px solid var(--line-soft);
+}
+
+.ripple {
+  position: relative;
+  margin-top: clamp(2rem, 4vw, 3.25rem);
+}
+
+/* Hidden until the diagram layout takes over, so the stacked list is never
+   pushed down by an empty canvas. */
+.ripple__canvas {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.ripple__origin {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.75rem;
+  padding-left: 1.15rem;
+  color: var(--ink);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.ripple__origin::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.ripple__branches {
+  display: grid;
+  gap: 1.75rem 2.5rem;
+}
+
+@media (min-width: 560px) {
+  .ripple__branches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ripple__branch {
+  position: relative;
+  padding-left: 1.15rem;
+  border-left: 1px solid var(--line);
+}
+
+.ripple__branch::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 0.55rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.ripple__name {
+  display: block;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.3;
+  transition: color 0.4s var(--ease);
+}
+
+.ripple__branch:hover .ripple__name,
+.ripple__branch:focus-visible .ripple__name {
+  color: var(--gold-ink);
+}
+
+.ripple__steps {
+  margin-top: 0.35rem;
+}
+
+.ripple__step {
+  color: var(--body);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.ripple__foot {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  text-align: center;
+}
+
+/* Only the diagram is worth hovering, so the invitation appears with it — and
+   only once site.js has a drawable canvas, since the stacked list below 900px
+   already shows every step without being asked. */
+.ripple__hint {
+  display: none;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+/* A thumb cannot hover, so each device is told what it can actually do. */
+.ripple__hint--touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .ripple__hint--pointer {
+    display: none;
+  }
+
+  .ripple__hint--touch {
+    display: inline;
+  }
+}
+
+/* -- Diagram layout -------------------------------------------------------- */
+/* Shared between the two orientations. Everything that differs — which way the
+   fan spreads, which endpoint each branch uses, and where its labels sit — is
+   in the two blocks below. --orient is how site.js learns which one is live, so
+   the breakpoint is written once, here in the stylesheet. */
+.ripple--on {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.ripple--on .ripple__canvas {
+  display: block;
+}
+
+/* The canvas draws the origin node itself, so the label only names it. Every
+   label in the diagram — this one, the six names, the eighteen effects — is put
+   where site.js measured room for it: --lx/--ly are the offset from the point
+   the label names, chosen to clear the other labels and the curves. */
+.ripple--on .ripple__origin {
+  position: absolute;
+  left: var(--ox, 8%);
+  top: var(--oy, 50%);
+  margin: 0;
+  padding: 0 0.5rem;
+  background: radial-gradient(closest-side, var(--band) 62%, transparent 100%);
+  white-space: nowrap;
+  transform: translate(calc(var(--lx, 0px) - 50%), calc(var(--ly, 0px) - 50%));
+}
+
+.ripple--on .ripple__origin::before {
+  display: none;
+}
+
+/* The list covers the whole drawing, so it hands pointer events back to
+   everything underneath and only the labels themselves take them. */
+.ripple--on .ripple__branches {
+  position: absolute;
+  inset: 0;
+  display: block;
+  gap: 0;
+  pointer-events: none;
+}
+
+/* The branch collapses to its endpoint: a zero-size anchor every label on the
+   branch is placed against, in the canvas's own coordinates. The endpoint
+   itself is set per orientation and read back by site.js for the curve, so a
+   label and its curve cannot drift apart. */
+.ripple--on .ripple__branch {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease) calc(var(--i, 0) * 130ms + 350ms);
+}
+
+.ripple--on .ripple__branch::before {
+  display: none;
+}
+
+.ripple--on.is-live .ripple__branch {
+  opacity: 1;
+}
+
+/* The branch being read comes forward, so its effects sit over the rest of the
+   fan rather than tangling with it — each label carries a plate in the band's
+   own colour, which is what hides the line and any neighbour behind the
+   words. */
+.ripple--on .ripple__branch:hover,
+.ripple--on .ripple__branch:focus-within {
+  z-index: 2;
+}
+
+/* The name is the hover target, and the only part of the branch with a box. It
+   carries on the way its branch was heading, as far as there is room to. */
+.ripple--on .ripple__name {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  padding: 0.25rem 0.5rem;
+  background: radial-gradient(closest-side, var(--band) 62%, transparent 100%);
+  text-align: center;
+  pointer-events: auto;
+  transform: translate(calc(var(--lx, 0px) - 50%), calc(var(--ly, 0px) - 50%));
+  transition: color 0.4s var(--ease), opacity 0.4s var(--ease);
+}
+
+/* While one branch is traced the others step back. site.js sets is-tracing,
+   since it is the thing that knows which branch the pointer or the keyboard
+   is on. */
+.ripple--on.is-tracing .ripple__name {
+  opacity: 0.38;
+}
+
+.ripple--on.is-tracing .ripple__branch:hover .ripple__name,
+.ripple--on.is-tracing .ripple__branch:focus-within .ripple__name {
+  opacity: 1;
+}
+
+/* The anchor has no box to ring, so focus shows on the name instead. */
+.ripple--on .ripple__branch:focus-visible {
+  outline: 0;
+}
+
+.ripple--on .ripple__branch:focus-visible .ripple__name {
+  outline: 2px solid var(--gold-ink);
+  outline-offset: 3px;
+}
+
+/* The three effects are not a list here — each one names a node along its
+   branch, set beside the curve rather than on it. */
+.ripple--on .ripple__steps {
+  margin: 0;
+}
+
+.ripple--on .ripple__step {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  padding: 0.1rem 0.4rem;
+  background: radial-gradient(closest-side, var(--band) 62%, transparent 100%);
+  color: var(--muted);
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(calc(var(--lx, 0px) - 50%), calc(var(--ly, 0px) - 50%));
+  transition: opacity 0.45s var(--ease);
+}
+
+/* Lit in the order they happen, matching the rings the canvas sends out from
+   the same three points. */
+.ripple--on .ripple__branch:hover .ripple__step,
+.ripple--on .ripple__branch:focus-visible .ripple__step {
+  opacity: 1;
+}
+
+.ripple--on .ripple__step:nth-child(2) {
+  transition-delay: 0.12s;
+}
+
+.ripple--on .ripple__step:nth-child(3) {
+  transition-delay: 0.24s;
+}
+
+/* The caption sits beside the diagram rather than inside it, so the hint
+   follows the diagram from its sibling. */
+/* --muted rather than the gold this carried on its own branch. It is the only
+   thing telling a reader the diagram responds at all, and gold on this band
+   measures 2.08:1 — the site tolerates that on eyebrows, where the heading
+   underneath carries the meaning, but not on the one instruction that makes the
+   section interactive. --muted reads 5.45:1 here; the gold stays in the tracing,
+   where it is decoration. */
+.ripple--on ~ .ripple__foot .ripple__hint {
+  display: block;
+  color: var(--muted);
+}
+
+/* -- Wide: the fan spreads to the right ------------------------------------ */
+@media (min-width: 900px) {
+  /* The floor is set by the labels, not the drawing: the highest node sits at
+     12% of the band and hangs its name above itself, which wants some 50px of
+     clear air. */
+  .ripple--on {
+    --orient: landscape;
+    height: clamp(580px, 46vw, 640px);
+  }
+
+  .ripple--on .ripple__branch {
+    left: var(--x);
+    top: var(--y);
+  }
+
+  .ripple--on .ripple__name {
+    max-width: 11rem;
+  }
+
+  .ripple--on .ripple__step {
+    max-width: 9rem;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+}
+
+/* -- Narrow: the same fan, turned to spread downward ----------------------- */
+/* A phone has height to spare and no width, so the diagram rotates rather than
+   falling back to a list: the origin moves to the top, the branches descend
+   alternating sides, names hang below their node and effects sit outboard of
+   the vine where there is room for them. */
+@media (max-width: 899px) {
+  .ripple--on {
+    --orient: portrait;
+    height: clamp(520px, 145vw, 700px);
+  }
+
+  .ripple--on .ripple__branch {
+    left: var(--mx);
+    top: var(--my);
+  }
+
+  .ripple--on .ripple__name {
+    max-width: 8rem;
+    font-size: 1.05rem;
+  }
+
+  /* The fan is tighter here, so a traced effect can land across a neighbour's
+     name. Sent further back than on a wide screen, the neighbour reads as
+     receded rather than half-covered. */
+  .ripple--on.is-tracing .ripple__name {
+    opacity: 0.14;
+  }
+
+  /* Two short lines beat one long one at this width, so the effects wrap. */
+  .ripple--on .ripple__step {
+    max-width: 6rem;
+    font-size: 0.68rem;
+    white-space: normal;
+  }
+}
 
 /* --------------------------------------------------------------------------
    22. Scroll reveal
@@ -2526,7 +2636,6 @@ body.nav-open .nav-toggle__close {
   /* Every hover movement is cancelled; colour changes are kept, since they
      convey the same affordance without motion. */
   .btn:hover,
-  .tile:hover .frame,
   .row:hover .row__media .frame,
   .duo__media:hover .frame,
   .post:hover .frame,
@@ -2543,6 +2652,14 @@ body.nav-open .nav-toggle__close {
   .post:hover,
   .pillars--tiles .pillar:hover {
     translate: none;
+  }
+  /* The ripple labels are positioned by transform, so they sit outside the
+     reveal rules above and carry their own staggered fade. Only the duration
+     is squashed by the blanket rule, not the delay, so the stagger is dropped
+     here rather than leaving a reader waiting a second for the last label. */
+  .ripple--on .ripple__branch {
+    opacity: 1;
+    transition: none;
   }
 }
 
@@ -2562,5 +2679,37 @@ body.nav-open .nav-toggle__close {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+  /* Paper gets the stacked branch list: the canvas would print as a blank
+     block, and pinned labels would collapse on top of each other. Selectors
+     match the .js diagram rules class for class, since those are the ones
+     being undone. */
+  .ripple--on .ripple__canvas {
+    display: none;
+  }
+  .ripple--on {
+    height: auto;
+    border: 0;
+  }
+  .ripple--on .ripple__branches {
+    position: static;
+    display: block;
+  }
+  .ripple--on .ripple__origin,
+  .ripple--on .ripple__branch,
+  .ripple--on .ripple__name,
+  .ripple--on .ripple__step {
+    position: static;
+    width: auto;
+    height: auto;
+    max-width: none;
+    opacity: 1;
+    transform: none;
+    background: none;
+    text-align: left;
+    white-space: normal;
+  }
+  .ripple--on .ripple__branch {
+    margin-bottom: 1rem;
   }
 }

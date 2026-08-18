@@ -37,11 +37,12 @@ adding one without the other works.
 | --- | --- | --- |
 | `hero-forest-poster.jpg` | 16:9 | **Supplied.** First frame of the hero loop (`assets/video/hero-forest.mp4`), shown while the video buffers and whenever it cannot play. 1280×720, 38 KB. Re-cut it from the video if the footage is ever replaced. |
 | `hero-workspace.jpg` | 16:9 | **Unused** since the hero became video, kept for reuse. Bright desk by a window: laptop showing “Would an AI recommend you?” in gold italic on a forest green screen, monogrammed mug, notebook and pen. 2400×1340, 215 KB. `hero-workspace-1400.jpg` is the 1400px companion. |
-| `mission-focus.jpg` | 1:1 | Woman at a laptop in a bright open-plan office, candid, natural light. |
-| `mission-collaboration.jpg` | 1:1 | Two colleagues mid-conversation across a table, warm and unposed. |
-| `mission-landscape.jpg` | 1:1 | Green valley and river from above, golden hour, misty ridgelines. |
-| `mission-portrait.jpg` | 1:1 | Portrait of a smiling woman in a library, headwrap, soft window light. |
 | `cta-foliage.jpg` | wide | Soft-focus olive foliage against a pale plaster wall, very low contrast. |
+
+The mission section is now the ripple diagram, which is drawn rather than
+photographed, so the four `mission-*.jpg` tiles it used are no longer needed.
+The homepage asks for two photographs: the hero poster (supplied) and the
+closing band's foliage.
 
 ## Services — `services.html`
 

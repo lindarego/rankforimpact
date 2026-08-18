@@ -127,56 +127,49 @@
 </section>
 
 <!-- ========================== Mission ========================== -->
-<section class="mission mission--light" id="mission">
-  <div class="mission__copy">
-    <div class="mission__inner">
-      <span class="eyebrow">Our Mission</span>
-      <h2 class="h2" data-mask-auto>Growth should benefit more than <em class="accent">one</em> business.</h2>
-      <div class="prose" style="margin-top:1.75rem">
-        <p class="lede">RankForImpact exists to help ambitious companies grow through strategic search authority.</p>
-        <p class="lede">Our long-term vision is to use that growth to increase digital visibility for nonprofits while creating meaningful career opportunities for talented young women in developing countries.</p>
-        <p class="lede">Every partnership brings us one step closer.</p>
-      </div>
-      <a class="link" href="about.html#mission">Learn more about our mission<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-
-      <div class="promise">
-        <div class="promise__head">
-          <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg></div>
-          <p class="promise__key">The ripple effect</p>
-        </div>
-        <ul class="promise__list">
-          <li>Better visibility.</li>
-          <li>More opportunities.</li>
-          <li>Stronger communities.</li>
-        </ul>
-      </div>
+<!-- The mission claim, traced rather than stated: one business ranking well
+     sets off effects it never paid for. The canvas draws the curves and the
+     gold ripples that follow the pointer; every word is real text in the
+     markup, so the section reads the same stacked on a phone, printed, or with
+     the drawing switched off. -->
+<section class="section ripple-band" id="mission">
+  <div class="wrap center">
+    <span class="eyebrow">Our Mission</span>
+    <h2 class="h2" data-mask-auto>Growth should benefit more than <em class="accent">one</em> business.</h2>
+  </div>
+  <div class="wrap">
+    <div class="ripple" data-ripple>
+      <canvas class="ripple__canvas" data-ripple-canvas aria-hidden="true"></canvas>
+      <p class="ripple__origin">Your business</p>
+      <ul class="ripple__branches">
+        <li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:37%;--y:11%;--i:0;--mx:14%;--my:44%">
+          <span class="ripple__name">Visibility</span>
+          <ul class="ripple__steps"><li class="ripple__step">Search rankings</li><li class="ripple__step">Discoverability</li><li class="ripple__step">Relevant traffic</li></ul>
+        </li><li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:55%;--y:26%;--i:1;--mx:27%;--my:59%">
+          <span class="ripple__name">Momentum</span>
+          <ul class="ripple__steps"><li class="ripple__step">More visitors</li><li class="ripple__step">More engagement</li><li class="ripple__step">More considerations</li></ul>
+        </li><li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:86%;--y:39%;--i:2;--mx:37%;--my:86%">
+          <span class="ripple__name">Scale</span>
+          <ul class="ripple__steps"><li class="ripple__step">Qualified leads</li><li class="ripple__step">Conversions</li><li class="ripple__step">Revenue</li></ul>
+        </li><li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:77%;--y:59%;--i:3;--mx:62%;--my:77%">
+          <span class="ripple__name">Impact</span>
+          <ul class="ripple__steps"><li class="ripple__step">Brand authority</li><li class="ripple__step">Trust</li><li class="ripple__step">Market presence</li></ul>
+        </li><li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:66%;--y:76%;--i:4;--mx:77%;--my:68%">
+          <span class="ripple__name">Compounding</span>
+          <ul class="ripple__steps"><li class="ripple__step">Referrals</li><li class="ripple__step">Repeat customers</li><li class="ripple__step">Organic growth</li></ul>
+        </li><li class="ripple__branch" data-ripple-branch tabindex="0" style="--x:34%;--y:81%;--i:5;--mx:80%;--my:39%">
+          <span class="ripple__name">Expansion</span>
+          <ul class="ripple__steps"><li class="ripple__step">New opportunities</li><li class="ripple__step">New markets</li><li class="ripple__step">Sustainable growth</li></ul>
+        </li>
+      </ul>
+    </div>
+    <!-- The steps are hidden until a branch is traced, so the invitation is the
+         only cue that there is anything to trace. It appears only once the
+         diagram is live; the stacked list below 900px shows every step already. -->
+    <div class="ripple__foot">
+      <p class="ripple__hint"><span class="ripple__hint--pointer">Hover</span><span class="ripple__hint--touch">Tap</span> a branch to trace it</p>
     </div>
   </div>
-  <div class="collage"><figure class="tile c1" tabindex="0">
-      <div class="frame frame--office frame--fill"><img src="assets/img/mission-focus.jpg" alt="A person working at a laptop in a bright open-plan office" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Editorial outreach</span><span class="frame__note">Real conversations with the editors who shape your category.</span></div></div>
-      <figcaption class="tile__cap">
-        <span class="tile__key">Editorial outreach</span>
-        <p>Real conversations with the editors who shape your category.</p>
-      </figcaption>
-    </figure><figure class="tile c2" tabindex="0">
-      <div class="frame frame--meeting frame--fill"><img src="assets/img/mission-collaboration.jpg" alt="Two colleagues in conversation across a table" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Senior attention</span><span class="frame__note">A deliberately small client roster, so your campaign never gets junior hands.</span></div></div>
-      <figcaption class="tile__cap">
-        <span class="tile__key">Senior attention</span>
-        <p>A deliberately small client roster, so your campaign never gets junior hands.</p>
-      </figcaption>
-    </figure><figure class="tile c3" tabindex="0">
-      <div class="frame frame--valley frame--fill"><img src="assets/img/mission-landscape.jpg" alt="A green river valley between forested mountains" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Compounding authority</span><span class="frame__note">Rankings built to hold their ground long after the campaign ends.</span></div></div>
-      <figcaption class="tile__cap">
-        <span class="tile__key">Compounding authority</span>
-        <p>Rankings built to hold their ground long after the campaign ends.</p>
-      </figcaption>
-    </figure><figure class="tile c4" tabindex="0">
-      <div class="frame frame--portrait frame--fill"><img src="assets/img/mission-portrait.jpg" alt="A smiling woman in a library" loading="lazy" decoding="async"><div class="frame__ph"><span class="frame__label">Opportunity created</span><span class="frame__note">Every partnership funds career paths for young women entering tech.</span></div></div>
-      <figcaption class="tile__cap">
-        <span class="tile__key">Opportunity created</span>
-        <p>Every partnership funds career paths for young women entering tech.</p>
-      </figcaption>
-    </figure></div>
 </section>
 
 <!-- ============================ CTA ============================ -->
