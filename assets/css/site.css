@@ -1850,17 +1850,6 @@ body.nav-open .nav-toggle__close {
   }
 }
 
-
-@media (max-width: 1000px) {
-  .cta__edge {
-    display: none;
-  }
-  .cta--triple:has(.cta__edge) .cta__inner {
-    grid-template-columns: 1fr;
-    padding-right: 0;
-  }
-}
-
 @media (max-width: 900px) {
   .cta--triple .cta__inner {
     grid-template-columns: 1fr;
@@ -2029,9 +2018,10 @@ body.nav-open .nav-toggle__close {
   font-size: 0.87rem;
 }
 
+/* Brand block plus three link columns, since Company went. */
 .footer__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) repeat(4, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 1fr));
   gap: clamp(2rem, 4vw, 3rem);
   padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
 }
@@ -2078,41 +2068,23 @@ body.nav-open .nav-toggle__close {
   color: var(--gold-light);
 }
 
-.socials {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
-}
-
-.socials a {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  color: var(--on-dark);
-  border: 1px solid var(--on-dark-line);
-  transition: background 0.3s var(--ease), color 0.3s var(--ease),
-    border-color 0.3s var(--ease);
-}
-
-.socials a:hover {
-  background: var(--gold);
-  color: var(--green);
-  border-color: var(--gold);
-}
-
-.socials .icon {
-  width: 15px;
-  height: 15px;
-}
-
-/* LinkedIn mark rendered typographically (no third-party logo artwork) */
-.socials__in {
+/* LinkedIn's mark, set in the body face rather than drawn: Simple Icons no
+   longer distributes the logo, and the site draws no third-party brand artwork
+   of its own. Sized and coloured to sit in the same column as the mail and
+   map-pin icons beside it, so the three read as one list. */
+.footer__in {
+  flex: none;
+  /* 1.15em to match the icons beside it — and no font-size of its own, or that
+     em would resolve against the smaller size and leave the glyph a pixel
+     narrower than they are, nudging its label out of line. */
+  width: 1.15em;
+  margin-top: 0.3em;
+  color: var(--gold-light);
   font-family: var(--sans);
-  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 1.15;
+  text-align: center;
 }
 
 .footer__bar {
