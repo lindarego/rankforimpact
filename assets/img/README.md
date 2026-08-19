@@ -21,7 +21,7 @@ Replace them freely if you would rather art-direct the social card.
 | File | Used for | Notes |
 | --- | --- | --- |
 | `logo-mark.png` | Header lockup | The square monogram — dark green `R` with the gold arrow and dot, transparent background. 512×512; rendered 52 px tall, shrinking to 42 px once the header sticks. |
-| `logo-footer.png` | Footer mark | **Supplied** as a 1254×1254 monogram on its own dark green. That green was `#192c23`, not the site's `#123328`, so on the footer it read as a visible darker square — the flat ground was cut to transparency instead, which fixes the seam and leaves the mark usable on any background. Resampled to 256×256, 47 KB; renders 64–84 px tall beside the cream wordmark. |
+| `logo-footer.png` | Footer mark | **Supplied** as a 1254×1254 monogram on its own dark green — a cream `R` with the gold arrow and dot, so unlike `logo-mark.png` it is drawn to sit on a dark band. Its ground was `#11281f`, not the site's `#123328`, so dropped in as-is it read as a visible darker square; the flat ground was cut to transparency instead, which fixes the seam and leaves the mark usable on any background. Resampled to 256×256, 32 KB; renders 64–84 px tall beside the cream wordmark. |
 | `logo-full.png` | **Unused** | The old footer lockup: monogram over `RANKFORIMPACT` and the "Authority creates opportunity." line, 1200×685. Dark-ink artwork, which is why it needed a cream plate. Kept for reuse now that the footer carries the mark instead. `logo-full-480.png` is its 480 px companion. |
 | `favicon.png` | Browser tab | 512×512, transparent background — the monogram alone |
 | `apple-touch-icon.png` | iOS home screen | 180×180, opaque cream background — iOS does not honour transparency |
