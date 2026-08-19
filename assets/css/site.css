@@ -591,40 +591,21 @@ button {
   color: var(--cream-hi);
 }
 
-/* The supplied full lockup is dark-ink artwork, so on the dark green footer it
-   sits on a cream plate to stay legible. */
-.brand--plate {
-  display: inline-block;
-  max-width: 290px;
-  padding: 22px 26px;
-  background: var(--cream-hi);
+/* The footer mark. No plate: the supplied artwork had its flat ground cut to
+   transparency, so it sits straight on the green rather than needing a light
+   panel to stay legible the way the old dark-ink lockup did. Taller than the
+   header's, since the footer has room and this is the page's last word. */
+.brand--footer {
+  gap: 1rem;
 }
 
-.brand--plate .brand__full {
-  width: 100%;
-  height: auto;
+.brand--footer .brand__mark--art {
+  height: clamp(64px, 8vw, 84px);
+  margin: 0;
 }
 
-.brand__full {
-  display: none;
-}
-
-.brand--plate.has-logo .brand__full {
-  display: block;
-}
-
-/* The full lockup already contains the wordmark and tagline, so the text
-   lockup beside it would duplicate them — and being cream on the cream plate,
-   only its gold "For" would have shown. */
-.brand--plate.has-logo .brand__word {
-  display: none;
-}
-
-/* Until the lockup lands, the plate collapses and the cream type lockup
-   stands in directly on the green. */
-.brand--plate:not(.has-logo) {
-  padding: 0;
-  background: none;
+.brand--footer .brand__word {
+  font-size: 1.28rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -2191,6 +2172,13 @@ body.nav-open .nav-toggle__close {
   --band: var(--cream-lo);
   background: var(--band);
   border-top: 1px solid var(--line-soft);
+  /* The fan's lowest label lands at roughly 84% of the diagram's height, so the
+     diagram already ends with about 100px of clear air inside itself. A full
+     section stride under that read as a hole rather than breathing room, so the
+     bottom padding is cut and the diagram's own tail serves as the margin.
+     Trimming the diagram's height instead would not have helped: the labels are
+     placed as percentages of it, so the empty share stays the same. */
+  padding-bottom: clamp(1rem, 2vw, 1.75rem);
 }
 
 .ripple {

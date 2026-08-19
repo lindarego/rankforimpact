@@ -21,8 +21,8 @@ Replace them freely if you would rather art-direct the social card.
 | File | Used for | Notes |
 | --- | --- | --- |
 | `logo-mark.png` | Header lockup | The square monogram — dark green `R` with the gold arrow and dot, transparent background. 512×512; rendered 52 px tall, shrinking to 42 px once the header sticks. |
-| `logo-full.png` | Footer lockup | The full lockup: monogram over `RANKFORIMPACT` and the "Authority creates opportunity." line. 1200×685. Because it is dark-ink artwork it sits on a cream plate in the footer, which keeps it legible on the dark green. |
-| `logo-full-480.png` | Footer lockup, 1× | 480 px wide version of the same artwork, served via `srcset`. |
+| `logo-footer.png` | Footer mark | **Supplied** as a 1254×1254 monogram on its own dark green. That green was `#192c23`, not the site's `#123328`, so on the footer it read as a visible darker square — the flat ground was cut to transparency instead, which fixes the seam and leaves the mark usable on any background. Resampled to 256×256, 47 KB; renders 64–84 px tall beside the cream wordmark. |
+| `logo-full.png` | **Unused** | The old footer lockup: monogram over `RANKFORIMPACT` and the "Authority creates opportunity." line, 1200×685. Dark-ink artwork, which is why it needed a cream plate. Kept for reuse now that the footer carries the mark instead. `logo-full-480.png` is its 480 px companion. |
 | `favicon.png` | Browser tab | 512×512, transparent background — the monogram alone |
 | `apple-touch-icon.png` | iOS home screen | 180×180, opaque cream background — iOS does not honour transparency |
 | `og-default.jpg` | Social sharing card | 1200×630 |
@@ -52,21 +52,21 @@ The hero is centred type with no photograph, and the page closes on the shared
 slots.
 
 All five **supplied**. Each was resized to 1600px wide and re-encoded at quality
-80, progressive, EXIF stripped — 4.75 MB of originals down to 0.66 MB, with no
-visible loss at the size these frames render. Replacements are best given the
-same treatment; a 2 MB photograph in a 420px-tall frame costs load time and buys
-nothing.
+80, progressive, EXIF stripped, which took roughly 2 MB originals down to about
+150 KB apiece with no visible loss at the size these frames render. Replacements
+are best given the same treatment; a 2 MB photograph in a 420px-tall frame costs
+load time and buys nothing.
 
 The rows band is full-bleed, so a media column can reach roughly half the
 viewport. 1600px covers a 1600-wide column, or an 800px one on a 2× screen.
 
 | File | Size | Shot |
 | --- | --- | --- |
-| `service-technical.jpg` | 1600×900, 170 KB | Writing in a spiral notebook at a dark desk, green cup and pencils, laptop at the edge. |
+| `service-technical.jpg` | 1600×1065, 134 KB | Hands at a white desk over a notebook headed SEO, pen and keyboard alongside. |
 | `service-intelligence.jpg` | 1500×750, 46 KB | Pale 3D render: magnifying glass beside blocks printed with search and analytics icons. |
 | `service-content.jpg` | 1600×893, 115 KB | Laptop showing “Would an AI recommend you?” beside a monogrammed mug and open notebook. |
 | `service-outreach.jpg` | 1600×1069, 201 KB | Two colleagues mid-conversation over a laptop in a warm wood-panelled office. |
-| `service-reporting.jpg` | 1600×1067, 145 KB | Close-up of a laptop screen showing a dark analytics dashboard, plant behind. |
+| `service-reporting.jpg` | 1600×912, 132 KB | Typing on a laptop showing a colourful analytics dashboard, mug and notebook on a wooden desk. |
 
 ## Our Approach — `approach.html`
 

@@ -78,7 +78,7 @@
      to the real artwork once assets/img/logo.svg loads. Adding the file is
      the only step — no markup change required.
      ---------------------------------------------------------------------- */
-  var artwork = document.querySelectorAll('.brand__mark--art, .brand__full');
+  var artwork = document.querySelectorAll('.brand__mark--art');
 
   Array.prototype.forEach.call(artwork, function (art) {
     var brand = art.closest ? art.closest('.brand') : art.parentNode;
