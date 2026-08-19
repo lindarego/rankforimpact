@@ -1367,11 +1367,13 @@ body.nav-open .nav-toggle__close {
    breakpoint — a plain `.pillars--tiles .pillar` ties on specificity with
    `.pillars .pillar`, and later wins.
 
-   Flex rather than the grid the other variants use, and that is the whole point:
-   five tiles never divide evenly, so some row is always short. `justify-content:
-   center` centres whichever row is — three then two here, and two then two then
-   one once it drops to pairs. A grid would anchor those leftovers left and leave
-   a hole at the end of the row, which is what this replaced. */
+   Flex rather than the grid the other variants use, so a short row centres
+   instead of being anchored left with a hole at its end. Six tiles happen to
+   divide evenly at every breakpoint here, but that is a property of the content,
+   not of the layout: `justify-content: center` is what kept five readable (three
+   then two, and two then two then one once it dropped to pairs) and it is what
+   will absorb a seventh. Do not swap this back to a grid on the strength of the
+   count being even today. */
 .pillars--tiles {
   --tile-gap: 1.25rem;
   display: flex;
