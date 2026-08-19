@@ -228,6 +228,12 @@ button {
   color: var(--on-dark);
 }
 
+/* Keeps a short phrase whole when a heading wraps. "SEO & AEO" needs it: broken
+   across lines it strands an ampersand at one end and an acronym at the other. */
+.nb {
+  white-space: nowrap;
+}
+
 .tone-lo {
   background: var(--cream);
 }
