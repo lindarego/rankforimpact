@@ -1432,6 +1432,17 @@ body.nav-open .nav-toggle__close {
   transform: scaleX(1);
 }
 
+/* The 25ch cap on `.pillar__body` was set for the borderless 5-column grid,
+   where a column was narrower than the cap and it never bit. Both wide variants
+   are broader than 25ch, so the cap stopped every caption short — around 60% of
+   a tile's inner width, barely half a column on the two-up — and left a ragged
+   void down the right of each one. Let the column set the measure: 35ch in a
+   tile, 46ch on the two-up, both comfortable for copy this short. */
+.pillars--tiles .pillar__body,
+.pillars--2 .pillar__body {
+  max-width: none;
+}
+
 /* Two across, leaving the fifth tile centred on its own row. */
 @media (max-width: 860px) {
   .pillars--tiles .pillar {
@@ -1457,7 +1468,12 @@ body.nav-open .nav-toggle__close {
     text-align: center;
   }
 
+  /* The two variant selectors are listed so this ties with the uncapped rule
+     above and wins on source order. Once the text is centred it needs a measure
+     again, or a full-width column sets lines too long to track back. */
   .pillar__body,
+  .pillars--tiles .pillar__body,
+  .pillars--2 .pillar__body,
   .card__body {
     max-width: 36ch;
     margin-inline: auto;
