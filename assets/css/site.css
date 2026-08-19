@@ -1899,7 +1899,7 @@ body.nav-open .nav-toggle__close {
 .post__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.15rem 0.6rem;
   color: var(--gold-ink);
   font-size: 0.64rem;
   font-weight: 500;
@@ -1907,9 +1907,16 @@ body.nav-open .nav-toggle__close {
   text-transform: uppercase;
 }
 
-.post__meta span:not(:first-child)::before {
+/* Any child, not just a span — the date is a <time>, and keying the separator
+   to spans skipped it.
+
+   Trailing rather than leading, which matters once there are three items: at a
+   card's width the line wraps, and a leading separator starts the second line
+   with a stranded dot. Trailing leaves it at the end of the first line, where it
+   reads as intended. */
+.post__meta > *:not(:last-child)::after {
   content: '·';
-  margin-right: 0.75rem;
+  margin-left: 0.6rem;
   color: var(--line);
 }
 
@@ -2011,6 +2018,183 @@ body.nav-open .nav-toggle__close {
   width: 1.05em;
   height: 1.05em;
   color: var(--green);
+}
+
+/* --------------------------------------------------------------------------
+   19b. Blog post — photograph behind the title, then the piece
+   --------------------------------------------------------------------------
+   Built on the homepage's full-bleed hero rather than beside it: same centred
+   stage, same scrim idea, an <img> where that one has a <video>.
+
+   The photograph is a crop of the part of the image carrying no words. Every one
+   of these flat-lays has the article's own title printed on a card in the middle
+   of the frame, and the H1 lands exactly there. Scrimming does not solve it —
+   darkening drops the whole band's luminance without touching the local contrast
+   between dark type and its pale card, so the printed title stays readable at
+   any strength that still leaves a photograph. Cropping is what solves it, and
+   the crops live in assets/img/post-*.jpg. */
+.hero--post {
+  display: grid;
+  place-items: center;
+  min-height: min(72vh, 660px);
+  background: var(--green-deep);
+  overflow: hidden;
+}
+
+.hero__shot {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Lighter than the homepage's, and it can be: these crops are soft plaster,
+   ceramic and leaf shadow with no bright sky to hold type against. Still a
+   feathered core under the copy rather than a flat wash, so the corners keep
+   some of the photograph. */
+.hero__shot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 78% 72% at 50% 50%,
+      rgba(9, 25, 21, 0.74) 0%,
+      rgba(9, 25, 21, 0.5) 62%,
+      rgba(9, 25, 21, 0.1) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(13, 38, 32, 0.5) 0%,
+      rgba(13, 38, 32, 0.34) 45%,
+      rgba(13, 38, 32, 0.62) 100%
+    );
+}
+
+.hero--post .hero__stage {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  padding-block: clamp(3.5rem, 9vw, 6rem);
+  text-align: center;
+}
+
+/* A post title is prose, not a slogan, so it sets smaller than the homepage's
+   display line and takes a reading-length measure. */
+.hero--post .display {
+  font-size: clamp(2rem, 4.4vw, 3.35rem);
+  line-height: 1.1;
+  max-width: 30ch;
+  margin-inline: auto;
+  text-shadow: 0 2px 34px rgba(9, 25, 21, 0.45);
+}
+
+.hero--post .lede {
+  max-width: 56ch;
+  margin: 1.5rem auto 0;
+}
+
+.hero--post .btn-row {
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* White, not the gold the cards use, for the same reason the homepage hero's
+   eyebrow is white: at this size gold over a photograph only just clears 4.5:1
+   on the palest of these crops (measured 4.56:1), and that is too thin a margin
+   to rest on. The gold stays on the cards, where the ground is cream. */
+.post__meta--hero {
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: var(--on-dark);
+}
+
+.post__meta--hero > *:not(:last-child)::after {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Reading measure. Narrower than .wrap--narrow, which is sized for headings and
+   two-up blocks rather than a column of body copy. */
+.wrap--reading {
+  max-width: 760px;
+}
+
+.article-band {
+  background: var(--cream-hi);
+}
+
+.article > * + * {
+  margin-top: 1.35rem;
+}
+
+.article p {
+  color: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.78;
+}
+
+.article h2 {
+  margin-top: 2.75rem;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 2.6vw, 1.95rem);
+  font-weight: 300;
+  line-height: 1.22;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+/* These posts lead many sections with a bolded thesis sentence, so strong is
+   doing structural work and gets the brand's ink rather than extra weight
+   piled on the serif. */
+.article strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.article a {
+  color: var(--green);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
+}
+
+.article a:hover {
+  color: var(--gold-ink);
+  text-decoration-color: var(--gold-ink);
+}
+
+.article__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--line);
+}
+
+.article__by {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .hero--post {
+    min-height: min(66vh, 540px);
+  }
 }
 
 /* --------------------------------------------------------------------------

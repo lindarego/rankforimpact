@@ -88,10 +88,32 @@ viewport. 1600px covers a 1600-wide column, or an 800px one on a 2× screen.
 | `about-approach.jpg` | 4:3 | Stacked hardback books, black vase with foliage, monogrammed mug, pen on plaster. |
 | `about-cta.jpg` | wide | Winding mountain road through golden hills at dusk, wide and cinematic. |
 
-## Insights — `insights.html`
+## Insights and blog posts
 
-`insight-1.jpg` … `insight-6.jpg`, 3:2 — editorial still life or abstract texture
-in brand tones. Replace alongside the placeholder article copy.
+All six **supplied**, and each one does two jobs.
+
+| File | Size | Shot |
+| --- | --- | --- |
+| `insight-1.jpg` … `insight-6.jpg` | 1536×1024 (3:2), ~220 KB each | Editorial flat-lays in brand tones: a dark green journal, brass pen, ceramic dish, olive sprigs and printed cards, under raking daylight with leaf shadows. Used whole as the insights card thumbnails. Supplied as 2.6 MB PNGs and re-encoded to progressive JPEG at quality 80. |
+| `post-<slug>.jpg` | ~1200×600, 68–112 KB | The hero band on each blog post — a **crop** of the matching `insight-N.jpg`, taken from the part of the frame carrying no words. |
+
+**Why the heroes are crops, not the whole picture.** Every one of these
+photographs has the article's own title printed on a card in the middle of the
+frame — `insight-1.jpg` reads "AEO: What Answer Engine Optimisation Actually
+Changes". The post hero overlays the article's `<h1>` there, so the full frame
+would show the same words twice. Scrimming does not fix it: darkening lowers the
+band's overall luminance without touching the local contrast between dark type
+and its pale card, so the printed title stays legible at any strength that still
+leaves a photograph (measured up to 86% ink). Cropping does fix it.
+
+The crops are all shallow-depth-of-field background — plaster, ceramic, leaf
+shadow — which is what makes their 1.4–2.2× upscale affordable: there is no fine
+detail to lose. `scratchpad/blogheroes.py` holds the crop rectangles and the
+reason for each. If you replace a photograph, re-cut its hero from a wordless
+region of the new frame; the card and the hero are deliberately allowed to differ.
+
+The insights page loads all six thumbnails (~1.3 MB) and a post loads one hero
+(~90 KB).
 
 ## Cropping a wide photograph
 

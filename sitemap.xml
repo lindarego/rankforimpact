@@ -2,32 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lindarego.github.io/rankforimpact/index.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://lindarego.github.io/rankforimpact/services.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://lindarego.github.io/rankforimpact/approach.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://lindarego.github.io/rankforimpact/about.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lindarego.github.io/rankforimpact/insights.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://lindarego.github.io/rankforimpact/contact.html</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lindarego.github.io/rankforimpact/blog/what-aeo-actually-changes.html</loc>
+    <lastmod>2026-06-05</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lindarego.github.io/rankforimpact/blog/why-we-measure-authority-not-just-rankings.html</loc>
+    <lastmod>2026-06-24</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lindarego.github.io/rankforimpact/blog/link-building-fewer-better-backlinks.html</loc>
+    <lastmod>2026-07-09</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lindarego.github.io/rankforimpact/blog/outreach-earning-placements.html</loc>
+    <lastmod>2026-07-22</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lindarego.github.io/rankforimpact/blog/topical-authority-b2b.html</loc>
+    <lastmod>2026-08-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lindarego.github.io/rankforimpact/blog/digital-pr-without-gimmicks.html</loc>
+    <lastmod>2026-08-18</lastmod>
+    <priority>0.6</priority>
   </url>
 </urlset>
