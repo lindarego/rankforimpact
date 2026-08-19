@@ -170,7 +170,7 @@
     ['.cards .card', 120],
     ['.pillars .pillar', 90],
     ['.cta__copy, .cta__actions', 130],
-    ['.footer__grid > *', 90],
+    ['.footer__inner > *', 90],
     ['.rows > .row', 60],
     ['.posts .post', 100]
   ].forEach(function (group) {
