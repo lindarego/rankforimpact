@@ -2158,6 +2158,34 @@ body.nav-open .nav-toggle__close {
   color: var(--ink);
 }
 
+/* A short gold rule instead of a bullet — the same marker the rest of the site
+   uses to open a thought, rather than a disc borrowed from the browser. */
+.article ul {
+  padding-left: 1.35rem;
+  list-style: none;
+}
+
+.article li {
+  position: relative;
+  color: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.78;
+}
+
+.article li + li {
+  margin-top: 0.65rem;
+}
+
+.article li::before {
+  content: '';
+  position: absolute;
+  left: -1.35rem;
+  top: 0.85em;
+  width: 8px;
+  height: 1px;
+  background: var(--gold);
+}
+
 .article a {
   color: var(--green);
   text-decoration: underline;

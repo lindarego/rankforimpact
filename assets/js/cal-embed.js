@@ -10,8 +10,10 @@
      data-cal-namespace="15min"
      data-cal-config='{"layout":"month_view", ...}'
 
-   Those buttons also keep a real href, so without JavaScript the click still
-   goes somewhere useful instead of doing nothing.
+   Those buttons carry no href, and must not: an href let the navigation win the
+   race against Cal's click handler and the modal never opened. The trade-off is
+   that a trigger does nothing at all if this script is blocked, which is why the
+   contact page prints the email address beside its booking panel.
 
    If the event or namespace changes, update CAL_LINK / CAL_NS below and the
    matching values in gen.py, which stamps them onto the buttons.
