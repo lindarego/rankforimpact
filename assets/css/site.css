@@ -1796,7 +1796,11 @@ body.nav-open .nav-toggle__close {
   line-height: 1.8;
 }
 
+/* Its own line. `.cta__actions` is a flex row, sized for buttons sitting side
+   by side, and this note is not a button — without a full basis it lands beside
+   the trigger instead of under it. */
 .cta__foot {
+  flex-basis: 100%;
   margin-top: 0.9rem;
   font-size: 0.84rem;
   line-height: 1.6;
@@ -2731,12 +2735,25 @@ body.nav-open .nav-toggle__close {
 .js .reveal,
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(22px);
+  /* Travel is a custom property so a component can dial it down without
+     restating the whole rule and re-entering the specificity argument above. */
+  transform: translateY(var(--reveal-y, 22px));
   /* The stagger delay is attached per property rather than through
      transition-delay, which would also hold up a hover lift by however long
      this element's place in the group happens to be. */
   transition: opacity 0.85s var(--ease) var(--d, 0ms),
     transform 0.85s var(--ease) var(--d, 0ms), translate 0.3s var(--ease);
+}
+
+/* Long-form copy travels less. 22px under a card reads as the card arriving;
+   the same distance under a paragraph reads as the text jumping, and a reader
+   working down an article meets one of these every few seconds rather than once
+   per section. Only the distance changes — overriding the duration here would
+   have to restate the whole shorthand, since a lone transition-duration would
+   also stretch the hover lift's timing. */
+.js .article > [data-reveal],
+.js .article__foot[data-reveal] {
+  --reveal-y: 10px;
 }
 
 .js .reveal.is-in,

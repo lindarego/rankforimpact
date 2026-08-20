@@ -165,14 +165,30 @@
   /* ----------------------------------------------------------------------
      Scroll reveal, staggered per group
      ---------------------------------------------------------------------- */
+  /* [selector, per-item stagger in ms]. A stagger of 0 means "reveal each of
+     these on its own as it arrives" — right for blocks spread down a page,
+     where a per-index delay would make the last one lag by half a second even
+     when it is the only thing on screen. Non-zero is for items that enter
+     together as a group and should arrive in sequence.
+
+     `:not([data-mask])` on the hero stages skips the headline, which is already
+     riding up from behind its clip; giving it a fade-up as well animates one
+     element two ways. It works because the mask pass above runs first and has
+     already stamped data-mask by the time this does. */
   [
     ['.hero__copy > .eyebrow, .hero__copy .prose > *, .hero__copy .btn-row', 90],
+    ['.hero__stage > *:not([data-mask])', 90],
     ['.cards .card', 120],
     ['.pillars .pillar', 90],
-    ['.cta__copy, .cta__actions', 130],
+    ['.cta__copy, .cta__mid, .cta__actions', 130],
     ['.footer__inner > *', 90],
     ['.rows > .row', 60],
-    ['.posts .post', 100]
+    ['.posts .post', 100],
+    ['.wrap > .lede, .wrap > .prose', 0],
+    ['.duo__media', 0],
+    ['.quote__rule', 0],
+    ['.article > *, .article__foot', 0],
+    ['.booker, .reassure', 120]
   ].forEach(function (group) {
     Array.prototype.forEach.call(
       document.querySelectorAll(group[0]),
