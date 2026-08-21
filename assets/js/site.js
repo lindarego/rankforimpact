@@ -321,6 +321,7 @@
     var h = 0;
     var visible = false;
     var started = 0; /* rAF timestamp of the first frame, so growth is relative */
+    var drawnIn = false; /* has the fan played its arrival yet */
     var hover = 0; /* eased 0 → 1 while the pointer is over the diagram */
     var hoverTarget = 0;
     var hot = -1; /* index of the branch under the pointer or focus */
@@ -814,7 +815,11 @@
         resizing = true;
         requestAnimationFrame(function () {
           resizing = false;
-          if (measure()) run();
+          /* Same reason as the fonts handler below: off screen this would stamp
+             the growth clock early and cost the section its arrival. */
+          if (!measure()) return;
+          if (reduce) paint();
+          else if (visible) run();
         });
       },
       { passive: true }
@@ -823,13 +828,20 @@
     measure();
 
     /* Placement is measured off the labels themselves, so it is worth redoing
-       once the brand faces have replaced the fallback metrics. */
+       once the brand faces have replaced the fallback metrics.
+
+       This must not call run() unconditionally. run() schedules a frame, and the
+       first frame stamps `started`, which is the origin the draw-in is measured
+       from. Fonts land within a few hundred milliseconds of load, long before
+       anyone has scrolled this far, so stamping here set the clock at load time:
+       by the time the section arrived, `now - started` was already past the
+       whole 2.2s growth and the fan snapped in fully formed instead of drawing
+       itself. Only run when the section is genuinely on screen. */
     if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
       document.fonts.ready.then(function () {
-        if (measure()) {
-          if (reduce) paint();
-          else run();
-        }
+        if (!measure()) return;
+        if (reduce) paint();
+        else if (visible) run();
       });
     }
 
@@ -853,6 +865,15 @@
             }
             live();
             if (!w) measure();
+            /* Start the growth clock from the moment the reader actually gets
+               here, whatever else may have scheduled a frame earlier. Once
+               only: redrawing the fan every time it scrolls back past would be
+               a trick rather than an arrival. */
+            if (!drawnIn) {
+              drawnIn = true;
+              started = 0;
+              last = 0;
+            }
             run();
           });
         },

@@ -107,10 +107,18 @@ and its pale card, so the printed title stays legible at any strength that still
 leaves a photograph (measured up to 86% ink). Cropping does fix it.
 
 The crops are all shallow-depth-of-field background — plaster, ceramic, leaf
-shadow — which is what makes their 1.4–2.2× upscale affordable: there is no fine
-detail to lose. `scratchpad/blogheroes.py` holds the crop rectangles and the
-reason for each. If you replace a photograph, re-cut its hero from a wordless
-region of the new frame; the card and the hero are deliberately allowed to differ.
+shadow, a journal cover — which is what makes their 1.4–2.2× upscale affordable:
+there is no fine detail to lose. The crop rectangles and the reason for each live
+in `scratchpad/blogheroes.py` (articles 1 and 2) and `scratchpad/blogimg3.py`
+(articles 3–6, the revised set). If you replace a photograph, re-cut its hero
+from a wordless region of the new frame; the card and the hero are deliberately
+allowed to differ, and that is the point.
+
+Two of the printed cards still carry a category prefix the page titles no longer
+use — `insight-3.jpg` reads "Link Building:" and `insight-4.jpg` reads
+"Outreach:", where the titles are now "The Case for Fewer, Better Backlinks" and
+"How to Earn a Placement in a Publication You Respect". The heroes are cropped
+clear of both, so this shows only on the insights thumbnails.
 
 The insights page loads all six thumbnails (~1.3 MB) and a post loads one hero
 (~90 KB).
