@@ -44,10 +44,46 @@ them through Jekyll.
 
 ### Custom domain
 
-Add a `CNAME` file at the root containing the bare domain (e.g.
-`rankforimpact.com`), point DNS at GitHub Pages, then update the absolute URLs in
+The root `CNAME` file holds the bare apex domain, `rankforimpact.com`. Because
+Pages is published by a workflow rather than from a branch, that file alone does
+not attach the domain — set it as well at **Settings → Pages → Custom domain**,
+which is where GitHub runs its DNS check.
+
+At the registrar (Namecheap, via `dns1/dns2.registrar-servers.com`) the apex
+needs exactly four A records, and nothing else:
+
+| Type | Host | Value |
+| --- | --- | --- |
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `lindarego.github.io.` |
+
+**"Nothing else" is the part that bites.** GitHub's check requires every A record
+on the apex to be one of its four addresses, so a single extra record fails it —
+even with all four correct ones present. On a fresh Namecheap domain the extra
+record is the parking page (`192.64.119.x`), which arrives by default as an
+`A Record` or a `URL Redirect Record` on `@`; it has to be deleted, not just
+outnumbered. Verify with:
+
+```sh
+dig +short A rankforimpact.com      # must list only the four 185.199.x.x
+dig +short CNAME www.rankforimpact.com
+```
+
+Namecheap's own edits propagate in minutes, but GitHub caches a failed check, so
+re-enter the domain in Settings once `dig` is clean rather than waiting on it.
+
+Optionally add the `_github-pages-challenge-lindarego` TXT record that
+**Settings → Pages → Verified domains** hands out; it blocks anyone else from
+claiming the domain for their own Pages site.
+
+Once the domain resolves and HTTPS is issued, update the absolute URLs in
 `sitemap.xml`, `robots.txt` and the `<link rel="canonical">` / `og:url` tags in
-each page's `<head>`.
+each page's `<head>` — they still point at
+`https://lindarego.github.io/rankforimpact/`. Doing that before the domain works
+would point canonicals at a dead host, so it waits until then.
 
 ## Structure
 
