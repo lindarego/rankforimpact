@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lindarego.github.io/rankforimpact/sitemap.xml
+Sitemap: https://rankforimpact.com/sitemap.xml
